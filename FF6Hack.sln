@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26228.4
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FF6Hack", "FF6Hack.csproj", "{5676A7E2-412D-4B2C-9792-CA60DBDFA973}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SnesEditing", "SnesEditing\SnesEditing.csproj", "{031F5603-1FFD-46D5-B619-9E54CD0EC292}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5676A7E2-412D-4B2C-9792-CA60DBDFA973}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5676A7E2-412D-4B2C-9792-CA60DBDFA973}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5676A7E2-412D-4B2C-9792-CA60DBDFA973}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5676A7E2-412D-4B2C-9792-CA60DBDFA973}.Release|Any CPU.Build.0 = Release|Any CPU
+		{031F5603-1FFD-46D5-B619-9E54CD0EC292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{031F5603-1FFD-46D5-B619-9E54CD0EC292}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{031F5603-1FFD-46D5-B619-9E54CD0EC292}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{031F5603-1FFD-46D5-B619-9E54CD0EC292}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

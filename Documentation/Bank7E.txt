@@ -1,0 +1,5767 @@
+
+7E/5000:	4C0C50  	JMP $500C      (Title screen)
+7E/5003:	4CF357  	JMP $57F3      (Opening credits)
+7E/5006:	4CC469  	JMP $69C4      (Rise of the Floating Continent)
+7E/5009:	4CF26C  	JMP $6CF2      (World being torn apart)
+
+Title screen
+7E/500C:	08      	PHP
+7E/500D:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/500F:	48      	PHA
+7E/5010:	DA      	PHX
+7E/5011:	5A      	PHY
+7E/5012:	8B      	PHB
+7E/5013:	0B      	PHD
+7E/5014:	202F50  	JSR $502F      (Set DBR, DPR, NMI address, IRQ address; zero $00)
+7E/5017:	207F50  	JSR $507F
+7E/501A:	20F750  	JSR $50F7      (Handler for white logo)
+7E/501D:	20A850  	JSR $50A8      (Handler for title screen)
+7E/5020:	204350  	JSR $5043      (Sound-related function) (JMP $5804...)
+7E/5023:	204E50  	JSR $504E      (Turn off the screen; disable DMA, HDMA, NMI, etc.)
+7E/5026:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/5028:	2B      	PLD
+7E/5029:	AB      	PLB
+7E/502A:	7A      	PLY
+7E/502B:	FA      	PLX
+7E/502C:	68      	PLA
+7E/502D:	28      	PLP
+7E/502E:	6B      	RTL
+
+Set DBR, DPR, NMI address, IRQ address; zero $00 and $01
+7E/502F:	E220    	SEP #$20       (8-bit accumulator)
+7E/5031:	A97E    	LDA #$7E
+7E/5033:	48      	PHA
+7E/5034:	AB      	PLB            (Set data bank register to 7E)
+7E/5035:	A20000  	LDX #$0000     (Zero X) (PEA $0000, PLD...)
+7E/5038:	DA      	PHX
+7E/5039:	2B      	PLD            (Set direct page register to 0000)
+7E/503A:	A20000  	LDX #$0000     (...)
+7E/503D:	8600    	STX $00        (Zero $00 for optimization purposes)
+7E/503F:	206250  	JSR $5062      (Set NMI and IRQ locations) (BRA...)
+7E/5042:	60      	RTS
+
+Sound-related function
+7E/5043:	A9F0    	LDA #$F0
+7E/5045:	8F001300	STA $001300
+7E/5049:	220400C5	JSL $C50004    (Play song)
+7E/504D:	60      	RTS
+
+Turn off the screen and disable DMA, HDMA, NMI, auto joypad read, etc.
+7E/504E:	A98F    	LDA #$8F
+7E/5050:	8F002100	STA $002100    (Turn off the screen; full brightness)
+7E/5054:	7B      	TDC            (Zero A)
+7E/5055:	8F004200	STA $004200    (Disable NMI, IRQ, and auto joypad read)
+7E/5059:	8F0B4200	STA $00420B    (Disable DMA)
+7E/505D:	8F0C4200	STA $00420C    (Disable HDMA)
+7E/5061:	60      	RTS
+
+NMI and IRQ locations
+7E/5062:	A95C    	LDA #$5C
+7E/5064:	8D0015  	STA $1500      (Precede NMI address with JML opcode)
+7E/5067:	8D0415  	STA $1504      (Precede IRQ address with JML opcode)
+7E/506A:	A23372  	LDX #$7233
+7E/506D:	8E0115  	STX $1501      (Set NMI address)
+7E/5070:	A26472  	LDX #$7264
+7E/5073:	8E0515  	STX $1505      (Set IRQ address) (Disable IRQ...)
+7E/5076:	A97E    	LDA #$7E
+7E/5078:	8D0315  	STA $1503      (NMI bank; 7E/7233)
+7E/507B:	8D0715  	STA $1507      (IRQ bank; 7E/7264)
+7E/507E:	60      	RTS
+
+From the main title-screen function
+7E/507F:	201177  	JSR $7711      (Initialize various registers)
+7E/5082:	7B      	TDC            (Zero A)
+7E/5083:	209350  	JSR $5093      (Play song "Omen 1" on mute)
+7E/5086:	201578  	JSR $7815
+7E/5089:	204F78  	JSR $784F      (Clear VRAM)
+7E/508C:	208574  	JSR $7485
+7E/508F:	20FA78  	JSR $78FA      (JMP...)
+7E/5092:	60      	RTS
+
+Music settings for title screen (from 7E/5083, 7E/5293)
+7E/5093:	8F021300	STA $001302    (Set volume)
+7E/5097:	A910    	LDA #$10
+7E/5099:	8F001300	STA $001300
+7E/509D:	A902    	LDA #$02
+7E/509F:	8F011300	STA $001301    (Set song to "Omen 1")
+7E/50A3:	220400C5	JSL $C50004    (Play song)
+7E/50A7:	60      	RTS
+
+Handler for progress of title screen
+7E/50A8:	7B      	TDC            (Zero A)
+7E/50A9:	A519    	LDA $19
+7E/50AB:	3018    	BMI $50C5      (Basically, branch if FF)
+7E/50AD:	0A      	ASL A          (Multiply by 2)
+7E/50AE:	AA      	TAX            (Transfer A to X)
+7E/50AF:	FCDF50  	JSR ($50DF,X)
+7E/50B2:	A506    	LDA $06        (Load controller 1 bits)
+7E/50B4:	8980    	BIT #$80       (Pressing A?) (BMI...)
+7E/50B6:	D008    	BNE $50C0      (Branch if so)
+7E/50B8:	200F75  	JSR $750F
+7E/50BB:	20FD71  	JSR $71FD
+7E/50BE:	80E8    	BRA $50A8      (Loop)
+7E/50C0:	A9FF    	LDA #$FF
+7E/50C2:	8D0002  	STA $0200      (Acknowledge interruption of title-screen sequence)
+7E/50C5:	A00F00  	LDY #$000F
+7E/50C8:	8415    	STY $15
+7E/50CA:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/50CC:	A0A055  	LDY #$55A0
+7E/50CF:	20DC74  	JSR $74DC      (Put 7E/55A0 in queue)
+7E/50D2:	A415    	LDY $15
+7E/50D4:	F008    	BEQ $50DE
+7E/50D6:	200F75  	JSR $750F
+7E/50D9:	20FD71  	JSR $71FD
+7E/50DC:	80F4    	BRA $50D2      (Loop)
+7E/50DE:	60      	RTS
+
+Jump table
+7E/50DF:	AE51    	(Title screen part 0, display dark clouds)
+7E/50E1:	8052    	(Title screen part 1, play song "Omen 1" at full volume)
+7E/50E3:	9752    	(Title screen part 2, display the fiery logo)
+7E/50E5:	A652    	(Title screen part 3)
+7E/50E7:	E052    	(Title screen part 4)
+7E/50E9:	EC52    	(Title screen part 5)
+7E/50EB:	3F53    	(Title screen part 6)
+7E/50ED:	7753    	(Title screen part 7)
+7E/50EF:	8A53    	(Title screen part 8)
+7E/50F1:	9C53    	(Title screen part 9, display clouds over Narshe)
+7E/50F3:	B553    	(Title screen part 10, wait)
+7E/50F5:	BC53    	(Title screen part 11, exit)
+
+Handler for white logo
+7E/50F7:	7B      	TDC            (Zero A)
+7E/50F8:	A519    	LDA $19
+7E/50FA:	300D    	BMI $5109
+7E/50FC:	0A      	ASL A          (Multiply by 2)
+7E/50FD:	AA      	TAX            (Transfer A to X)
+7E/50FE:	FC3151  	JSR ($5131,X)
+7E/5101:	200F75  	JSR $750F
+7E/5104:	20FD71  	JSR $71FD
+7E/5107:	80EE    	BRA $50F7      (Loop)
+7E/5109:	A00F00  	LDY #$000F
+7E/510C:	8415    	STY $15
+7E/510E:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5110:	A0A055  	LDY #$55A0
+7E/5113:	20DC74  	JSR $74DC      (Put 7E/55A0 in queue)
+7E/5116:	A415    	LDY $15
+7E/5118:	F008    	BEQ $5122      (Branch if zero)
+7E/511A:	200F75  	JSR $750F
+7E/511D:	20FD71  	JSR $71FD
+7E/5120:	80F4    	BRA $5116      (Loop)
+7E/5122:	7B      	TDC            (Zero A)
+7E/5123:	A8      	TAY            (Zero Y)
+7E/5124:	8519    	STA $19
+7E/5126:	8425    	STY $25
+7E/5128:	8427    	STY $27
+7E/512A:	208574  	JSR $7485
+7E/512D:	204E50  	JSR $504E      (Turn off the screen; disable DMA, HDMA, NMI, etc.) (JMP...)
+7E/5130:	60      	RTS
+
+Jump table
+7E/5131:	5551    	(Display the white logo)
+7E/5133:	A551    	(Wait for timer to expire)
+
+Data: palette for the white logo
+7E/5135:	0000 6310 BD77 0000 FF7F FF7F FF7F FF7F
+7E/5145:	FF7F FF7F FF7F FF7F FF7F FF7F FF7F FF7F
+
+Display the white logo
+7E/5155:	200653  	JSR $5306
+7E/5158:	A20030  	LDX #$3000     (Destination address)
+7E/515B:	A06574  	LDY #$7465     (Source address)
+7E/515E:	202473  	JSR $7324      (Transfer palette)
+7E/5161:	A22030  	LDX #$3020     (Destination address)
+7E/5164:	A06574  	LDY #$7465     (Source address)
+7E/5167:	202473  	JSR $7324      (Transfer palette)
+7E/516A:	A22031  	LDX #$3120     (Destination address)
+7E/516D:	A06574  	LDY #$7465     (Source address)
+7E/5170:	202473  	JSR $7324      (Transfer palette)
+7E/5173:	A22031  	LDX #$3120     (X already holds that...)
+7E/5176:	A0437B  	LDY #$7B43     (Data location; 7E/7B43)
+7E/5179:	A901    	LDA #$01
+7E/517B:	203A73  	JSR $733A
+7E/517E:	A20030  	LDX #$3000
+7E/5181:	A04574  	LDY #$7445     (Data location; 7E/7445)
+7E/5184:	A901    	LDA #$01
+7E/5186:	203A73  	JSR $733A
+7E/5189:	A22030  	LDX #$3020
+7E/518C:	A03551  	LDY #$5135     (Data location; 7E/5135)
+7E/518F:	A901    	LDA #$01
+7E/5191:	203A73  	JSR $733A
+7E/5194:	A00001  	LDY #$0100
+7E/5197:	8425    	STY $25
+7E/5199:	A02C01  	LDY #$012C
+7E/519C:	8415    	STY $15        (Set timer to 300)
+7E/519E:	E619    	INC $19        (Advance to...?)
+7E/51A0:	A90F    	LDA #$0F
+7E/51A2:	8532    	STA $32        (Set screen to reach full brightness)
+7E/51A4:	60      	RTS
+
+Wait for timer to expire
+7E/51A5:	A415    	LDY $15        (Time remaining to current loop)
+7E/51A7:	D004    	BNE $51AD      (Exit unless null)
+7E/51A9:	A9FF    	LDA #$FF
+7E/51AB:	8519    	STA $19
+7E/51AD:	60      	RTS
+
+Title screen part 0, display dark clouds
+7E/51AE:	A22031  	LDX #$3120     (Destination address)
+7E/51B1:	A0637B  	LDY #$7B63     (Source address)
+7E/51B4:	202473  	JSR $7324      (Transfer palette)
+7E/51B7:	A24031  	LDX #$3140     (Destination address)
+7E/51BA:	A0437B  	LDY #$7B43     (Source address)
+7E/51BD:	202473  	JSR $7324      (Transfer palette)
+7E/51C0:	A20030  	LDX #$3000     (Destination address)
+7E/51C3:	A06574  	LDY #$7465     (Source address)
+7E/51C6:	202473  	JSR $7324      (Transfer palette)
+7E/51C9:	A22030  	LDX #$3020     (Destination address)
+7E/51CC:	A0C37B  	LDY #$7BC3     (Source address)
+7E/51CF:	202473  	JSR $7324      (Transfer palette)
+7E/51D2:	A2C030  	LDX #$30C0     (Destination address)
+7E/51D5:	A06574  	LDY #$7465     (Source address)
+7E/51D8:	202473  	JSR $7324      (Transfer palette)
+7E/51DB:	A24030  	LDX #$3040     (Destination address)
+7E/51DE:	A06574  	LDY #$7465     (Source address)
+7E/51E1:	202473  	JSR $7324      (Transfer palette)
+7E/51E4:	A26030  	LDX #$3060     (Destination address)
+7E/51E7:	A06574  	LDY #$7465     (Source address)
+7E/51EA:	202473  	JSR $7324      (Transfer palette)
+7E/51ED:	A2E030  	LDX #$30E0     (Destination address)
+7E/51F0:	A06574  	LDY #$7465     (Source address)
+7E/51F3:	202473  	JSR $7324      (Transfer palette)
+7E/51F6:	A2A030  	LDX #$30A0     (Destination address)
+7E/51F9:	A06574  	LDY #$7465     (Source address)
+7E/51FC:	202473  	JSR $7324      (Transfer palette)
+7E/51FF:	A2C030  	LDX #$30C0
+7E/5202:	A0037C  	LDY #$7C03     (Data location; 7E/7C03)
+7E/5205:	A904    	LDA #$04
+7E/5207:	203A73  	JSR $733A
+7E/520A:	A24030  	LDX #$3040
+7E/520D:	A0237C  	LDY #$7C23     (Data location; 7E/7C23)
+7E/5210:	A904    	LDA #$04
+7E/5212:	203A73  	JSR $733A
+7E/5215:	A26030  	LDX #$3060
+7E/5218:	A0237C  	LDY #$7C23     (Data location; 7E/7C23)
+7E/521B:	A904    	LDA #$04
+7E/521D:	203A73  	JSR $733A
+7E/5220:	A2E030  	LDX #$30E0
+7E/5223:	A0437C  	LDY #$7C43     (Data location; 7E/7C43)
+7E/5226:	A904    	LDA #$04
+7E/5228:	203A73  	JSR $733A
+7E/522B:	A2A030  	LDX #$30A0
+7E/522E:	A0E37B  	LDY #$7BE3     (Data location; 7E/7BE3)
+7E/5231:	A904    	LDA #$04
+7E/5233:	203A73  	JSR $733A
+7E/5236:	A901    	LDA #$01       (Start from $3220 to find an unoccupied queue slot)
+7E/5238:	A03955  	LDY #$5539
+7E/523B:	20DC74  	JSR $74DC      (Put 7E/5539 in queue)
+7E/523E:	A03C00  	LDY #$003C
+7E/5241:	8415    	STY $15        (Set timer for next part to 60)
+7E/5243:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/5245:	A90F    	LDA #$0F
+7E/5247:	8532    	STA $32        (Set screen to reach full brightness)
+7E/5249:	A901    	LDA #$01       (Start from $3220 to find an unoccupied queue slot)
+7E/524B:	A0C855  	LDY #$55C8
+7E/524E:	20DC74  	JSR $74DC      (Put 7E/55C8 in queue)
+7E/5251:	C220    	REP #$20       (16-bit accumulator)
+7E/5253:	A94030  	LDA #$3040
+7E/5256:	9D0137  	STA $3701,X
+7E/5259:	E220    	SEP #$20       (8-bit accumulator)
+7E/525B:	A901    	LDA #$01       (Start from $3220 to find an unoccupied queue slot)
+7E/525D:	A0C855  	LDY #$55C8
+7E/5260:	20DC74  	JSR $74DC      (Put 7E/55C8 in queue)
+7E/5263:	C220    	REP #$20       (16-bit accumulator)
+7E/5265:	A96030  	LDA #$3060
+7E/5268:	9D0137  	STA $3701,X
+7E/526B:	E220    	SEP #$20       (8-bit accumulator)
+7E/526D:	A901    	LDA #$01       (Start from $3220 to find an unoccupied queue slot)
+7E/526F:	A0C855  	LDY #$55C8
+7E/5272:	20DC74  	JSR $74DC      (Put 7E/55C8 in queue)
+7E/5275:	C220    	REP #$20       (16-bit accumulator)
+7E/5277:	A9C030  	LDA #$30C0
+7E/527A:	9D0137  	STA $3701,X
+7E/527D:	E220    	SEP #$20       (8-bit accumulator)
+7E/527F:	60      	RTS
+
+Title screen part 1, play song "Omen 1" at full volume
+7E/5280:	A415    	LDY $15        (Time remaining to current loop)
+7E/5282:	D012    	BNE $5296      (Exit unless null)
+7E/5284:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/5286:	A04304  	LDY #$0443
+7E/5289:	8415    	STY $15        (Set timer for next part to 1091)
+7E/528B:	A9FF    	LDA #$FF
+7E/528D:	8F051300	STA $001305
+7E/5291:	A9FF    	LDA #$FF       (...)
+7E/5293:	209350  	JSR $5093      (Play song "Omen 1" at full volume) (JMP...)
+7E/5296:	60      	RTS
+
+Title screen part 2, display the fiery logo
+7E/5297:	A415    	LDY $15        (Time remaining to current loop)
+7E/5299:	D00A    	BNE $52A5      (Exit unless null)
+7E/529B:	209778  	JSR $7897      (Display the fiery logo)
+7E/529E:	A01E00  	LDY #$001E
+7E/52A1:	8415    	STY $15        (Set timer for next part to 30)
+7E/52A3:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/52A5:	60      	RTS
+
+Title screen part 3
+7E/52A6:	A415    	LDY $15        (Time remaining to current loop)
+7E/52A8:	D035    	BNE $52DF      (Exit unless null)
+7E/52AA:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/52AC:	A0C553  	LDY #$53C5
+7E/52AF:	20DC74  	JSR $74DC      (Put 7E/53C5 in queue)
+7E/52B2:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/52B4:	A03154  	LDY #$5431
+7E/52B7:	20DC74  	JSR $74DC      (Put 7E/5431 in queue)
+7E/52BA:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/52BC:	A0AF54  	LDY #$54AF
+7E/52BF:	20DC74  	JSR $74DC      (Put 7E/54AF in queue)
+7E/52C2:	A20030  	LDX #$3000
+7E/52C5:	A0837B  	LDY #$7B83     (Data location; 7E/7B83)
+7E/52C8:	A902    	LDA #$02
+7E/52CA:	203A73  	JSR $733A
+7E/52CD:	A22030  	LDX #$3020
+7E/52D0:	A0A37B  	LDY #$7BA3     (Data location; 7E/7BA3)
+7E/52D3:	A901    	LDA #$01
+7E/52D5:	203A73  	JSR $733A
+7E/52D8:	A04A01  	LDY #$014A
+7E/52DB:	8415    	STY $15        (Set timer for next part to 330)
+7E/52DD:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/52DF:	60      	RTS
+
+Title screen part 4
+7E/52E0:	A415    	LDY $15        (Time remaining to current loop)
+7E/52E2:	D007    	BNE $52EB      (Exit unless null)
+7E/52E4:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/52E6:	A0F000  	LDY #$00F0
+7E/52E9:	8415    	STY $15        (Set timer for next part to 250)
+7E/52EB:	60      	RTS
+
+Title screen part 5
+7E/52EC:	A415    	LDY $15        (Time remaining to current loop)
+7E/52EE:	D015    	BNE $5305      (Exit unless null)
+7E/52F0:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/52F2:	A0C003  	LDY #$03C0
+7E/52F5:	8415    	STY $15        (Set timer for next part to 960)
+7E/52F7:	200653  	JSR $5306
+7E/52FA:	A22031  	LDX #$3120
+7E/52FD:	A0437B  	LDY #$7B43     (Data location; 7E/7B43)
+7E/5300:	A904    	LDA #$04
+7E/5302:	203A73  	JSR $733A      (JMP...)
+7E/5305:	60      	RTS
+
+7E/5306:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5308:	A0DB76  	LDY #$76DB
+7E/530B:	20DC74  	JSR $74DC      (Put 7E/76DB in queue)
+7E/530E:	C220    	REP #$20       (16-bit accumulator)
+7E/5310:	A95C7A  	LDA #$7A5C
+7E/5313:	9D0035  	STA $3500,X
+7E/5316:	E220    	SEP #$20       (8-bit accumulator)
+7E/5318:	A940    	LDA #$40
+7E/531A:	9D0133  	STA $3301,X
+7E/531D:	A9A0    	LDA #$A0
+7E/531F:	9D0134  	STA $3401,X
+7E/5322:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5324:	A0DB76  	LDY #$76DB
+7E/5327:	20DC74  	JSR $74DC      (Put 7E/76DB in queue)
+7E/532A:	C220    	REP #$20       (16-bit accumulator)
+7E/532C:	A95F7A  	LDA #$7A5F
+7E/532F:	9D0035  	STA $3500,X
+7E/5332:	E220    	SEP #$20       (8-bit accumulator)
+7E/5334:	A990    	LDA #$90
+7E/5336:	9D0133  	STA $3301,X
+7E/5339:	A9A0    	LDA #$A0
+7E/533B:	9D0134  	STA $3401,X
+7E/533E:	60      	RTS
+
+Title screen part 6, progressively hide the fiery logo [???]
+7E/533F:	A415    	LDY $15        (Time remaining to current loop)
+7E/5341:	D033    	BNE $5376      (Exit unless null)
+7E/5343:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/5345:	A00001  	LDY #$0100
+7E/5348:	8415    	STY $15        (Set timer for next part to 256)
+7E/534A:	A20031  	LDX #$3100
+7E/534D:	A0637B  	LDY #$7B63     (Data location; 7E/7B63)
+7E/5350:	A902    	LDA #$02
+7E/5352:	203A73  	JSR $733A
+7E/5355:	A22031  	LDX #$3120
+7E/5358:	A0637B  	LDY #$7B63     (Data location; 7E/7B63)
+7E/535B:	A904    	LDA #$04
+7E/535D:	203A73  	JSR $733A
+7E/5360:	A20030  	LDX #$3000
+7E/5363:	A0637B  	LDY #$7B63     (Data location; 7E/7B63)
+7E/5366:	A908    	LDA #$08
+7E/5368:	203A73  	JSR $733A
+7E/536B:	A22030  	LDX #$3020
+7E/536E:	A0637B  	LDY #$7B63     (Data location; 7E/7B63)
+7E/5371:	A908    	LDA #$08
+7E/5373:	203A73  	JSR $733A      (JMP...)
+7E/5376:	60      	RTS
+
+Title screen part 7
+7E/5377:	A415    	LDY $15        (Time remaining to current loop)
+7E/5379:	D00E    	BNE $5389      (Exit unless null)
+7E/537B:	A940    	LDA #$40
+7E/537D:	0433    	TSB $33
+7E/537F:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/5381:	A00100  	LDY #$0001
+7E/5384:	8415    	STY $15        (Set timer for next part to one)
+7E/5386:	20BD5C  	JSR $5CBD      (Add function for flickering lights to queue) (JMP...)
+7E/5389:	60      	RTS
+
+Title screen part 8
+7E/538A:	A415    	LDY $15        (Time remaining to current loop)
+7E/538C:	D00D    	BNE $539B      (Exit unless null)
+7E/538E:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/5390:	6431    	STZ $31
+7E/5392:	A980    	LDA #$80
+7E/5394:	8533    	STA $33
+7E/5396:	A0A003  	LDY #$03A0
+7E/5399:	8415    	STY $15        (Set timer for next part to 928)
+7E/539B:	60      	RTS
+
+Title screen part 9, display clouds over Narshe
+7E/539C:	A415    	LDY $15        (Time remaining to current loop)
+7E/539E:	D008    	BNE $53A8      (Branch unless null)
+7E/53A0:	A0E001  	LDY #$01E0
+7E/53A3:	8415    	STY $15        (Set timer for next part to 480)
+7E/53A5:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/53A7:	60      	RTS            (Exit)
+7E/53A8:	A518    	LDA $18        (NMI counter)
+7E/53AA:	2903    	AND #$03       (Remain between 0 and 3)
+7E/53AC:	D006    	BNE $53B4      (Exit unless null)
+7E/53AE:	C220    	REP #$20       (16-bit accumulator)
+7E/53B0:	E627    	INC $27
+7E/53B2:	E220    	SEP #$20       (8-bit accumulator)
+7E/53B4:	60      	RTS
+
+Title screen part 10, wait
+7E/53B5:	A415    	LDY $15        (Time remaining to current loop)
+7E/53B7:	D002    	BNE $53BB      (Exit unless null)
+7E/53B9:	E619    	INC $19        (Advance to next part of title screen sequence)
+7E/53BB:	60      	RTS
+
+Title screen part 11, exit
+7E/53BC:	A9FF    	LDA #$FF
+7E/53BE:	8519    	STA $19
+7E/53C0:	7B      	TDC            (Zero A)
+7E/53C1:	8D0002  	STA $0200      (Acknowledge the title-screen sequence went uninterrupted)
+7E/53C4:	60      	RTS
+
+7E/53C5:	AA      	TAX            (Transfer A to X)
+7E/53C6:	7CC953  	JMP ($53C9,X)
+
+Jump table
+7E/53C9:	CD53
+7E/53CB:	D553
+
+7E/53CD:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/53CF:	FE003A  	INC $3A00,X
+7E/53D2:	9E0137  	STZ $3701,X
+7E/53D5:	A533    	LDA $33
+7E/53D7:	3056    	BMI $542F
+7E/53D9:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/53DB:	7B      	TDC            (Zero A)
+7E/53DC:	A8      	TAY            (Zero Y)
+7E/53DD:	9E0138  	STZ $3801,X
+7E/53E0:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/53E2:	BD0137  	LDA $3701,X
+7E/53E5:	18      	CLC            (Clear Carry for addition)
+7E/53E6:	7D0138  	ADC $3801,X
+7E/53E9:	20A554  	JSR $54A5
+7E/53EC:	48      	PHA
+7E/53ED:	AF124200	LDA $004212    (PPU status)
+7E/53F1:	2940    	AND #$40       (H-Blank flag set?)
+7E/53F3:	F0F8    	BEQ $53ED      (If not, loop)
+7E/53F5:	A908    	LDA #$08
+7E/53F7:	8F1B2100	STA $00211B    (Mode 7 matrix A, low byte)
+7E/53FB:	7B      	TDC            (Zero A)
+7E/53FC:	8F1B2100	STA $00211B    (Mode 7 matrix A, high byte)
+7E/5400:	68      	PLA
+7E/5401:	8F1C2100	STA $00211C    (Mode 7 matrix B, low byte)
+7E/5405:	8F1C2100	STA $00211C    (Mode 7 matrix B, high byte)
+7E/5409:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/540B:	C220    	REP #$20       (16-bit accumulator)
+7E/540D:	AF352100	LDA $002135
+7E/5411:	998041  	STA $4180,Y
+7E/5414:	E220    	SEP #$20       (8-bit accumulator)
+7E/5416:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5418:	BD0138  	LDA $3801,X
+7E/541B:	18      	CLC            (Clear Carry for addition)
+7E/541C:	6904    	ADC #$04
+7E/541E:	9D0138  	STA $3801,X    (Save changes)
+7E/5421:	C8      	INY
+7E/5422:	C8      	INY
+7E/5423:	C8      	INY
+7E/5424:	C8      	INY
+7E/5425:	C0C000  	CPY #$00C0
+7E/5428:	D0B6    	BNE $53E0      (If not, loop)
+7E/542A:	FE0137  	INC $3701,X
+7E/542D:	38      	SEC            (Mark function address to remain in queue)
+7E/542E:	60      	RTS            (Exit)
+7E/542F:	18      	CLC            (Mark function address to be removed from queue)
+7E/5430:	60      	RTS
+
+7E/5431:	AA      	TAX            (Transfer A to X)
+7E/5432:	7C3554  	JMP ($5435,X)
+
+Jump table
+7E/5435:	3954
+7E/5437:	4154
+
+7E/5439:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/543B:	FE003A  	INC $3A00,X
+7E/543E:	9E0039  	STZ $3900,X
+7E/5441:	A533    	LDA $33
+7E/5443:	305B    	BMI $54A0
+7E/5445:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5447:	7B      	TDC            (Zero A)
+7E/5448:	A8      	TAY            (Zero Y)
+7E/5449:	A910    	LDA #$10
+7E/544B:	9D0138  	STA $3801,X
+7E/544E:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5450:	BD0137  	LDA $3701,X
+7E/5453:	18      	CLC            (Clear Carry for addition)
+7E/5454:	7D0138  	ADC $3801,X
+7E/5457:	20A554  	JSR $54A5
+7E/545A:	48      	PHA
+7E/545B:	AF124200	LDA $004212    (PPU status)
+7E/545F:	2940    	AND #$40       (H-Blank flag set?)
+7E/5461:	F0F8    	BEQ $545B      (If not, loop)
+7E/5463:	A90A    	LDA #$0A
+7E/5465:	8F1B2100	STA $00211B    (Mode 7 matrix A, low byte)
+7E/5469:	7B      	TDC            (Zero A)
+7E/546A:	8F1B2100	STA $00211B    (Mode 7 matrix A, high byte)
+7E/546E:	68      	PLA
+7E/546F:	8F1C2100	STA $00211C    (Mode 7 matrix B, low byte)
+7E/5473:	8F1C2100	STA $00211C    (Mode 7 matrix B, high byte)
+7E/5477:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5479:	C220    	REP #$20       (16-bit accumulator)
+7E/547B:	AF352100	LDA $002135
+7E/547F:	990045  	STA $4500,Y
+7E/5482:	990245  	STA $4502,Y
+7E/5485:	E220    	SEP #$20       (8-bit accumulator)
+7E/5487:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5489:	BD0138  	LDA $3801,X
+7E/548C:	18      	CLC            (Clear Carry for addition)
+7E/548D:	6904    	ADC #$04
+7E/548F:	9D0138  	STA $3801,X    (Save changes)
+7E/5492:	C8      	INY
+7E/5493:	C8      	INY
+7E/5494:	C8      	INY
+7E/5495:	C8      	INY
+7E/5496:	C0C000  	CPY #$00C0
+7E/5499:	D0B3    	BNE $544E      (If not, loop)
+7E/549B:	FE0137  	INC $3701,X
+7E/549E:	38      	SEC            (Mark function address to remain in queue)
+7E/549F:	60      	RTS            (Exit)
+7E/54A0:	18      	CLC            (Mark function address to be removed from queue)
+7E/54A1:	60      	RTS
+
+Unused function
+7E/54A2:	18      	CLC            (Clear Carry for addition)
+7E/54A3:	6940    	ADC #$40
+7E/54A5:	EB      	XBA            (Exchange B and A)
+7E/54A6:	A500    	LDA $00        (Zero A)
+7E/54A8:	EB      	XBA            (Exchange B and A)
+7E/54A9:	AA      	TAX            (Transfer A to X)
+7E/54AA:	BF6DFEC2	LDA $C2FE6D,X
+7E/54AE:	60      	RTS
+
+7E/54AF:	AA      	TAX            (Transfer A to X)
+7E/54B0:	7CB354  	JMP ($54B3,X)
+
+Jump table
+7E/54B3:	B754
+7E/54B5:	C154
+
+7E/54B7:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/54B9:	FE003A  	INC $3A00,X
+7E/54BC:	A901    	LDA #$01
+7E/54BE:	9D0039  	STA $3900,X
+7E/54C1:	A518    	LDA $18        (NMI counter)
+7E/54C3:	2901    	AND #$01       (Even number?)
+7E/54C5:	F00F    	BEQ $54D6      (Branch if so)
+7E/54C7:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/54C9:	BD0039  	LDA $3900,X
+7E/54CC:	C940    	CMP #$40
+7E/54CE:	F008    	BEQ $54D8
+7E/54D0:	20DA54  	JSR $54DA
+7E/54D3:	FE0039  	INC $3900,X
+7E/54D6:	38      	SEC            (Mark function address to remain in queue)
+7E/54D7:	60      	RTS            (Exit)
+7E/54D8:	18      	CLC            (Mark function address to be removed from queue)
+7E/54D9:	60      	RTS
+
+7E/54DA:	A940    	LDA #$40
+7E/54DC:	8F054200	STA $004205    (Set high byte of dividend C to 64)
+7E/54E0:	7B      	TDC            (Zero A)
+7E/54E1:	8F044200	STA $004204    (Zero dividend C, low byte)
+7E/54E5:	BD0039  	LDA $3900,X
+7E/54E8:	8F064200	STA $004206    (Set divisor B)
+7E/54EC:	EA      	NOP            (...)
+7E/54ED:	EA      	NOP            (...)
+7E/54EE:	EA      	NOP            (...)
+7E/54EF:	EA      	NOP            (...)
+7E/54F0:	EA      	NOP            (...)
+7E/54F1:	64F2    	STZ $F2
+7E/54F3:	A0FC00  	LDY #$00FC
+7E/54F6:	64E2    	STZ $E2
+7E/54F8:	64E9    	STZ $E9
+7E/54FA:	64EA    	STZ $EA
+7E/54FC:	AF154200	LDA $004215    (High byte of quotient)
+7E/5500:	85E8    	STA $E8
+7E/5502:	AF144200	LDA $004214    (Low byte of quotient)
+7E/5506:	85E7    	STA $E7
+7E/5508:	BD0039  	LDA $3900,X
+7E/550B:	C5E2    	CMP $E2
+7E/550D:	9002    	BCC $5511
+7E/550F:	8007    	BRA $5518
+7E/5511:	C220    	REP #$20       (16-bit accumulator)
+7E/5513:	A90001  	LDA #$0100
+7E/5516:	800C    	BRA $5524
+7E/5518:	7B      	TDC            (Zero A)
+7E/5519:	A5EA    	LDA $EA
+7E/551B:	38      	SEC            (Set Carry for subtraction)
+7E/551C:	E5E2    	SBC $E2
+7E/551E:	C220    	REP #$20       (16-bit accumulator)
+7E/5520:	49FFFF  	EOR #$FFFF     (Toggle all bits)
+7E/5523:	1A      	INC A
+7E/5524:	99FA3D  	STA $3DFA,Y
+7E/5527:	A5E7    	LDA $E7
+7E/5529:	18      	CLC            (Clear Carry for addition)
+7E/552A:	65E9    	ADC $E9
+7E/552C:	85E9    	STA $E9
+7E/552E:	E220    	SEP #$20       (8-bit accumulator)
+7E/5530:	E6E2    	INC $E2
+7E/5532:	88      	DEY
+7E/5533:	88      	DEY
+7E/5534:	88      	DEY
+7E/5535:	88      	DEY
+7E/5536:	D0D0    	BNE $5508
+7E/5538:	60      	RTS
+
+7E/5539:	AA      	TAX            (Transfer A to X)
+7E/553A:	7C3D55  	JMP ($553D,X)
+
+Jump table
+7E/553D:	4155
+7E/553F:	5955
+
+7E/5541:	A0FFFF  	LDY #$FFFF
+7E/5544:	8410    	STY $10        (Skip the VRAM-related function at 7E/72D5)
+7E/5546:	A04000  	LDY #$0040
+7E/5549:	840E    	STY $0E
+7E/554B:	A97F    	LDA #$7F
+7E/554D:	8514    	STA $14
+7E/554F:	A00100  	LDY #$0001
+7E/5552:	8427    	STY $27
+7E/5554:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5556:	FE003A  	INC $3A00,X
+7E/5559:	A518    	LDA $18        (NMI counter)
+7E/555B:	2903    	AND #$03       (Remain between 0 and 3)
+7E/555D:	D036    	BNE $5595      (Branch unless null)
+7E/555F:	C220    	REP #$20       (16-bit accumulator)
+7E/5561:	A527    	LDA $27
+7E/5563:	C91F01  	CMP #$011F
+7E/5566:	F02F    	BEQ $5597
+7E/5568:	C90001  	CMP #$0100
+7E/556B:	B024    	BCS $5591
+7E/556D:	290700  	AND #$0007
+7E/5570:	D01F    	BNE $5591
+7E/5572:	A527    	LDA $27
+7E/5574:	38      	SEC            (Set Carry for subtraction)
+7E/5575:	E90800  	SBC #$0008
+7E/5578:	29F8FF  	AND #$FFF8
+7E/557B:	0A      	ASL A          (Multiply by 2)
+7E/557C:	0A      	ASL A          (Multiply by 4)
+7E/557D:	0A      	ASL A          (Multiply by 8)
+7E/557E:	18      	CLC            (Clear Carry for addition)
+7E/557F:	69C023  	ADC #$23C0
+7E/5582:	8512    	STA $12
+7E/5584:	A527    	LDA $27
+7E/5586:	38      	SEC            (Set Carry for subtraction)
+7E/5587:	E90800  	SBC #$0008
+7E/558A:	29F8FF  	AND #$FFF8
+7E/558D:	0A      	ASL A          (Multiply by 2)
+7E/558E:	0A      	ASL A          (Multiply by 4)
+7E/558F:	8510    	STA $10
+7E/5591:	E627    	INC $27
+7E/5593:	E220    	SEP #$20       (8-bit accumulator)
+7E/5595:	38      	SEC            (Mark function address to remain in queue)
+7E/5596:	60      	RTS            (Exit)
+7E/5597:	E220    	SEP #$20       (8-bit accumulator)
+7E/5599:	A0FFFF  	LDY #$FFFF
+7E/559C:	8410    	STY $10        (Set VRAM-related function at 7E/72D5 to be skipped)
+7E/559E:	18      	CLC            (Mark function address to be removed from queue)
+7E/559F:	60      	RTS
+
+7E/55A0:	AA      	TAX            (Transfer A to X)
+7E/55A1:	7CA455  	JMP ($55A4,X)
+
+Jump table
+7E/55A4:	A855
+7E/55A6:	B255
+
+7E/55A8:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/55AA:	FE003A  	INC $3A00,X
+7E/55AD:	A90F    	LDA #$0F
+7E/55AF:	9D0133  	STA $3301,X
+7E/55B2:	A415    	LDY $15
+7E/55B4:	F00C    	BEQ $55C2
+7E/55B6:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/55B8:	BD0133  	LDA $3301,X
+7E/55BB:	8532    	STA $32        (Brightness variable)
+7E/55BD:	DE0133  	DEC $3301,X
+7E/55C0:	38      	SEC            (Mark function address to remain in queue)
+7E/55C1:	60      	RTS            (Exit)
+7E/55C2:	A980    	LDA #$80
+7E/55C4:	8532    	STA $32        (Set the screen to go blank)
+7E/55C6:	18      	CLC            (Mark function address to be removed from queue)
+7E/55C7:	60      	RTS
+
+7E/55C8:	AA      	TAX            (Transfer A to X)
+7E/55C9:	7CCC55  	JMP ($55CC,X)
+
+Jump table
+7E/55CC:	D255
+7E/55CE:	EB55
+7E/55D0:	2056
+
+7E/55D2:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/55D4:	FE003A  	INC $3A00,X
+7E/55D7:	A980    	LDA #$80
+7E/55D9:	9D0036  	STA $3600,X
+7E/55DC:	C220    	REP #$20       (16-bit accumulator)
+7E/55DE:	A93E56  	LDA #$563E
+7E/55E1:	9D0035  	STA $3500,X
+7E/55E4:	E220    	SEP #$20       (8-bit accumulator)
+7E/55E6:	205F75  	JSR $755F
+7E/55E9:	38      	SEC            (Mark function address to remain in queue)
+7E/55EA:	60      	RTS
+
+7E/55EB:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/55ED:	BD0036  	LDA $3600,X
+7E/55F0:	F017    	BEQ $5609
+7E/55F2:	C901    	CMP #$01
+7E/55F4:	F007    	BEQ $55FD
+7E/55F6:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/55F8:	DE0036  	DEC $3600,X
+7E/55FB:	38      	SEC            (Mark function address to remain in queue)
+7E/55FC:	60      	RTS
+
+7E/55FD:	A902    	LDA #$02       (Start from $3240 to find an unoccupied queue slot)
+7E/55FF:	A0F956  	LDY #$56F9
+7E/5602:	20DC74  	JSR $74DC      (Put 7E/56F9 in queue)
+7E/5605:	E636    	INC $36
+7E/5607:	80ED    	BRA $55F6
+
+7E/5609:	BD013B  	LDA $3B01,X
+7E/560C:	C9FE    	CMP #$FE
+7E/560E:	D003    	BNE $5613
+7E/5610:	FE003A  	INC $3A00,X
+7E/5613:	C220    	REP #$20       (16-bit accumulator)
+7E/5615:	BD0137  	LDA $3701,X
+7E/5618:	AA      	TAX            (Transfer A to X)
+7E/5619:	E220    	SEP #$20       (8-bit accumulator)
+7E/561B:	207575  	JSR $7575
+7E/561E:	38      	SEC            (Mark function address to remain in queue)
+7E/561F:	60      	RTS
+
+7E/5620:	203056  	JSR $5630      (Load a random number)
+7E/5623:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5625:	9D0036  	STA $3600,X
+7E/5628:	A901    	LDA #$01
+7E/562A:	9D003A  	STA $3A00,X
+7E/562D:	4CDC55  	JMP $55DC
+
+Random-number generator, type 1
+7E/5630:	7B      	TDC            (Zero A)
+7E/5631:	E634    	INC $34
+7E/5633:	A518    	LDA $18        (NMI counter)
+7E/5635:	18      	CLC            (Clear Carry for addition)
+7E/5636:	6534    	ADC $34
+7E/5638:	AA      	TAX            (Transfer A to X)
+7E/5639:	BF00FDC0	LDA $C0FD00,X  (Random-number table)
+7E/563D:	60      	RTS
+
+Data for animating cloud sections illuminated by lightning
+7E/563E:	237C    	(7E/7C23)
+7E/5640:	01
+7E/5641:	5956    	(7E/5659)
+7E/5643:	02
+7E/5644:	D956    	(7E/56D9; black)
+7E/5646:	01
+7E/5647:	5956    	(7E/5659)
+7E/5649:	02
+7E/564A:	D956    	(7E/56D9; black)
+7E/564C:	01
+7E/564D:	7956    	(7E/5679)
+7E/564F:	02
+7E/5650:	9956    	(7E/5699)
+7E/5652:	03
+7E/5653:	B956    	(7E/56B9)
+7E/5655:	04
+7E/5656:	D956    	(7E/56D9; black)
+7E/5658:	FE
+
+Data: palette for animating cloud sections illuminated by lightning
+7E/5659:	6310 DE66 5B56 B445 2E35 0831 E82C C728
+7E/5669:	A624 A51C 8418 6414 6310 BB21 3611 7F73
+
+Data: palette for animating cloud sections illuminated by lightning
+7E/5679:	0000 3952 D745 5139 EC2C E72C C728 A624
+7E/5689:	8520 8418 8414 6414 6310 BB21 3611 7B5A
+
+Data: palette for animating cloud sections illuminated by lightning
+7E/5699:	0000 943D 5335 EE2C AA24 A524 8520 641C
+7E/56A9:	6414 6310 6310 6310 6310 BB21 3611 D645
+
+Data: palette for animating cloud sections illuminated by lightning
+7E/56B9:	0000 AA20 A720 851C 4318 6310 6310 6310
+7E/56C9:	6310 6310 6310 6310 6310 BB21 3611 CC24
+
+Data: palette for dark cloud sections
+7E/56D9:	0000 6310 6310 6310 6310 6310 6310 6310
+7E/56E9:	6310 6310 6310 6310 6310 BB21 3611 6310
+
+7E/56F9:	AA      	TAX            (Transfer A to X)
+7E/56FA:	7CFD56  	JMP ($56FD,X)
+
+Jump table
+7E/56FD:	0157
+7E/56FF:	3657
+
+Pertains to lightning bolts from title screen
+7E/5701:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5703:	FE003A  	INC $3A00,X
+7E/5706:	203056  	JSR $5630      (Load a random number)
+7E/5709:	2903    	AND #$03       (Remain between 0 and 3)
+7E/570B:	F037    	BEQ $5744      (Branch if null)
+7E/570D:	0A      	ASL A          (Multiply by 2)
+7E/570E:	AA      	TAX            (Transfer A to X)
+7E/570F:	C220    	REP #$20       (16-bit accumulator)
+7E/5711:	BD4657  	LDA $5746,X
+7E/5714:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5716:	9D0035  	STA $3500,X
+7E/5719:	E220    	SEP #$20       (...)
+7E/571B:	E220    	SEP #$20       (8-bit accumulator)
+7E/571D:	DA      	PHX            (Save X)
+7E/571E:	203056  	JSR $5630      (Load a random number)
+7E/5721:	FA      	PLX            (Restore X)
+7E/5722:	9D0133  	STA $3301,X
+7E/5725:	DA      	PHX            (Save X)
+7E/5726:	203056  	JSR $5630      (Load a random number)
+7E/5729:	FA      	PLX            (Restore X)
+7E/572A:	297F    	AND #$7F       (Remain between 0 and 127)
+7E/572C:	6910    	ADC #$10
+7E/572E:	9D0134  	STA $3401,X
+7E/5731:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5733:	205F75  	JSR $755F
+7E/5736:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5738:	BD013B  	LDA $3B01,X
+7E/573B:	C9FE    	CMP #$FE
+7E/573D:	F005    	BEQ $5744
+7E/573F:	208D75  	JSR $758D
+7E/5742:	38      	SEC            (Mark function address to remain in queue)
+7E/5743:	60      	RTS            (Exit)
+7E/5744:	18      	CLC            (Mark function address to be removed from queue)
+7E/5745:	60      	RTS
+
+Data for title screen
+7E/5746:	0000    	(Blank entry)
+7E/5748:	4E57    	(7E/574E)
+7E/574A:	6657    	(7E/5766)
+7E/574C:	4E57    	(7E/574E)
+
+Data for title screen
+7E/574E:	7F57    	(7E/577F)
+7E/5750:	01
+7E/5751:	7E57    	(7E/577E)
+7E/5753:	01
+7E/5754:	8457    	(7E/5784)
+7E/5756:	01
+7E/5757:	7E57    	(7E/577E)
+7E/5759:	01
+7E/575A:	9157    	(7E/5791)
+7E/575C:	01
+7E/575D:	7E57    	(7E/577E)
+7E/575F:	01
+7E/5760:	9E57    	(7E/579E)
+7E/5762:	01
+7E/5763:	7E57    	(7E/577E)
+7E/5765:	FE
+7E/5766:	AB57    	(7E/57AB)
+7E/5768:	01
+7E/5769:	7E57    	(7E/577E)
+7E/576B:	01
+7E/576C:	B057    	(7E/57B0)
+7E/576E:	01
+7E/576F:	7E57    	(7E/577E)
+7E/5771:	01
+7E/5772:	BD57    	(7E/57BD)
+7E/5774:	01
+7E/5775:	7E57    	(7E/577E)
+7E/5777:	01
+7E/5778:	CA57    	(7E/57CA)
+7E/577A:	01
+7E/577B:	7E57    	(7E/577E)
+7E/577D:	FE
+
+Data for title screen (OAM?)
+7E/577E:	00
+
+Data for title screen (OAM?)
+7E/577F:	01
+7E/5780:	08
+7E/5781:	00
+7E/5782:	4C
+7E/5783:	35
+
+Data for title screen (OAM?)
+7E/5784:	03
+7E/5785:	00
+7E/5786:	00
+7E/5787:	4E
+7E/5788:	35
+7E/5789:	10
+7E/578A:	00
+7E/578B:	60
+7E/578C:	35
+7E/578D:	08
+7E/578E:	10
+7E/578F:	62
+7E/5790:	35
+
+Data for title screen (OAM?)
+7E/5791:	03
+7E/5792:	08
+7E/5793:	00
+7E/5794:	64
+7E/5795:	35
+7E/5796:	08
+7E/5797:	10
+7E/5798:	66
+7E/5799:	35
+7E/579A:	08
+7E/579B:	20
+7E/579C:	68
+7E/579D:	35
+
+Data for title screen (OAM?)
+7E/579E:	03
+7E/579F:	08
+7E/57A0:	00
+7E/57A1:	6A
+7E/57A2:	35
+7E/57A3:	08
+7E/57A4:	10
+7E/57A5:	6C
+7E/57A6:	35
+7E/57A7:	08
+7E/57A8:	20
+7E/57A9:	6E
+7E/57AA:	35
+
+Data for title screen (OAM?)
+7E/57AB:	01
+7E/57AC:	08
+7E/57AD:	00
+7E/57AE:	4C
+7E/57AF:	75
+
+Data for title screen (OAM?)
+7E/57B0:	03
+7E/57B1:	10
+7E/57B2:	00
+7E/57B3:	4E
+7E/57B4:	75
+7E/57B5:	08
+7E/57B6:	00
+7E/57B7:	60
+7E/57B8:	75
+7E/57B9:	08
+7E/57BA:	10
+7E/57BB:	62
+7E/57BC:	75
+
+Data for title screen (OAM?)
+7E/57BD:	03
+7E/57BE:	08
+7E/57BF:	00
+7E/57C0:	64
+7E/57C1:	75
+7E/57C2:	08
+7E/57C3:	10
+7E/57C4:	66
+7E/57C5:	75
+7E/57C6:	08
+7E/57C7:	20
+7E/57C8:	68
+7E/57C9:	75
+
+Data for title screen (OAM?)
+7E/57CA:	03
+7E/57CB:	08
+7E/57CC:	00
+7E/57CD:	6A
+7E/57CE:	75
+7E/57CF:	08
+7E/57D0:	10
+7E/57D1:	6C
+7E/57D2:	75
+7E/57D3:	08
+7E/57D4:	20
+7E/57D5:	6E
+7E/57D6:	75
+
+7E/57D7:	40
+7E/57D8:	A8
+7E/57D9:	40
+7E/57DA:	70
+7E/57DB:	B0
+7E/57DC:	48
+7E/57DD:	68
+7E/57DE:	A8
+7E/57DF:	70
+7E/57E0:	68
+7E/57E1:	60
+7E/57E2:	A8
+7E/57E3:	80
+7E/57E4:	D0
+7E/57E5:	88
+7E/57E6:	58
+7E/57E7:	90
+7E/57E8:	A8
+7E/57E9:	98
+7E/57EA:	88
+7E/57EB:	50
+7E/57EC:	58
+7E/57ED:	70
+7E/57EE:	60
+7E/57EF:	90
+7E/57F0:	60
+7E/57F1:	10
+7E/57F2:	78
+
+Opening credits
+7E/57F3:	08      	PHP
+7E/57F4:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/57F6:	48      	PHA
+7E/57F7:	DA      	PHX
+7E/57F8:	5A      	PHY
+7E/57F9:	8B      	PHB
+7E/57FA:	0B      	PHD
+7E/57FB:	202F50  	JSR $502F      (Set DBR, DPR, NMI address, IRQ address; zero $00)
+7E/57FE:	201358  	JSR $5813
+7E/5801:	207258  	JSR $5872
+7E/5804:	204350  	JSR $5043      (Sound-related function)
+7E/5807:	204E50  	JSR $504E      (Turn off the screen; disable DMA, HDMA, NMI, etc.) (JMP $6D03...)
+7E/580A:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/580C:	2B      	PLD
+7E/580D:	AB      	PLB
+7E/580E:	7A      	PLY
+7E/580F:	FA      	PLX
+7E/5810:	68      	PLA
+7E/5811:	28      	PLP
+7E/5812:	6B      	RTL
+
+7E/5813:	201177  	JSR $7711      (Initialize various registers)
+7E/5816:	203C58  	JSR $583C      (Initialize various registers)
+7E/5819:	A9FF    	LDA #$FF
+7E/581B:	8F021300  	STA $001302    (Set volume to maximum)
+7E/581F:	A910    	LDA #$10
+7E/5821:	8F001300  	STA $001300
+7E/5825:	A904    	LDA #$04
+7E/5827:	8F011300  	STA $001301    (Set song to "Omen 3")
+7E/582B:	220400C5  	JSL $C50004    (Play song)
+7E/582F:	201578  	JSR $7815
+7E/5832:	204F78  	JSR $784F      (Clear VRAM)
+7E/5835:	208574  	JSR $7485
+7E/5838:	20FF61  	JSR $61FF      (JMP...)
+7E/583B:	60      	RTS
+
+Initialization of various registers
+7E/583C:	8B      	PHB
+7E/583D:	A900    	LDA #$00       (TDC...)
+7E/583F:	48      	PHA
+7E/5840:	AB      	PLB            (Set data bank register to 00)
+7E/5841:	A903    	LDA #$03
+7E/5843:	8D0121  	STA $2101      (Set 8x8 and 16x16 sprite sizes, store character data to $C000 in VRAM)
+7E/5846:	A600    	LDX $00        (Zero X)
+7E/5848:	8E0221  	STX $2102      (OAM address; OAM priority rotation)
+7E/584B:	A907    	LDA #$07
+7E/584D:	8D0521  	STA $2105      (BG mode and character size settings)
+7E/5850:	A978    	LDA #$78
+7E/5852:	8D0721  	STA $2107
+7E/5855:	A97C    	LDA #$7C
+7E/5857:	8D0821  	STA $2108
+7E/585A:	A974    	LDA #$74
+7E/585C:	8D0921  	STA $2109
+7E/585F:	8D0A21  	STA $210A
+7E/5862:	A922    	LDA #$22
+7E/5864:	8D0B21  	STA $210B
+7E/5867:	A977    	LDA #$77
+7E/5869:	8D0C21  	STA $210C
+7E/586C:	7B      	TDC            (Zero A)
+7E/586D:	8D1A21  	STA $211A      (Mode 7 settings)
+7E/5870:	AB      	PLB
+7E/5871:	60      	RTS
+
+7E/5872:	7B      	TDC            (Zero A)
+7E/5873:	A519    	LDA $19
+7E/5875:	3018    	BMI $588F
+7E/5877:	0A      	ASL A          (Multiply by 2)
+7E/5878:	AA      	TAX            (Transfer A to X)
+7E/5879:	FCAD58  	JSR ($58AD,X)
+7E/587C:	A506    	LDA $06        (Load controller 1 bits)
+7E/587E:	8980    	BIT #$80       (Pressing A?) (BMI...)
+7E/5880:	D008    	BNE $588A      (Branch if so)
+7E/5882:	200F75  	JSR $750F
+7E/5885:	20FD71  	JSR $71FD
+7E/5888:	80E8    	BRA $5872      (Loop)
+7E/588A:	A9FF    	LDA #$FF
+7E/588C:	8D0002  	STA $0200      (Acknowledge the opening credits were interrupted)
+7E/588F:	A00F00  	LDY #$000F
+7E/5892:	8415    	STY $15
+7E/5894:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5896:	A0A055  	LDY #$55A0
+7E/5899:	20DC74  	JSR $74DC      (Put 7E/55A0 in queue)
+7E/589C:	A415    	LDY $15
+7E/589E:	F008    	BEQ $58A8
+7E/58A0:	200F75  	JSR $750F
+7E/58A3:	20FD71  	JSR $71FD
+7E/58A6:	80F4    	BRA $589C      (Loop)
+7E/58A8:	220C00EE	JSL $EE000C    (Move #$06E0 bytes from 7E/F120 to 00/0520; sets size of A, X, and Y)
+7E/58AC:	60      	RTS
+
+Jump table
+7E/58AD:	B558
+7E/58AF:	4C5A
+7E/58B1:	665A
+7E/58B3:	705A
+
+7E/58B5:	20705C  	JSR $5C70
+7E/58B8:	205D5B  	JSR $5B5D
+7E/58BB:	8B      	PHB            (Save data bank)
+7E/58BC:	A900    	LDA #$00
+7E/58BE:	48      	PHA
+7E/58BF:	AB      	PLB            (Set data bank register to 00)
+7E/58C0:	220900EE	JSL $EE0009    (Move #$06E0 bytes from 7E/0520 to 7E/F120; sets size of A, X, and Y)
+7E/58C4:	220300EE	JSL $EE0003    (Mode 7 rendering)
+7E/58C8:	AB      	PLB            (Restore data bank)
+7E/58C9:	20455C  	JSR $5C45
+7E/58CC:	208574  	JSR $7485
+7E/58CF:	A20031  	LDX #$3100     (Destination address)
+7E/58D2:	A06574  	LDY #$7465     (Source address)
+7E/58D5:	202473  	JSR $7324      (Transfer palette)
+7E/58D8:	A22031  	LDX #$3120     (Destination address)
+7E/58DB:	A06574  	LDY #$7465     (Source address)
+7E/58DE:	202473  	JSR $7324      (Transfer palette)
+7E/58E1:	A26031  	LDX #$3160     (Destination address)
+7E/58E4:	A06574  	LDY #$7465     (Source address)
+7E/58E7:	202473  	JSR $7324      (Transfer palette)
+7E/58EA:	A28031  	LDX #$3180     (Destination address)
+7E/58ED:	A06574  	LDY #$7465     (Source address)
+7E/58F0:	202473  	JSR $7324      (Transfer palette)
+7E/58F3:	A2A031  	LDX #$31A0     (Destination address)
+7E/58F6:	A06574  	LDY #$7465     (Source address)
+7E/58F9:	202473  	JSR $7324      (Transfer palette)
+7E/58FC:	A20030  	LDX #$3000     (Destination address)
+7E/58FF:	A06574  	LDY #$7465     (Source address)
+7E/5902:	202473  	JSR $7324      (Transfer palette)
+7E/5905:	A22030  	LDX #$3020     (Destination address)
+7E/5908:	A06574  	LDY #$7465     (Source address)
+7E/590B:	202473  	JSR $7324      (Transfer palette)
+7E/590E:	A24030  	LDX #$3040     (Destination address)
+7E/5911:	A06574  	LDY #$7465     (Source address)
+7E/5914:	202473  	JSR $7324      (Transfer palette)
+7E/5917:	A26030  	LDX #$3060     (Destination address)
+7E/591A:	A06574  	LDY #$7465     (Source address)
+7E/591D:	202473  	JSR $7324      (Transfer palette)
+7E/5920:	A2E030  	LDX #$30E0     (Destination address)
+7E/5923:	A06574  	LDY #$7465     (Source address)
+7E/5926:	202473  	JSR $7324      (Transfer palette)
+7E/5929:	A968    	LDA #$68
+7E/592B:	8539      	STA $39
+7E/592D:	A948   	    	LDA #$48
+7E/592F:	853A    	STA $3A
+7E/5931:	A978    	LDA #$78
+7E/5933:	853B    	STA $3B
+7E/5935:	A9C0    	LDA #$C0
+7E/5937:	853C    	STA $3C
+7E/5939:	A980    	LDA #$80
+7E/593B:	853D    	STA $3D
+7E/593D:	A990    	LDA #$90
+7E/593F:	853E    	STA $3E
+7E/5941:	6429    	STZ $29
+7E/5943:	642A    	STZ $2A
+7E/5945:	A03800  	LDY #$0038
+7E/5948:	842B    	STY $2B
+7E/594A:	6437    	STZ $37
+7E/594C:	6438    	STZ $38
+7E/594E:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5950:	A0C05F  	LDY #$5FC0
+7E/5953:	20DC74  	JSR $74DC      (Put 7E/5FC0 in queue)
+7E/5956:	7B      	TDC            (Zero A)
+7E/5957:	20085B  	JSR $5B08
+7E/595A:	A901    	LDA #$01
+7E/595C:	20085B  	JSR $5B08
+7E/595F:	A902    	LDA #$02
+7E/5961:	20085B  	JSR $5B08
+7E/5964:	A22031  	LDX #$3120
+7E/5967:	A09064  	LDY #$6490     (Data location; 7E/6490)
+7E/596A:	A901    	LDA #$01
+7E/596C:	203A73  	JSR $733A
+7E/596F:	A26031  	LDX #$3160
+7E/5972:	A09064  	LDY #$6490     (Data location; 7E/6490)
+7E/5975:	A902    	LDA #$01
+7E/5977:	203A73  	JSR $733A
+7E/597A:	A28031  	LDX #$3180
+7E/597D:	A09064  	LDY #$6490     (Data location; 7E/6490)
+7E/5980:	A904    	LDA #$04
+7E/5982:	203A73  	JSR $733A
+7E/5985:	A2A031  	LDX #$31A0
+7E/5988:	A09064  	LDY #$6490     (Data location; 7E/6490)
+7E/598B:	A906      	LDA #$06
+7E/598D:	203A73  	JSR $733A
+7E/5990:	A20031  	LDX #$3100
+7E/5993:	A07064  	LDY #$6470     (Data location; 7E/6470)
+7E/5996:	A903      	LDA #$03
+7E/5998:	203A73  	JSR $733A
+7E/599B:	A22030  	LDX #$3020
+7E/599E:	A01064  	LDY #$6410     (Data location; 7E/6410)
+7E/59A1:	A902      	LDA #$02
+7E/59A3:	203A73  	JSR $733A
+7E/59A6:	A24030  	LDX #$3040
+7E/59A9:	A03064  	LDY #$6430     (Data location; 7E/6430)
+7E/59AC:	A902      	LDA #$02
+7E/59AE:	203A73  	JSR $733A
+7E/59B1:	A26030  	LDX #$3060
+7E/59B4:	A05064  	LDY #$6450     (Data location; 7E/6450)
+7E/59B7:	A902      	LDA #$02
+7E/59B9:	203A73  	JSR $733A
+7E/59BC:	A2E030  	LDX #$30E0
+7E/59BF:	A0437C  	LDY #$7C43     (Data location; 7E/7C43)
+7E/59C2:	A904      	LDA #$04
+7E/59C4:	203A73  	JSR $733A
+7E/59C7:	A900      	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/59C9:	A0275F  	LDY #$5F27
+7E/59CC:	20DC74  	JSR $74DC      (Put 7E/5F27 in queue)
+7E/59CF:	A900      	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/59D1:	A0ED5A  	LDY #$5AED
+7E/59D4:	20DC74  	JSR $74DC      (Put 7E/5AED in queue)
+7E/59D7:	A900      	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/59D9:	A0925A  	LDY #$5A92
+7E/59DC:	20DC74  	JSR $74DC      (Put 7E/5A92 in queue)
+7E/59DF:	7B      	TDC            (Zero A)
+7E/59E0:	9D0139  	STA $3901,X
+7E/59E3:	A901      	LDA #$01
+7E/59E5:	9D0036  	STA $3600,X
+7E/59E8:	A95A      	LDA #$5A
+7E/59EA:	9D0039  	STA $3900,X
+7E/59ED:	C220    	REP #$20       (16-bit accumulator)
+7E/59EF:	A9A0FF  	LDA #$FFA0
+7E/59F2:	9D0038  	STA $3800,X
+7E/59F5:	E220    	SEP #$20       (8-bit accumulator)
+7E/59F7:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/59F9:	A0925A  	LDY #$5A92
+7E/59FC:	20DC74  	JSR $74DC      (Put 7E/5A92 in queue)
+7E/59FF:	A901    	LDA #$01
+7E/5A01:	9D0139  	STA $3901,X
+7E/5A04:	A90A    	LDA #$0A
+7E/5A06:	9D0036  	STA $3600,X
+7E/5A09:	A928    	LDA #$28
+7E/5A0B:	9D0039  	STA $3900,X
+7E/5A0E:	C220    	REP #$20       (16-bit accumulator)
+7E/5A10:	A960FF  	LDA #$FF60
+7E/5A13:	9D0038  	STA $3800,X
+7E/5A16:	E220    	SEP #$20       (8-bit accumulator)
+7E/5A18:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5A1A:	A0925A  	LDY #$5A92
+7E/5A1D:	20DC74  	JSR $74DC      (Put 7E/5A92 in queue)
+7E/5A20:	A902    	LDA #$02
+7E/5A22:	9D0139  	STA $3901,X
+7E/5A25:	A907    	LDA #$07
+7E/5A27:	9D0036  	STA $3600,X
+7E/5A2A:	A92D    	LDA #$2D
+7E/5A2C:	9D0039  	STA $3900,X
+7E/5A2F:	C220    	REP #$20       (16-bit accumulator)
+7E/5A31:	A980FF  	LDA #$FF80
+7E/5A34:	9D0038  	STA $3800,X
+7E/5A37:	E220    	SEP #$20       (8-bit accumulator)
+7E/5A39:	E619    	INC $19
+7E/5A3B:	A901    	LDA #$01
+7E/5A3D:	8532    	STA $32
+7E/5A3F:	20FD71  	JSR $71FD
+7E/5A42:	A0CA00  	LDY #$00CA
+7E/5A45:	8415    	STY $15
+7E/5A47:	A90F    	LDA #$0F
+7E/5A49:	8532    	STA $32        (Set screen to reach full brightness)
+7E/5A4B:	60      	RTS
+
+7E/5A4C:	A415    	LDY $15
+7E/5A4E:	D012    	BNE $5A62      (Branch unless null)
+7E/5A50:	E619    	INC $19
+7E/5A52:	A0E40C  	LDY #$0CE4
+7E/5A55:	8415    	STY $15        (Set timer to 3300) [???]
+7E/5A57:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5A59:	A0E25C  	LDY #$5CE2
+7E/5A5C:	20DC74  	JSR $74DC      (Put 7E/5CE2 in queue)
+7E/5A5F:	20BD5C  	JSR $5CBD      (Add function for flickering lights to queue)
+7E/5A62:	20795A  	JSR $5A79      (Set center X and Y for Mode 7) (BRA...)
+7E/5A65:	60      	RTS
+
+7E/5A66:	A415    	LDY $15
+7E/5A68:	D002    	BNE $5A6C      (Branch unless null)
+7E/5A6A:	E619    	INC $19
+7E/5A6C:	20795A  	JSR $5A79      (Set center X and Y for Mode 7) (BRA...)
+7E/5A6F:	60      	RTS
+
+7E/5A70:	A9FF    	LDA #$FF
+7E/5A72:	8519    	STA $19
+7E/5A74:	7B      	TDC            (Zero A)
+7E/5A75:	8D0002  	STA $0200      (Acknowledge the opening credits went uninterrupted)
+7E/5A78:	60      	RTS
+
+Set center X and Y for Mode 7
+7E/5A79:	A53F    	LDA $3F
+7E/5A7B:	8F1F2100	STA $00211F    (Mode 7 center X, low byte)
+7E/5A7F:	A540    	LDA $40
+7E/5A81:	8F1F2100	STA $00211F    (Mode 7 center X, high byte)
+7E/5A85:	A541    	LDA $41
+7E/5A87:	8F202100	STA $002120    (Mode 7 center Y, low byte)
+7E/5A8B:	A542    	LDA $42
+7E/5A8D:	8F202100	STA $002120    (Mode 7 center Y, high byte)
+7E/5A91:	60      	RTS
+
+7E/5A92:	AA      	TAX            (Transfer A to X)
+7E/5A93:	7C965A  	JMP ($5A96,X)
+
+Jump table
+7E/5A96:	9C5A
+7E/5A98:	AF5A
+7E/5A9A:	C65A
+
+7E/5A9C:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5A9E:	FE003A  	INC $3A00,X
+7E/5AA1:	7B      	TDC            (Zero A)
+7E/5AA2:	BD0139  	LDA $3901,X
+7E/5AA5:	A8      	TAY            (Transfer A to Y)
+7E/5AA6:	B93C00  	LDA $003C,Y
+7E/5AA9:	9D0134  	STA $3401,X
+7E/5AAC:	9E0034  	STZ $3400,X
+7E/5AAF:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5AB1:	BD0036  	LDA $3600,X
+7E/5AB4:	D00B    	BNE $5AC1
+7E/5AB6:	FE003A  	INC $3A00,X
+7E/5AB9:	BD0039  	LDA $3900,X
+7E/5ABC:	9D0036  	STA $3600,X
+7E/5ABF:	38      	SEC            (Mark function address to remain in queue)
+7E/5AC0:	60      	RTS            (Exit)
+7E/5AC1:	DE0036  	DEC $3600,X
+7E/5AC4:	38      	SEC            (Mark function address to remain in queue)
+7E/5AC5:	60      	RTS
+
+7E/5AC6:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5AC8:	BD0036  	LDA $3600,X
+7E/5ACB:	F01E    	BEQ $5AEB
+7E/5ACD:	C220    	REP #$20       (16-bit accumulator)
+7E/5ACF:	BD0034  	LDA $3400,X
+7E/5AD2:	18      	CLC            (Clear Carry for addition)
+7E/5AD3:	7D0038  	ADC $3800,X
+7E/5AD6:	9D0034  	STA $3400,X
+7E/5AD9:	E220    	SEP #$20       (8-bit accumulator)
+7E/5ADB:	7B      	TDC            (Zero A)
+7E/5ADC:	BD0139  	LDA $3901,X
+7E/5ADF:	A8      	TAY            (Transfer A to Y)
+7E/5AE0:	BD0134  	LDA $3401,X
+7E/5AE3:	993C00  	STA $003C,Y
+7E/5AE6:	DE0036  	DEC $3600,X
+7E/5AE9:	38      	SEC            (Mark function address to remain in queue)
+7E/5AEA:	60      	RTS            (Exit)
+7E/5AEB:	18      	CLC            (Mark function address to be removed from queue)
+7E/5AEC:	60      	RTS
+
+7E/5AED:	A518    	LDA $18        (NMI counter)
+7E/5AEF:	2903    	AND #$03       (Remain between 0 and 3)
+7E/5AF1:	D008    	BNE $5AFB      (Branch unless null)
+7E/5AF3:	C220    	REP #$20       (16-bit accumulator)
+7E/5AF5:	C641    	DEC $41
+7E/5AF7:	C627    	DEC $27
+7E/5AF9:	E220    	SEP #$20       (8-bit accumulator)
+7E/5AFB:	A518    	LDA $18        (NMI counter)
+7E/5AFD:	293F    	AND #$3F       (Remain between 0 and 63)
+7E/5AFF:	D005    	BNE $5B06      (Branch unless null) (BNE $5AE9...)
+7E/5B01:	A42B    	LDY $2B
+7E/5B03:	C8      	INY
+7E/5B04:	842B    	STY $2B        (Save changes)
+7E/5B06:	38      	SEC            (Mark function address to remain in queue)
+7E/5B07:	60      	RTS
+
+7E/5B08:	85F4    	STA $F4
+7E/5B0A:	0A      	ASL A          (Multiply by 2)
+7E/5B0B:	0A      	ASL A          (Multiply by 4)
+7E/5B0C:	0A      	ASL A          (Multiply by 8)
+7E/5B0D:	85F3    	STA $F3
+7E/5B0F:	A400    	LDY $00        (Zero Y)
+7E/5B11:	5A      	PHY            (Save Y)
+7E/5B12:	A902    	LDA #$02       (Start from $3240 to find an unoccupied queue slot)
+7E/5B14:	A07E5F  	LDY #$5F7E
+7E/5B17:	20DC74  	JSR $74DC      (Put 7E/5F7E in queue)
+7E/5B1A:	A5F4    	LDA $F4
+7E/5B1C:	9D0039  	STA $3900,X
+7E/5B1F:	A5F3    	LDA $F3
+7E/5B21:	9D0139  	STA $3901,X
+7E/5B24:	7A      	PLY            (Restore Y)
+7E/5B25:	C220    	REP #$20       (16-bit accumulator)
+7E/5B27:	B9455B  	LDA $5B45,Y
+7E/5B2A:	9D0035  	STA $3500,X
+7E/5B2D:	E220    	SEP #$20       (8-bit accumulator)
+7E/5B2F:	C8      	INY
+7E/5B30:	C8      	INY
+7E/5B31:	B9455B  	LDA $5B45,Y
+7E/5B34:	9D0137  	STA $3701,X
+7E/5B37:	C8      	INY
+7E/5B38:	B9455B  	LDA $5B45,Y
+7E/5B3B:	9D0138  	STA $3801,X
+7E/5B3E:	C8      	INY
+7E/5B3F:	C01800  	CPY #$0018     (Copied the entire table?)
+7E/5B42:	D0CD    	BNE $5B11      (If not, loop)
+7E/5B44:	60      	RTS
+
+Data for the opening credits
+7E/5B45:	31
+7E/5B46:	60
+7E/5B47:	04
+7E/5B48:	F8
+7E/5B49:	54
+7E/5B4A:	60
+7E/5B4B:	00
+7E/5B4C:	00
+7E/5B4D:	21
+7E/5B4E:	61
+7E/5B4F:	FD
+7E/5B50:	E0
+7E/5B51:	90
+7E/5B52:	61
+7E/5B53:	FB
+7E/5B54:	E0
+7E/5B55:	7F
+7E/5B56:	60
+7E/5B57:	04
+7E/5B58:	08
+7E/5B59:	D0
+7E/5B5A:	60
+7E/5B5B:	04
+7E/5B5C:	08
+
+7E/5B5D:	8B      	PHB
+7E/5B5E:	A900    	LDA #$00
+7E/5B60:	48      	PHA
+7E/5B61:	AB      	PLB            (Set data bank register to 00)
+7E/5B62:	A917    	LDA #$17
+7E/5B64:	8D2C21  	STA $212C      (Enable BG1, BG2, BG3, and OBJ for main screen)
+7E/5B67:	A902    	LDA #$02
+7E/5B69:	8D2D21  	STA $212D      (Enable BG2 for subscreen)
+7E/5B6C:	A9E0    	LDA #$E0
+7E/5B6E:	8D3221  	STA $2132
+7E/5B71:	9C2043  	STZ $4320      (Control for DMA channel 2)
+7E/5B74:	A932    	LDA #$32
+7E/5B76:	8D2143  	STA $4321      (Set destination for DMA channel 2 to $2132: fixed color data)
+7E/5B79:	A0235C  	LDY #$5C23
+7E/5B7C:	8C2243  	STY $4322      (Source bank for channel 2)
+7E/5B7F:	A97E    	LDA #$7E
+7E/5B81:	8D2443  	STA $4324      (Source bank for channel 2; 7E/5C23)
+7E/5B84:	8D2743  	STA $4327      (Set indirect bank for HDMA channel 2 to 7E)
+7E/5B87:	9C3043  	STZ $4330      (Control for DMA channel 3)
+7E/5B8A:	A905    	LDA #$05
+7E/5B8C:	8D3143  	STA $4331      (Set destination for DMA channel 3 to $2105: BG mode and character size)
+7E/5B8F:	A0405C  	LDY #$5C40
+7E/5B92:	8C3243  	STY $4332      (Source address for channel 3)
+7E/5B95:	A97E    	LDA #$7E
+7E/5B97:	8D3443  	STA $4334      (Source bank for channel 3; 7E/5C40)
+7E/5B9A:	8D3743  	STA $4337      (Set indirect bank for HDMA channel 3 to 7E)
+7E/5B9D:	A901    	LDA #$01
+7E/5B9F:	8D4043  	STA $4340      (Control for DMA channel 4)
+7E/5BA2:	A930    	LDA #$30
+7E/5BA4:	8D4143  	STA $4341      (Set destination for DMA channel 4 to $2130: color addition select)
+7E/5BA7:	A00E5C  	LDY #$5C0E
+7E/5BAA:	8C4243  	STY $4342      (Source address for channel 4)
+7E/5BAD:	A97E    	LDA #$7E
+7E/5BAF:	8D4443  	STA $4344      (Source bank for channel 4; 7E/5C0E)
+7E/5BB2:	8D4743  	STA $4347      (Set indirect bank for HDMA channel 4 to 7E)
+7E/5BB5:	8D5443  	STA $4354      (Source bank for channel 5; 7E/5C01)
+7E/5BB8:	8D5743  	STA $4357      (Set indirect bank for HDMA channel 5 to 7E)
+7E/5BBB:	A902    	LDA #$02
+7E/5BBD:	8D5043  	STA $4350      (Control for DMA channel 5)
+7E/5BC0:	A911    	LDA #$11
+7E/5BC2:	8D5143  	STA $4351      (Set destination for DMA channel 5 to $2111: BG3 horizontal scroll)
+7E/5BC5:	A0015C  	LDY #$5C01
+7E/5BC8:	8C5243  	STY $4352      (Source address for channel 5)
+7E/5BCB:	A943    	LDA #$43
+7E/5BCD:	8D6043  	STA $4360      (Control for DMA channel 6)
+7E/5BD0:	A91B    	LDA #$1B
+7E/5BD2:	8D6143  	STA $4361      (Set destination for DMA channel 6 to $211B: Mode 7 matrix A)
+7E/5BD5:	A0155C  	LDY #$5C15
+7E/5BD8:	8C6243  	STY $4362      (Source address for channel 6)
+7E/5BDB:	A97E    	LDA #$7E
+7E/5BDD:	8D6443  	STA $4364      (Source bank for channel 6; 7E/5C15)
+7E/5BE0:	8D6743  	STA $4367      (Set indirect bank for HDMA channel 6 to 7E)
+7E/5BE3:	A943    	LDA #$43
+7E/5BE5:	8D7043  	STA $4370      (Control for DMA channel 7)
+7E/5BE8:	A91D    	LDA #$1D
+7E/5BEA:	8D7143  	STA $4371      (Set destination for DMA channel 7 to $211D: Mode 7 matrix C)
+7E/5BED:	A01C5C  	LDY #$5C1C
+7E/5BF0:	8C7243  	STY $4372      (Source address for channel 7)
+7E/5BF3:	A97E    	LDA #$7E
+7E/5BF5:	8D7443  	STA $4374      (Source bank for channel 7; 7E/5C1C)
+7E/5BF8:	8D7743  	STA $4377      (Set indirect bank for HDMA channel 7 to 7E)
+7E/5BFB:	A9FC    	LDA #$FC
+7E/5BFD:	0431    	TSB $31
+7E/5BFF:	AB      	PLB
+7E/5C00:	60      	RTS
+
+Data for the opening credits
+7E/5C01:	27
+7E/5C02:	00      	(This is subject to change; see 7E/5EE9)
+7E/5C03:	00
+7E/5C04:	10
+7E/5C05:	00      	(This is subject to change; see 7E/5EF1)
+7E/5C06:	00
+7E/5C07:	10
+7E/5C08:	00      	(This is subject to change; see 7E/5EF9)
+7E/5C09:	00
+7E/5C0A:	10
+7E/5C0B:	00      	(This is subject to change; see 7E/5F01)
+7E/5C0C:	00
+7E/5C0D:	00
+7E/5C0E:	54
+7E/5C0F:	82
+7E/5C10:	04
+7E/5C11:	01
+7E/5C12:	80
+7E/5C13:	81
+7E/5C14:	00
+7E/5C15:	E4
+7E/5C16:	A0
+7E/5C17:	3C
+7E/5C18:	FB
+7E/5C19:	30
+7E/5C1A:	3E
+7E/5C1B:	00
+7E/5C1C:	E4
+7E/5C1D:	20
+7E/5C1E:	40
+7E/5C1F:	FB
+7E/5C20:	B0
+7E/5C21:	41
+7E/5C22:	00
+7E/5C23:	54
+7E/5C24:	E0
+7E/5C25:	01
+7E/5C26:	ED
+7E/5C27:	01
+7E/5C28:	EB
+7E/5C29:	01
+7E/5C2A:	EA
+7E/5C2B:	02
+7E/5C2C:	E9
+7E/5C2D:	03
+7E/5C2E:	E8
+7E/5C2F:	04
+7E/5C30:	E7
+7E/5C31:	05
+7E/5C32:	E6
+7E/5C33:	06
+7E/5C34:	E5
+7E/5C35:	07
+7E/5C36:	E4
+7E/5C37:	08
+7E/5C38:	E3
+7E/5C39:	0C
+7E/5C3A:	E2
+7E/5C3B:	0F
+7E/5C3C:	E1
+7E/5C3D:	1E
+7E/5C3E:	E0
+7E/5C3F:	00
+7E/5C40:	54
+7E/5C41:	09
+7E/5C42:	01
+7E/5C43:	07
+7E/5C44:	00
+
+7E/5C45:	7B      	TDC            (Zero A)
+7E/5C46:	AA      	TAX            (Zero X)
+7E/5C47:	A8      	TAY            (Zero Y)
+7E/5C48:	C220    	REP #$20       (16-bit accumulator)
+7E/5C4A:	BD0003  	LDA $0300,X
+7E/5C4D:	99003D  	STA $3D00,Y
+7E/5C50:	BD8006  	LDA $0680,X
+7E/5C53:	998040  	STA $4080,Y
+7E/5C56:	C8      	INY
+7E/5C57:	C8      	INY
+7E/5C58:	BDC004  	LDA $04C0,X
+7E/5C5B:	99003D  	STA $3D00,Y
+7E/5C5E:	BD4008  	LDA $0840,X
+7E/5C61:	998040  	STA $4080,Y
+7E/5C64:	C8      	INY
+7E/5C65:	C8      	INY
+7E/5C66:	E8      	INX
+7E/5C67:	E8      	INX
+7E/5C68:	E0C001  	CPX #$01C0
+7E/5C6B:	D0DD    	BNE $5C4A      (If not, loop)
+7E/5C6D:	E220    	SEP #$20       (8-bit accumulator)
+7E/5C6F:	60      	RTS
+
+7E/5C70:	A00001  	LDY #$0100
+7E/5C73:	843F    	STY $3F
+7E/5C75:	A08000  	LDY #$0080
+7E/5C78:	8441    	STY $41
+7E/5C7A:	8425    	STY $25
+7E/5C7C:	7B      	TDC            (Zero A)
+7E/5C7D:	A8      	TAY            (Zero Y)
+7E/5C7E:	8427    	STY $27
+7E/5C80:	6472    	STZ $72
+7E/5C82:	6473    	STZ $73
+7E/5C84:	6474    	STZ $74
+7E/5C86:	A0E000  	LDY #$00E0
+7E/5C89:	8487    	STY $87
+7E/5C8B:	A00040  	LDY #$4000
+7E/5C8E:	848B    	STY $8B
+7E/5C90:	A00000  	LDY #$0000     (Zero Y)
+7E/5C93:	848D    	STY $8D
+7E/5C95:	A0FFFF  	LDY #$FFFF     (DEY...)
+7E/5C98:	848F    	STY $8F
+7E/5C9A:	20B15C  	JSR $5CB1      (Zero $4400 through $467F)
+7E/5C9D:	A04074  	LDY #$7440
+7E/5CA0:	8410    	STY $10
+7E/5CA2:	A00044  	LDY #$4400
+7E/5CA5:	8412    	STY $12
+7E/5CA7:	A97E    	LDA #$7E
+7E/5CA9:	8514    	STA $14
+7E/5CAB:	A08002  	LDY #$0280
+7E/5CAE:	840E    	STY $0E
+7E/5CB0:	60      	RTS
+
+Zero $4400 through $467F
+7E/5CB1:	7B      	TDC            (Zero A)
+7E/5CB2:	AA      	TAX            (Zero X)
+7E/5CB3:	9E0044  	STZ $4400,X    (Zero $4400+X)
+7E/5CB6:	E8      	INX            (Point to the next byte)
+7E/5CB7:	E08002  	CPX #$0280     (Reached $4700?)
+7E/5CBA:	D0F7    	BNE $5CB3      (If not, loop)
+7E/5CBC:	60      	RTS
+
+Add function for flickering lights to queue
+7E/5CBD:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5CBF:	A0C65C  	LDY #$5CC6
+7E/5CC2:	20DC74  	JSR $74DC      (Put 7E/5CC6 in queue) (JMP...)
+7E/5CC5:	60      	RTS
+
+Generate flickering lights by substituting mountain palette
+7E/5CC6:	A518    	LDA $18        (NMI counter)
+7E/5CC8:	2901    	AND #$01       (Odd number?)
+7E/5CCA:	D00B    	BNE $5CD7      (Branch if so)
+7E/5CCC:	A2E030  	LDX #$30E0     (Destination address)
+7E/5CCF:	A0437C  	LDY #$7C43     (Source address)
+7E/5CD2:	202473  	JSR $7324      (Transfer palette)
+7E/5CD5:	8009    	BRA $5CE0      (Skip code for alternate palette)
+7E/5CD7:	A2E030  	LDX #$30E0     (Destination address) (Avoidable...)
+7E/5CDA:	A09864  	LDY #$6498     (Source address)
+7E/5CDD:	202473  	JSR $7324      (Transfer palette)
+7E/5CE0:	38      	SEC
+7E/5CE1:	60      	RTS
+
+7E/5CE2:	AA      	TAX            (Transfer A to X)
+7E/5CE3:	7CE65C  	JMP ($5CE6,X)
+
+Jump table
+7E/5CE6:	EA5C
+7E/5CE8:	FC5C
+
+7E/5CEA:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5CEC:	FE003A  	INC $3A00,X
+7E/5CEF:	C220    	REP #$20       (16-bit accumulator)
+7E/5CF1:	A9475D  	LDA #$5D47
+7E/5CF4:	9D0035  	STA $3500,X
+7E/5CF7:	E220    	SEP #$20       (8-bit accumulator)
+7E/5CF9:	205F75  	JSR $755F
+7E/5CFC:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5CFE:	BD013B  	LDA $3B01,X
+7E/5D01:	C901    	CMP #$01
+7E/5D03:	D00B    	BNE $5D10
+7E/5D05:	A20030  	LDX #$3000
+7E/5D08:	A00064  	LDY #$6400     (Data location; 7E/6400)
+7E/5D0B:	A901    	LDA #$01
+7E/5D0D:	203A73  	JSR $733A
+7E/5D10:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5D12:	BD013B  	LDA $3B01,X
+7E/5D15:	C920    	CMP #$20
+7E/5D17:	D00B    	BNE $5D24
+7E/5D19:	A20030  	LDX #$3000
+7E/5D1C:	A06574  	LDY #$7465     (Data location; 7E/7465)
+7E/5D1F:	A901    	LDA #$01
+7E/5D21:	203A73  	JSR $733A
+7E/5D24:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5D26:	BD013B  	LDA $3B01,X
+7E/5D29:	C9FE    	CMP #$FE
+7E/5D2B:	F018    	BEQ $5D45
+7E/5D2D:	209375  	JSR $7593
+7E/5D30:	E210    	SEP #$10       (8-bit indexes)
+7E/5D32:	BD003B  	LDA $3B00,X
+7E/5D35:	A8      	TAY            (Transfer A to Y)
+7E/5D36:	C220    	REP #$20       (16-bit accumulator)
+7E/5D38:	B1EB    	LDA ($EB),Y
+7E/5D3A:	85E7    	STA $E7
+7E/5D3C:	C210    	REP #$10       (16-bit indexes)
+7E/5D3E:	E220    	SEP #$20       (8-bit accumulator)
+7E/5D40:	208B5E  	JSR $5E8B
+7E/5D43:	38      	SEC            (Mark function address to remain in queue)
+7E/5D44:	60      	RTS            (Exit)
+7E/5D45:	18      	CLC            (Mark function address to be removed from queue)
+7E/5D46:	60      	RTS
+
+Data for the opening credits
+7E/5D47:	9865    	(7E/6598)
+7E/5D49:	01
+7E/5D4A:	A565
+7E/5D4C:	8B
+7E/5D4D:	195E
+7E/5D4F:	01
+7E/5D50:	BC65
+7E/5D52:	01
+7E/5D53:	C965
+7E/5D55:	8B
+7E/5D56:	195E
+7E/5D58:	01
+7E/5D59:	ED65
+7E/5D5B:	01
+7E/5D5C:	0166
+7E/5D5E:	8B
+7E/5D5F:	195E
+7E/5D61:	01
+7E/5D62:	2166
+7E/5D64:	01
+7E/5D65:	3666
+7E/5D67:	8B
+7E/5D68:	195E
+7E/5D6A:	01
+7E/5D6B:	2166
+7E/5D6D:	01
+7E/5D6E:	5D66
+7E/5D70:	8B
+7E/5D71:	195E
+7E/5D73:	01
+7E/5D74:	7E66
+7E/5D76:	01
+7E/5D77:	8866
+7E/5D79:	8B
+7E/5D7A:	195E
+7E/5D7C:	01
+7E/5D7D:	9A66
+7E/5D7F:	01
+7E/5D80:	AD66
+7E/5D82:	8B
+7E/5D83:	195E
+7E/5D85:	01
+7E/5D86:	C166
+7E/5D88:	01
+7E/5D89:	D466
+7E/5D8B:	8B
+7E/5D8C:	195E
+7E/5D8E:	01
+7E/5D8F:	F766
+7E/5D91:	01
+7E/5D92:	0967
+7E/5D94:	8B
+7E/5D95:	195E
+7E/5D97:	01
+7E/5D98:	F766
+7E/5D9A:	01
+7E/5D9B:	2E67
+7E/5D9D:	8B
+7E/5D9E:	195E
+7E/5DA0:	01
+7E/5DA1:	5467
+7E/5DA3:	01
+7E/5DA4:	6667
+7E/5DA6:	8B
+7E/5DA7:	195E
+7E/5DA9:	01
+7E/5DAA:	8D67
+7E/5DAC:	01
+7E/5DAD:	A367
+7E/5DAF:	8B
+7E/5DB0:	195E
+7E/5DB2:	01
+7E/5DB3:	C467
+7E/5DB5:	01
+7E/5DB6:	DA67
+7E/5DB8:	8B
+7E/5DB9:	195E
+7E/5DBB:	01
+7E/5DBC:	F067
+7E/5DBE:	01
+7E/5DBF:	0568
+7E/5DC1:	8B
+7E/5DC2:	195E
+7E/5DC4:	01
+7E/5DC5:	1568
+7E/5DC7:	01
+7E/5DC8:	3168
+7E/5DCA:	8B
+7E/5DCB:	195E
+7E/5DCD:	01
+7E/5DCE:	4668
+7E/5DD0:	01
+7E/5DD1:	6168
+7E/5DD3:	8B
+7E/5DD4:	195E
+7E/5DD6:	01
+7E/5DD7:	4668
+7E/5DD9:	01
+7E/5DDA:	9468
+7E/5DDC:	8B
+7E/5DDD:	195E
+7E/5DDF:	01
+7E/5DE0:	4668
+7E/5DE2:	01
+7E/5DE3:	CA68
+7E/5DE5:	8B
+7E/5DE6:	195E
+7E/5DE8:	01
+7E/5DE9:	F568
+7E/5DEB:	01
+7E/5DEC:	1269
+7E/5DEE:	8B
+7E/5DEF:	195E
+7E/5DF1:	01
+7E/5DF2:	2569
+7E/5DF4:	01
+7E/5DF5:	4169
+7E/5DF7:	8B
+7E/5DF8:	195E
+7E/5DFA:	01
+7E/5DFB:	5569
+7E/5DFD:	01
+7E/5DFE:	6869
+7E/5E00:	8B
+7E/5E01:	195E
+7E/5E03:	01
+7E/5E04:	7A69
+7E/5E06:	01
+7E/5E07:	8D69
+7E/5E09:	8B
+7E/5E0A:	195E
+7E/5E0C:	01
+7E/5E0D:	A569
+7E/5E0F:	01
+7E/5E10:	B469
+7E/5E12:	8B
+7E/5E13:	195E
+7E/5E15:	01
+7E/5E16:	195E
+7E/5E18:	FE
+7E/5E19:	4644
+
+Data for the opening credits
+7E/5E1B:	01
+7E/5E1C:	01
+7E/5E1D:	01
+7E/5E1E:	01
+7E/5E1F:	01
+7E/5E20:	01
+7E/5E21:	01
+7E/5E22:	01
+7E/5E23:	01
+7E/5E24:	01
+7E/5E25:	01
+7E/5E26:	01
+7E/5E27:	01
+7E/5E28:	01
+7E/5E29:	01
+7E/5E2A:	01
+7E/5E2B:	01
+7E/5E2C:	01
+7E/5E2D:	01
+7E/5E2E:	01
+7E/5E2F:	01
+7E/5E30:	01
+7E/5E31:	01
+7E/5E32:	01
+7E/5E33:	01
+7E/5E34:	01
+7E/5E35:	01
+7E/5E36:	FE
+7E/5E37:	01
+7E/5E38:	01
+7E/5E39:	01
+7E/5E3A:	01
+7E/5E3B:	01
+7E/5E3C:	01
+7E/5E3D:	01
+7E/5E3E:	01
+7E/5E3F:	01
+7E/5E40:	01
+7E/5E41:	01
+7E/5E42:	01
+7E/5E43:	01
+7E/5E44:	01
+7E/5E45:	01
+7E/5E46:	01
+7E/5E47:	01
+7E/5E48:	01
+7E/5E49:	01
+7E/5E4A:	01
+7E/5E4B:	01
+7E/5E4C:	01
+7E/5E4D:	01
+7E/5E4E:	01
+7E/5E4F:	01
+7E/5E50:	01
+7E/5E51:	01
+7E/5E52:	FE
+7E/5E53:	01
+7E/5E54:	01
+7E/5E55:	01
+7E/5E56:	01
+7E/5E57:	01
+7E/5E58:	01
+7E/5E59:	01
+7E/5E5A:	01
+7E/5E5B:	01
+7E/5E5C:	01
+7E/5E5D:	01
+7E/5E5E:	01
+7E/5E5F:	01
+7E/5E60:	01
+7E/5E61:	01
+7E/5E62:	01
+7E/5E63:	01
+7E/5E64:	01
+7E/5E65:	01
+7E/5E66:	01
+7E/5E67:	01
+7E/5E68:	01
+7E/5E69:	01
+7E/5E6A:	01
+7E/5E6B:	01
+7E/5E6C:	01
+7E/5E6D:	01
+7E/5E6E:	FE
+7E/5E6F:	01
+7E/5E70:	01
+7E/5E71:	01
+7E/5E72:	01
+7E/5E73:	01
+7E/5E74:	01
+7E/5E75:	01
+7E/5E76:	01
+7E/5E77:	01
+7E/5E78:	01
+7E/5E79:	01
+7E/5E7A:	01
+7E/5E7B:	01
+7E/5E7C:	01
+7E/5E7D:	01
+7E/5E7E:	01
+7E/5E7F:	01
+7E/5E80:	01
+7E/5E81:	01
+7E/5E82:	01
+7E/5E83:	01
+7E/5E84:	01
+7E/5E85:	01
+7E/5E86:	01
+7E/5E87:	01
+7E/5E88:	01
+7E/5E89:	01
+
+7E/5E8B:	A600    	LDX $00        (Zero X)
+7E/5E8D:	9B      	TXY            (Zero Y)
+7E/5E8E:	C220    	REP #$20       (16-bit accumulator)
+7E/5E90:	B2E7    	LDA ($E7)
+7E/5E92:	85EB    	STA $EB
+7E/5E94:	E6E7    	INC $E7
+7E/5E96:	E6E7    	INC $E7
+7E/5E98:	E220    	SEP #$20       (8-bit accumulator)
+7E/5E9A:	B1E7    	LDA ($E7),Y
+7E/5E9C:	8543    	STA $43
+7E/5E9E:	C8      	INY
+7E/5E9F:	7B      	TDC            (Zero A)
+7E/5EA0:	B1E7    	LDA ($E7),Y
+7E/5EA2:	C8      	INY
+7E/5EA3:	20DF5E  	JSR $5EDF
+7E/5EA6:	B1E7    	LDA ($E7),Y
+7E/5EA8:	F017    	BEQ $5EC1
+7E/5EAA:	C9FE    	CMP #$FE
+7E/5EAC:	F014    	BEQ $5EC2
+7E/5EAE:	C9FF    	CMP #$FF
+7E/5EB0:	F019    	BEQ $5ECB
+7E/5EB2:	5A      	PHY
+7E/5EB3:	9B      	TXY            (Transfer X to Y)
+7E/5EB4:	91EB    	STA ($EB),Y
+7E/5EB6:	E8      	INX
+7E/5EB7:	9B      	TXY            (Transfer X to Y)
+7E/5EB8:	A543    	LDA $43
+7E/5EBA:	91EB    	STA ($EB),Y
+7E/5EBC:	E8      	INX
+7E/5EBD:	7A      	PLY
+7E/5EBE:	C8      	INY
+7E/5EBF:	80E5    	BRA $5EA6      (Loop)
+7E/5EC1:	60      	RTS            (Exit)
+7E/5EC2:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/5EC4:	A98000  	LDA #$0080
+7E/5EC7:	85E0    	STA $E0
+7E/5EC9:	8007    	BRA $5ED2      (Skip next three instructions)
+7E/5ECB:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/5ECD:	A94000  	LDA #$0040
+7E/5ED0:	85E0    	STA $E0
+7E/5ED2:	A5EB    	LDA $EB
+7E/5ED4:	65E0    	ADC $E0
+7E/5ED6:	85EB    	STA $EB        (Save changes)
+7E/5ED8:	E220    	SEP #$20       (8-bit accumulator)
+7E/5EDA:	7B      	TDC            (Zero A)
+7E/5EDB:	AA      	TAX            (Zero X)
+7E/5EDC:	C8      	INY
+7E/5EDD:	80C7    	BRA $5EA6      (Loop)
+
+7E/5EDF:	DA      	PHX
+7E/5EE0:	5A      	PHY
+7E/5EE1:	0A      	ASL A          (Multiply by 2)
+7E/5EE2:	0A      	ASL A          (Multiply by 4)
+7E/5EE3:	AA      	TAX            (Transfer A to X)
+7E/5EE4:	BD075F  	LDA $5F07,X
+7E/5EE7:	49FF    	EOR #$FF       (Toggle all bits)
+7E/5EE9:	8D025C  	STA $5C02
+7E/5EEC:	BD085F  	LDA $5F08,X
+7E/5EEF:	49FF    	EOR #$FF       (Toggle all bits)
+7E/5EF1:	8D055C  	STA $5C05
+7E/5EF4:	BD095F  	LDA $5F09,X
+7E/5EF7:	49FF    	EOR #$FF       (Toggle all bits)
+7E/5EF9:	8D085C  	STA $5C08
+7E/5EFC:	BD0A5F  	LDA $5F0A,X
+7E/5EFF:	49FF    	EOR #$FF       (Toggle all bits)
+7E/5F01:	8D0B5C  	STA $5C0B
+7E/5F04:	7A      	PLY
+7E/5F05:	FA      	PLX
+7E/5F06:	60      	RTS
+
+Data
+7E/5F07:	00
+7E/5F08:	00
+7E/5F09:	00
+7E/5F0A:	00
+7E/5F0B:	00
+7E/5F0C:	00
+7E/5F0D:	04
+7E/5F0E:	00
+7E/5F0F:	04
+7E/5F10:	00
+7E/5F11:	00
+7E/5F12:	00
+7E/5F13:	00
+7E/5F14:	04
+7E/5F15:	00
+7E/5F16:	00
+7E/5F17:	00
+7E/5F18:	04
+7E/5F19:	04
+7E/5F1A:	00
+7E/5F1B:	04
+7E/5F1C:	04
+7E/5F1D:	00
+7E/5F1E:	00
+7E/5F1F:	04
+7E/5F20:	00
+7E/5F21:	04
+7E/5F22:	00
+7E/5F23:	00
+7E/5F24:	04
+7E/5F25:	00
+7E/5F26:	04
+
+7E/5F27:	A51F    	LDA $1F        (Number of queued functions)
+7E/5F29:	C977    	CMP #$77       (Compare to 119)
+7E/5F2B:	B03F    	BCS $5F6C      (Branch if equal or greater)
+7E/5F2D:	A940    	LDA #$40
+7E/5F2F:	1433    	TRB $33
+7E/5F31:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/5F33:	A0DB76  	LDY #$76DB
+7E/5F36:	20DC74  	JSR $74DC      (Put 7E/76DB in queue)
+7E/5F39:	7B      	TDC            (Zero A)
+7E/5F3A:	A518    	LDA $18        (NMI counter)
+7E/5F3C:	2907    	AND #$07       (Remain between 0 and 7)
+7E/5F3E:	0A      	ASL A          (Multiply by 2)
+7E/5F3F:	A8      	TAY            (Transfer A to Y)
+7E/5F40:	C220    	REP #$20       (16-bit accumulator)
+7E/5F42:	B96E5F  	LDA $5F6E,Y
+7E/5F45:	9D0035  	STA $3500,X
+7E/5F48:	E220    	SEP #$20       (8-bit accumulator)
+7E/5F4A:	DA      	PHX            (Save X)
+7E/5F4B:	203056  	JSR $5630      (Load a random number)
+7E/5F4E:	FA      	PLX            (Restore X)
+7E/5F4F:	9D0133  	STA $3301,X
+7E/5F52:	290F    	AND #$0F
+7E/5F54:	1A      	INC A          (Add one)
+7E/5F55:	9D0138  	STA $3801,X
+7E/5F58:	DA      	PHX            (Save X)
+7E/5F59:	203056  	JSR $5630      (Load a random number)
+7E/5F5C:	FA      	PLX            (Restore X)
+7E/5F5D:	9D0134  	STA $3401,X
+7E/5F60:	9D0038  	STA $3800,X
+7E/5F63:	2903    	AND #$03
+7E/5F65:	1A      	INC A          (Add one)
+7E/5F66:	9D0137  	STA $3701,X
+7E/5F69:	9D0037  	STA $3700,X
+7E/5F6C:	38      	SEC
+7E/5F6D:	60      	RTS
+
+Pointers
+7E/5F6E:	B463
+7E/5F70:	B763
+7E/5F72:	BA63
+7E/5F74:	BD63
+7E/5F76:	C063
+7E/5F78:	C363
+7E/5F7A:	C663
+7E/5F7C:	BA63
+
+7E/5F7E:	AA      	TAX            (Transfer A to X)
+7E/5F7F:	7C825F  	JMP ($5F82,X)
+
+Jump table
+7E/5F82:	865F
+7E/5F84:	985F
+
+7E/5F86:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5F88:	FE003A  	INC $3A00,X
+7E/5F8B:	205F75  	JSR $755F
+7E/5F8E:	BD0139  	LDA $3901,X
+7E/5F91:	18      	CLC            (Clear Carry for addition)
+7E/5F92:	7D013B  	ADC $3B01,X
+7E/5F95:	9D013B  	STA $3B01,X
+7E/5F98:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5F9A:	7B      	TDC            (Zero A)
+7E/5F9B:	BD0039  	LDA $3900,X
+7E/5F9E:	A8      	TAY            (Transfer A to Y)
+7E/5F9F:	A537    	LDA $37
+7E/5FA1:	18      	CLC            (Clear Carry for addition)
+7E/5FA2:	7D0137  	ADC $3701,X
+7E/5FA5:	BB      	TYX            (Transfer Y to X)
+7E/5FA6:	7539    	ADC $39,X
+7E/5FA8:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5FAA:	9D0133  	STA $3301,X
+7E/5FAD:	A538    	LDA $38
+7E/5FAF:	18      	CLC            (Clear Carry for addition)
+7E/5FB0:	7D0138  	ADC $3801,X
+7E/5FB3:	BB      	TYX            (Transfer Y to X)
+7E/5FB4:	753C    	ADC $3C,X
+7E/5FB6:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5FB8:	9D0134  	STA $3401,X
+7E/5FBB:	208D75  	JSR $758D
+7E/5FBE:	38      	SEC            (Mark function address to remain in queue)
+7E/5FBF:	60      	RTS
+
+7E/5FC0:	AA      	TAX            (Transfer A to X)
+7E/5FC1:	7CC45F  	JMP ($5FC4,X)
+
+Jump table
+7E/5FC4:	C85F
+7E/5FC6:	DF5F
+
+7E/5FC8:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5FCA:	FE003A  	INC $3A00,X
+7E/5FCD:	C220    	REP #$20       (16-bit accumulator)
+7E/5FCF:	A92760  	LDA #$6027
+7E/5FD2:	9D0035  	STA $3500,X
+7E/5FD5:	E220    	SEP #$20       (8-bit accumulator)
+7E/5FD7:	A908    	LDA #$08
+7E/5FD9:	9D013B  	STA $3B01,X
+7E/5FDC:	9E003B  	STZ $3B00,X
+7E/5FDF:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/5FE1:	20EF5F  	JSR $5FEF
+7E/5FE4:	7B      	TDC            (Zero A)
+7E/5FE5:	BD003B  	LDA $3B00,X
+7E/5FE8:	A8      	TAY            (Transfer A to Y)
+7E/5FE9:	B1EB    	LDA ($EB),Y
+7E/5FEB:	8538    	STA $38
+7E/5FED:	38      	SEC            (Mark function address to remain in queue)
+7E/5FEE:	60      	RTS
+
+7E/5FEF:	C220    	REP #$20       (16-bit accumulator)
+7E/5FF1:	BD0035  	LDA $3500,X
+7E/5FF4:	85EB    	STA $EB
+7E/5FF6:	E220    	SEP #$20       (8-bit accumulator)
+7E/5FF8:	BD013B  	LDA $3B01,X
+7E/5FFB:	C9FF    	CMP #$FF
+7E/5FFD:	D008    	BNE $6007
+7E/5FFF:	9E003B  	STZ $3B00,X
+7E/6002:	201B60  	JSR $601B
+7E/6005:	80F1    	BRA $5FF8      (Loop)
+7E/6007:	BD013B  	LDA $3B01,X
+7E/600A:	D00B    	BNE $6017
+7E/600C:	FE003B  	INC $3B00,X
+7E/600F:	FE003B  	INC $3B00,X
+7E/6012:	201B60  	JSR $601B
+7E/6015:	80E1    	BRA $5FF8      (Loop)
+7E/6017:	DE013B  	DEC $3B01,X
+7E/601A:	60      	RTS
+
+7E/601B:	7B      	TDC            (Zero A)
+7E/601C:	BD003B  	LDA $3B00,X
+7E/601F:	A8      	TAY            (Transfer A to Y)
+7E/6020:	C8      	INY
+7E/6021:	B1EB    	LDA ($EB),Y
+7E/6023:	9D013B  	STA $3B01,X
+7E/6026:	60      	RTS
+
+Data for the opening credits
+7E/6027:	01
+7E/6028:	04
+7E/6029:	02
+7E/602A:	08
+7E/602B:	01
+7E/602C:	04
+7E/602D:	00
+7E/602E:	04
+7E/602F:	00
+7E/6030:	FF
+7E/6031:	40
+7E/6032:	60
+7E/6033:	04
+7E/6034:	45
+7E/6035:	60
+7E/6036:	10
+7E/6037:	4A
+7E/6038:	60
+7E/6039:	04
+7E/603A:	4F
+7E/603B:	60
+7E/603C:	10
+7E/603D:	4A
+7E/603E:	60
+7E/603F:	FF
+7E/6040:	01
+7E/6041:	90
+7E/6042:	27
+7E/6043:	84
+7E/6044:	30
+7E/6045:	01
+7E/6046:	90
+7E/6047:	26
+7E/6048:	84
+7E/6049:	30
+7E/604A:	01
+7E/604B:	90
+7E/604C:	27
+7E/604D:	84
+7E/604E:	70
+7E/604F:	01
+7E/6050:	90
+7E/6051:	26
+7E/6052:	84
+7E/6053:	70
+7E/6054:	5D
+7E/6055:	60
+7E/6056:	14
+7E/6057:	6E
+7E/6058:	60
+7E/6059:	14
+7E/605A:	6E
+7E/605B:	60
+7E/605C:	FF
+7E/605D:	04
+7E/605E:	90
+7E/605F:	08
+7E/6060:	6C
+7E/6061:	30
+7E/6062:	A0
+7E/6063:	08
+7E/6064:	6E
+7E/6065:	30
+7E/6066:	90
+7E/6067:	18
+7E/6068:	80
+7E/6069:	30
+7E/606A:	A0
+7E/606B:	18
+7E/606C:	82
+7E/606D:	30
+7E/606E:	04
+7E/606F:	98
+7E/6070:	08
+7E/6071:	6C
+7E/6072:	70
+7E/6073:	88
+7E/6074:	08
+7E/6075:	6E
+7E/6076:	70
+7E/6077:	98
+7E/6078:	18
+7E/6079:	80
+7E/607A:	70
+7E/607B:	88
+7E/607C:	18
+7E/607D:	82
+7E/607E:	70
+7E/607F:	9A
+7E/6080:	60
+7E/6081:	08
+7E/6082:	A3
+7E/6083:	60
+7E/6084:	04
+7E/6085:	AC
+7E/6086:	60
+7E/6087:	04
+7E/6088:	B5
+7E/6089:	60
+7E/608A:	04
+7E/608B:	BE
+7E/608C:	60
+7E/608D:	08
+7E/608E:	C7
+7E/608F:	60
+7E/6090:	04
+7E/6091:	AC
+7E/6092:	60
+7E/6093:	04
+7E/6094:	B5
+7E/6095:	60
+7E/6096:	04
+7E/6097:	B5
+7E/6098:	60
+7E/6099:	FF
+7E/609A:	02
+7E/609B:	80
+7E/609C:	08
+7E/609D:	60
+7E/609E:	30
+7E/609F:	80
+7E/60A0:	18
+7E/60A1:	62
+7E/60A2:	30
+7E/60A3:	02
+7E/60A4:	80
+7E/60A5:	09
+7E/60A6:	60
+7E/60A7:	30
+7E/60A8:	80
+7E/60A9:	19
+7E/60AA:	62
+7E/60AB:	30
+7E/60AC:	02
+7E/60AD:	80
+7E/60AE:	09
+7E/60AF:	64
+7E/60B0:	30
+7E/60B1:	80
+7E/60B2:	19
+7E/60B3:	66
+7E/60B4:	30
+7E/60B5:	02
+7E/60B6:	80
+7E/60B7:	08
+7E/60B8:	64
+7E/60B9:	30
+7E/60BA:	80
+7E/60BB:	18
+7E/60BC:	66
+7E/60BD:	30
+7E/60BE:	02
+7E/60BF:	80
+7E/60C0:	08
+7E/60C1:	68
+7E/60C2:	30
+7E/60C3:	80
+7E/60C4:	18
+7E/60C5:	6A
+7E/60C6:	30
+7E/60C7:	02
+7E/60C8:	80
+7E/60C9:	09
+7E/60CA:	68
+7E/60CB:	30
+7E/60CC:	80
+7E/60CD:	19
+7E/60CE:	6A
+7E/60CF:	30
+7E/60D0:	0F
+7E/60D1:	61
+7E/60D2:	08
+7E/60D3:	18
+7E/60D4:	61
+7E/60D5:	04
+7E/60D6:	FD
+7E/60D7:	60
+7E/60D8:	04
+7E/60D9:	06
+7E/60DA:	61
+7E/60DB:	04
+7E/60DC:	EB
+7E/60DD:	60
+7E/60DE:	08
+7E/60DF:	F4
+7E/60E0:	60
+7E/60E1:	04
+7E/60E2:	FD
+7E/60E3:	60
+7E/60E4:	04
+7E/60E5:	06
+7E/60E6:	61
+7E/60E7:	04
+7E/60E8:	06
+7E/60E9:	61
+7E/60EA:	FF
+7E/60EB:	02
+7E/60EC:	A0
+7E/60ED:	08
+7E/60EE:	60
+7E/60EF:	70
+7E/60F0:	A0
+7E/60F1:	18
+7E/60F2:	62
+7E/60F3:	70
+7E/60F4:	02
+7E/60F5:	A0
+7E/60F6:	09
+7E/60F7:	60
+7E/60F8:	70
+7E/60F9:	A0
+7E/60FA:	19
+7E/60FB:	62
+7E/60FC:	70
+7E/60FD:	02
+7E/60FE:	A0
+7E/60FF:	09
+7E/6100:	64
+7E/6101:	70
+7E/6102:	A0
+7E/6103:	19
+7E/6104:	66
+7E/6105:	70
+7E/6106:	02
+7E/6107:	A0
+7E/6108:	08
+7E/6109:	64
+7E/610A:	70
+7E/610B:	A0
+7E/610C:	18
+7E/610D:	66
+7E/610E:	70
+7E/610F:	02
+7E/6110:	A0
+7E/6111:	08
+7E/6112:	68
+7E/6113:	70
+7E/6114:	A0
+7E/6115:	18
+7E/6116:	6A
+7E/6117:	70
+7E/6118:	02
+7E/6119:	A0
+7E/611A:	09
+7E/611B:	68
+7E/611C:	70
+7E/611D:	A0
+7E/611E:	19
+7E/611F:	6A
+7E/6120:	70
+7E/6121:	3F
+7E/6122:	61
+7E/6123:	04
+7E/6124:	48
+7E/6125:	61
+7E/6126:	04
+7E/6127:	51
+7E/6128:	61
+7E/6129:	04
+7E/612A:	5A
+7E/612B:	61
+7E/612C:	04
+7E/612D:	63
+7E/612E:	61
+7E/612F:	04
+7E/6130:	6C
+7E/6131:	61
+7E/6132:	08
+7E/6133:	75
+7E/6134:	61
+7E/6135:	04
+7E/6136:	7E
+7E/6137:	61
+7E/6138:	04
+7E/6139:	87
+7E/613A:	61
+7E/613B:	04
+7E/613C:	87
+7E/613D:	61
+7E/613E:	FF
+7E/613F:	02
+7E/6140:	90
+7E/6141:	3F
+7E/6142:	40
+7E/6143:	30
+7E/6144:	90
+7E/6145:	4F
+7E/6146:	42
+7E/6147:	30
+7E/6148:	02
+7E/6149:	90
+7E/614A:	3D
+7E/614B:	40
+7E/614C:	30
+7E/614D:	90
+7E/614E:	4D
+7E/614F:	42
+7E/6150:	30
+7E/6151:	02
+7E/6152:	90
+7E/6153:	3F
+7E/6154:	44
+7E/6155:	30
+7E/6156:	90
+7E/6157:	4F
+7E/6158:	46
+7E/6159:	30
+7E/615A:	02
+7E/615B:	90
+7E/615C:	3E
+7E/615D:	44
+7E/615E:	30
+7E/615F:	90
+7E/6160:	4E
+7E/6161:	46
+7E/6162:	30
+7E/6163:	02
+7E/6164:	90
+7E/6165:	3D
+7E/6166:	48
+7E/6167:	30
+7E/6168:	90
+7E/6169:	4D
+7E/616A:	4A
+7E/616B:	30
+7E/616C:	02
+7E/616D:	90
+7E/616E:	3E
+7E/616F:	48
+7E/6170:	30
+7E/6171:	90
+7E/6172:	4E
+7E/6173:	4A
+7E/6174:	30
+7E/6175:	02
+7E/6176:	90
+7E/6177:	3D
+7E/6178:	4C
+7E/6179:	30
+7E/617A:	90
+7E/617B:	4D
+7E/617C:	4E
+7E/617D:	30
+7E/617E:	02
+7E/617F:	90
+7E/6180:	3F
+7E/6181:	4C
+7E/6182:	30
+7E/6183:	90
+7E/6184:	4F
+7E/6185:	4E
+7E/6186:	30
+7E/6187:	02
+7E/6188:	90
+7E/6189:	41
+7E/618A:	4C
+7E/618B:	30
+7E/618C:	90
+7E/618D:	51
+7E/618E:	4E
+7E/618F:	30
+7E/6190:	AE
+7E/6191:	61
+7E/6192:	08
+7E/6193:	B7
+7E/6194:	61
+7E/6195:	04
+7E/6196:	C0
+7E/6197:	61
+7E/6198:	04
+7E/6199:	C9
+7E/619A:	61
+7E/619B:	04
+7E/619C:	D2
+7E/619D:	61
+7E/619E:	04
+7E/619F:	DB
+7E/61A0:	61
+7E/61A1:	04
+7E/61A2:	E4
+7E/61A3:	61
+7E/61A4:	04
+7E/61A5:	ED
+7E/61A6:	61
+7E/61A7:	04
+7E/61A8:	F6
+7E/61A9:	61
+7E/61AA:	04
+7E/61AB:	F6
+7E/61AC:	61
+7E/61AD:	FF
+7E/61AE:	02
+7E/61AF:	A0
+7E/61B0:	3E
+7E/61B1:	48
+7E/61B2:	70
+7E/61B3:	A0
+7E/61B4:	4E
+7E/61B5:	4A
+7E/61B6:	70
+7E/61B7:	02
+7E/61B8:	A0
+7E/61B9:	3D
+7E/61BA:	4C
+7E/61BB:	70
+7E/61BC:	A0
+7E/61BD:	4D
+7E/61BE:	4E
+7E/61BF:	70
+7E/61C0:	02
+7E/61C1:	A0
+7E/61C2:	3F
+7E/61C3:	4C
+7E/61C4:	70
+7E/61C5:	A0
+7E/61C6:	4F
+7E/61C7:	4E
+7E/61C8:	70
+7E/61C9:	02
+7E/61CA:	A0
+7E/61CB:	41
+7E/61CC:	4C
+7E/61CD:	70
+7E/61CE:	A0
+7E/61CF:	51
+7E/61D0:	4E
+7E/61D1:	70
+7E/61D2:	02
+7E/61D3:	A0
+7E/61D4:	3F
+7E/61D5:	40
+7E/61D6:	70
+7E/61D7:	A0
+7E/61D8:	4F
+7E/61D9:	42
+7E/61DA:	70
+7E/61DB:	02
+7E/61DC:	A0
+7E/61DD:	3D
+7E/61DE:	40
+7E/61DF:	70
+7E/61E0:	A0
+7E/61E1:	4D
+7E/61E2:	42
+7E/61E3:	70
+7E/61E4:	02
+7E/61E5:	A0
+7E/61E6:	3F
+7E/61E7:	44
+7E/61E8:	70
+7E/61E9:	A0
+7E/61EA:	4F
+7E/61EB:	46
+7E/61EC:	70
+7E/61ED:	02
+7E/61EE:	A0
+7E/61EF:	3E
+7E/61F0:	44
+7E/61F1:	70
+7E/61F2:	A0
+7E/61F3:	4E
+7E/61F4:	46
+7E/61F5:	70
+7E/61F6:	02
+7E/61F7:	A0
+7E/61F8:	3D
+7E/61F9:	48
+7E/61FA:	70
+7E/61FB:	A0
+7E/61FC:	4D
+7E/61FD:	4A
+7E/61FE:	70
+
+7E/61FF:	20A87A  	JSR $7AA8
+7E/6202:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/6204:	AF66DADF	LDA $DFDA66    (Holds #$93C0...)
+7E/6208:	6900DB  	ADC #$DB00     (Becomes #$6EC0; sets Carry)
+7E/620B:	85E7    	STA $E7        (Source address)
+7E/620D:	E220    	SEP #$20       (8-bit accumulator)
+7E/620F:	AF68DADF	LDA $DFDA68    (Holds #$02...)
+7E/6213:	69DF    	ADC #$DF       (Add #$DF, as the pointer is relative; plus one because of Carry)
+7E/6215:	85E9    	STA $E9        (Source bank; E2/6EC0)
+7E/6217:	A00098  	LDY #$9800
+7E/621A:	84EB    	STY $EB        (Destination address)
+7E/621C:	A97F    	LDA #$7F
+7E/621E:	85ED    	STA $ED        (Destination bank; 7F/9800)
+7E/6220:	A00008  	LDY #$0800
+7E/6223:	84EF    	STY $EF        (Number of bytes: #$0800)
+7E/6225:	20CC62  	JSR $62CC      (Copy Y bytes from [$E7] to [$EB])
+7E/6228:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/622A:	AF5DDADF	LDA $DFDA5D    (Holds #$6500...)
+7E/622E:	6900E3  	ADC #$E300     (Becomes #$4800; sets Carry)
+7E/6231:	85E7    	STA $E7        (Source address)
+7E/6233:	E220    	SEP #$20       (8-bit accumulator)
+7E/6235:	AF5FDADF	LDA $DFDA5F    (Holds #$02...)
+7E/6239:	69DF    	ADC #$DF       (Add #$DF, as the pointer is relative; plus one because of Carry)
+7E/623B:	85E9    	STA $E9        (Source bank; E2/4800)
+7E/623D:	A000A0  	LDY #$A000
+7E/6240:	84EB    	STY $EB        (Destination address)
+7E/6242:	A97F    	LDA #$7F
+7E/6244:	85ED    	STA $ED        (Destination bank; 7F/A000)
+7E/6246:	A00008  	LDY #$0800
+7E/6249:	84EF    	STY $EF        (Number of bytes: #$0800)
+7E/624B:	20CC62  	JSR $62CC      (Copy Y bytes from [$E7] to [$EB])
+7E/624E:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/6250:	AF60DADF	LDA $DFDA60    (Holds #$7400...)
+7E/6254:	6900DB  	ADC #$DB00     (Becomes #$4F00; sets Carry)
+7E/6257:	85E7    	STA $E7        (Source address)
+7E/6259:	E220    	SEP #$20       (8-bit accumulator)
+7E/625B:	AF62DADF	LDA $DFDA62    (Holds #$02...)
+7E/625F:	69DF    	ADC #$DF       (Add #$DF, as the pointer is relative; plus one because of Carry)
+7E/6261:	85E9    	STA $E9        (Source bank; E2/$4F00)
+7E/6263:	A000A8  	LDY #$A800
+7E/6266:	84EB    	STY $EB        (Destination address)
+7E/6268:	A97F    	LDA #$7F
+7E/626A:	85ED    	STA $ED        (Destination bank; 7F/A800)
+7E/626C:	A00008  	LDY #$0800
+7E/626F:	84EF    	STY $EF        (Number of bytes: #$0800)
+7E/6271:	20CC62  	JSR $62CC      (Copy Y bytes from [$E7] to [$EB])
+7E/6274:	64E4    	STZ $E4
+7E/6276:	64E5    	STZ $E5
+7E/6278:	A980    	LDA #$80
+7E/627A:	85ED    	STA $ED
+7E/627C:	A20098  	LDX #$9800
+7E/627F:	A97F    	LDA #$7F       (Source: 7F/9800)
+7E/6281:	204863  	JSR $6348
+7E/6284:	20DD62  	JSR $62DD
+7E/6287:	A000B8  	LDY #$B800
+7E/628A:	84E7    	STY $E7
+7E/628C:	A97F    	LDA #$7F
+7E/628E:	85E9    	STA $E9        (7F/B800)
+7E/6290:	64ED    	STZ $ED
+7E/6292:	64EE    	STZ $EE
+7E/6294:	A00040  	LDY #$4000
+7E/6297:	84EB    	STY $EB        (Number of bytes to copy)
+7E/6299:	A00000  	LDY #$0000     (VRAM pointer: $0000)
+7E/629C:	20187A  	JSR $7A18      (VRAM-related function)
+7E/629F:	A28000  	LDX #$0080
+7E/62A2:	86E4    	STX $E4
+7E/62A4:	A980    	LDA #$80
+7E/62A6:	85ED    	STA $ED
+7E/62A8:	A200A8  	LDX #$A800
+7E/62AB:	A97F    	LDA #$7F       (Source: 7F/A800)
+7E/62AD:	204863  	JSR $6348
+7E/62B0:	20DD62  	JSR $62DD
+7E/62B3:	A000B8  	LDY #$B800
+7E/62B6:	84E7    	STY $E7
+7E/62B8:	A97F    	LDA #$7F
+7E/62BA:	85E9    	STA $E9        (7F/B800)
+7E/62BC:	64ED    	STZ $ED
+7E/62BE:	64EE    	STZ $EE
+7E/62C0:	A00040  	LDY #$4000
+7E/62C3:	84EB    	STY $EB        (Number of bytes to copy)
+7E/62C5:	A00020  	LDY #$2000     (VRAM pointer: $4000)
+7E/62C8:	20187A  	JSR $7A18      (VRAM-related function) (JMP...)
+7E/62CB:	60      	RTS
+
+Copy Y bytes from [$E7] to [$EB]
+7E/62CC:	C220    	REP #$20       (16-bit accumulator)
+7E/62CE:	A400    	LDY $00        (Zero Y)
+7E/62D0:	B7E7    	LDA [$E7],Y
+7E/62D2:	97EB    	STA [$EB],Y
+7E/62D4:	C8      	INY
+7E/62D5:	C8      	INY
+7E/62D6:	C4EF    	CPY $EF
+7E/62D8:	D0F6    	BNE $62D0      (If not, loop)
+7E/62DA:	E220    	SEP #$20       (8-bit accumulator)
+7E/62DC:	60      	RTS
+
+7E/62DD:	7B      	TDC            (Zero A)
+7E/62DE:	AA      	TAX            (Zero X)
+7E/62DF:	C220    	REP #$20       (16-bit accumulator)
+7E/62E1:	BDFB62  	LDA $62FB,X
+7E/62E4:	A8      	TAY            (Transfer A to Y)
+7E/62E5:	E8      	INX
+7E/62E6:	E8      	INX
+7E/62E7:	BDFB62  	LDA $62FB,X
+7E/62EA:	85E7    	STA $E7
+7E/62EC:	E8      	INX
+7E/62ED:	E8      	INX
+7E/62EE:	E220    	SEP #$20       (8-bit accumulator)
+7E/62F0:	DA      	PHX            (Save X)
+7E/62F1:	201B63  	JSR $631B
+7E/62F4:	FA      	PLX            (Restore X)
+7E/62F5:	E02000  	CPX #$0020
+7E/62F8:	D0E5    	BNE $62DF      (If not, loop)
+7E/62FA:	60      	RTS
+
+Data: relative pointers
+7E/62FB:	0000    	(7F/B800)
+7E/62FD:	0000    	(7F/B800)
+7E/62FF:	0004    	(7F/BC00)
+7E/6301:	4000    	(7F/B840)
+7E/6303:	0000    	(7F/B800)
+7E/6305:	8000    	(7F/B880)
+7E/6307:	0004    	(7F/BC00)
+7E/6309:	C000    	(7F/B8C0)
+7E/630B:	0008    	(7F/C000)
+7E/630D:	0020    	(7F/D800)
+7E/630F:	000C    	(7F/C400)
+7E/6311:	4020    	(7F/D840)
+7E/6313:	0008    	(7F/C000)
+7E/6315:	8020    	(7F/D880)
+7E/6317:	000C    	(7F/C400)
+7E/6319:	C020    	(7F/D8C0)
+
+7E/631B:	8B      	PHB
+7E/631C:	A97F    	LDA #$7F
+7E/631E:	48      	PHA
+7E/631F:	AB      	PLB            (Set data bank register to 7F)
+7E/6320:	A920    	LDA #$20
+7E/6322:	85E0    	STA $E0
+7E/6324:	A920    	LDA #$20       (...)
+7E/6326:	85E1    	STA $E1
+7E/6328:	A6E7    	LDX $E7
+7E/632A:	B9C00B  	LDA $0BC0,Y
+7E/632D:	9D00B8  	STA $B800,X
+7E/6330:	C8      	INY
+7E/6331:	E8      	INX
+7E/6332:	E8      	INX
+7E/6333:	C6E1    	DEC $E1
+7E/6335:	D0F3    	BNE $632A      (Loop unless null)
+7E/6337:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/6339:	A5E7    	LDA $E7
+7E/633B:	690001  	ADC #$0100
+7E/633E:	85E7    	STA $E7        (Save changes)
+7E/6340:	E220    	SEP #$20       (8-bit accumulator)
+7E/6342:	C6E0    	DEC $E0
+7E/6344:	D0DE    	BNE $6324
+7E/6346:	AB      	PLB
+7E/6347:	60      	RTS
+
+7E/6348:	85E9    	STA $E9        (Set source bank)
+7E/634A:	86E7    	STX $E7        (Set source address)
+7E/634C:	8B      	PHB
+7E/634D:	A97F    	LDA #$7F
+7E/634F:	48      	PHA
+7E/6350:	AB      	PLB            (Set data bank register to 7F)
+7E/6351:	7B      	TDC            (Zero A)
+7E/6352:	AA      	TAX            (Zero X)
+7E/6353:	A908    	LDA #$08
+7E/6355:	85E6    	STA $E6
+7E/6357:	C220    	REP #$20       (16-bit accumulator)
+7E/6359:	A01000  	LDY #$0010
+7E/635C:	A7E7    	LDA [$E7]
+7E/635E:	85F1    	STA $F1
+7E/6360:	B7E7    	LDA [$E7],Y
+7E/6362:	85EF    	STA $EF
+7E/6364:	7B      	TDC            (...)
+7E/6365:	E220    	SEP #$20       (8-bit accumulator)
+7E/6367:	A00800  	LDY #$0008
+7E/636A:	7B      	TDC            (Zero A)
+7E/636B:	06F0    	ASL $F0
+7E/636D:	2A      	ROL A
+7E/636E:	06EF    	ASL $EF
+7E/6370:	2A      	ROL A
+7E/6371:	06F2    	ASL $F2
+7E/6373:	2A      	ROL A
+7E/6374:	06F1    	ASL $F1
+7E/6376:	2A      	ROL A
+7E/6377:	290F    	AND #$0F
+7E/6379:	F012    	BEQ $638D
+7E/637B:	85E0    	STA $E0
+7E/637D:	DA      	PHX            (Save X)
+7E/637E:	A6E4    	LDX $E4
+7E/6380:	BFB8647E	LDA $7E64B8,X
+7E/6384:	FA      	PLX            (Restore X)
+7E/6385:	0A      	ASL A          (Multiply by 2)
+7E/6386:	0A      	ASL A          (Multiply by 4)
+7E/6387:	0A      	ASL A          (Multiply by 8)
+7E/6388:	0A      	ASL A          (Multiply by 16)
+7E/6389:	2930    	AND #$30
+7E/638B:	05E0    	ORA $E0
+7E/638D:	9D01B8  	STA $B801,X
+7E/6390:	E8      	INX
+7E/6391:	E8      	INX
+7E/6392:	88      	DEY
+7E/6393:	D0D5    	BNE $636A      (Loop unless null)
+7E/6395:	A4E7    	LDY $E7
+7E/6397:	C8      	INY
+7E/6398:	C8      	INY
+7E/6399:	84E7    	STY $E7        (Save changes)
+7E/639B:	C6E6    	DEC $E6
+7E/639D:	D0B8    	BNE $6357      (Loop unless null)
+7E/639F:	C220    	REP #$20       (16-bit accumulator)
+7E/63A1:	E6E4    	INC $E4
+7E/63A3:	A5E7    	LDA $E7
+7E/63A5:	18      	CLC            (Clear Carry for addition)
+7E/63A6:	691000  	ADC #$0010
+7E/63A9:	85E7    	STA $E7        (Save changes)
+7E/63AB:	7B      	TDC            (Zero A)
+7E/63AC:	E220    	SEP #$20       (8-bit accumulator)
+7E/63AE:	C6ED    	DEC $ED
+7E/63B0:	D0A1    	BNE $6353      (Loop unless null)
+7E/63B2:	AB      	PLB
+7E/63B3:	60      	RTS
+
+Data for the opening credits (pointers to OAM?)
+7E/63B4:	C963    	(7E/63C9)
+7E/63B6:	FE
+7E/63B7:	CE63    	(7E/63CE)
+7E/63B9:	FE
+7E/63BA:	D363    	(7E/63D3)
+7E/63BC:	FE
+7E/63BD:	D863    	(7E/63D8)
+7E/63BF:	FE
+7E/63C0:	DD63    	(7E/63DD)
+7E/63C2:	FE
+7E/63C3:	EE63    	(7E/63EE)
+7E/63C5:	FE
+7E/63C6:	F763    	(7E/63F7)
+7E/63C8:	FE
+
+Data (OAM?)
+7E/63C9:	01
+7E/63CA:	00
+7E/63CB:	00
+7E/63CC:	86
+7E/63CD:	72
+
+Data (OAM?)
+7E/63CE:	01
+7E/63CF:	00
+7E/63D0:	00
+7E/63D1:	87
+7E/63D2:	76
+
+Data (OAM?)
+7E/63D3:	01
+7E/63D4:	00
+7E/63D5:	00
+7E/63D6:	88
+7E/63D7:	78
+
+Data (OAM?)
+7E/63D8:	01
+7E/63D9:	00
+7E/63DA:	00
+7E/63DB:	89
+7E/63DC:	7A
+
+Data (OAM?)
+7E/63DD:	04
+7E/63DE:	08
+7E/63DF:	08
+7E/63E0:	87
+7E/63E1:	72
+7E/63E2:	00
+7E/63E3:	00
+7E/63E4:	86
+7E/63E5:	36
+7E/63E6:	00
+7E/63E7:	10
+7E/63E8:	86
+7E/63E9:	78
+7E/63EA:	20
+7E/63EB:	00
+7E/63EC:	86
+7E/63ED:	32
+
+Data (OAM?)
+7E/63EE:	02
+7E/63EF:	00
+7E/63F0:	00
+7E/63F1:	89
+7E/63F2:	76
+7E/63F3:	10
+7E/63F4:	08
+7E/63F5:	89
+7E/63F6:	76
+
+Data (OAM?)
+7E/63F7:	02
+7E/63F8:	00
+7E/63F9:	00
+7E/63FA:	86
+7E/63FB:	7A
+7E/63FC:	30
+7E/63FD:	08
+7E/63FE:	86
+7E/63FF:	38
+
+Data: palette for credits and hidden scrolling image
+7E/6400:	0000 FF7F F662 E620 0000 9C73 514E 8314
+
+Data: shared colors; for hidden scrolling image
+7E/6410:	0000 0B46 CA3D 4829 692D 4929 6A35 0820
+
+Data: purposeless background palette
+7E/6420:	0820 0820 0820 CD35 AB31 7056 6F56 4E52
+
+Data: palette for snowfield
+7E/6430:	0000 0B46 CA3D 2725 C614 0D4A E71C 7056
+7E/6440:	6F56 4E52 AC39 692D 2725 7056 6F56 4E52
+
+Data: purposeless background palette
+7E/6450:	0000 8A35 6A31 692D 4829 4929 692D 0D4A
+7E/6460:	0820 0820 0820 0820 0820 0820 6F56 6F56
+
+Data: palette for magitek armor
+7E/6470:	0000 EF41 8C31 282D 0725 E71C C618 8B41
+7E/6480:	6939 062D C524 8A3D 2631 0820 0820 0820
+
+Data: palette for snowflakes
+7E/6490:	0000 D262 905A 4E52
+
+Data: Palette for animated mountains
+7E/6498:	0000 7615 2E00 420C 4108 CD45 6A3D 2835
+7E/64A8:	2825 E72C E624 C520 C518 A318 8314 6310
+
+Data (palette assignation for rock tiles on snowfield?)
+7E/64B8:	00
+7E/64B9:	01
+7E/64BA:	02
+7E/64BB:	01
+7E/64BC:	01
+7E/64BD:	01
+7E/64BE:	01
+7E/64BF:	01
+7E/64C0:	01
+7E/64C1:	02
+7E/64C2:	02
+7E/64C3:	02
+7E/64C4:	02
+7E/64C5:	02
+7E/64C6:	02
+7E/64C7:	03
+7E/64C8:	02
+7E/64C9:	03
+7E/64CA:	03
+7E/64CB:	02
+7E/64CC:	02
+7E/64CD:	02
+7E/64CE:	02
+7E/64CF:	02
+7E/64D0:	02
+7E/64D1:	02
+7E/64D2:	02
+7E/64D3:	01
+7E/64D4:	01
+7E/64D5:	01
+7E/64D6:	01
+7E/64D7:	01
+7E/64D8:	02
+7E/64D9:	02
+7E/64DA:	02
+7E/64DB:	02
+7E/64DC:	02
+7E/64DD:	02
+7E/64DE:	02
+7E/64DF:	02
+7E/64E0:	02
+7E/64E1:	02
+7E/64E2:	02
+7E/64E3:	01
+7E/64E4:	01
+7E/64E5:	01
+7E/64E6:	01
+7E/64E7:	01
+7E/64E8:	02
+7E/64E9:	02
+7E/64EA:	02
+7E/64EB:	02
+7E/64EC:	02
+7E/64ED:	02
+7E/64EE:	02
+7E/64EF:	02
+7E/64F0:	02
+7E/64F1:	02
+7E/64F2:	02
+7E/64F3:	01
+7E/64F4:	01
+7E/64F5:	01
+7E/64F6:	01
+7E/64F7:	01
+7E/64F8:	02
+7E/64F9:	02
+7E/64FA:	02
+7E/64FB:	02
+7E/64FC:	02
+7E/64FD:	02
+7E/64FE:	02
+7E/64FF:	02
+7E/6500:	02
+7E/6501:	02
+7E/6502:	02
+7E/6503:	02
+7E/6504:	02
+7E/6505:	02
+7E/6506:	02
+7E/6507:	02
+7E/6508:	02
+7E/6509:	02
+7E/650A:	02
+7E/650B:	02
+7E/650C:	02
+7E/650D:	02
+7E/650E:	02
+7E/650F:	02
+7E/6510:	02
+7E/6511:	02
+7E/6512:	02
+7E/6513:	02
+7E/6514:	02
+7E/6515:	02
+7E/6516:	02
+7E/6517:	02
+7E/6518:	02
+7E/6519:	02
+7E/651A:	02
+7E/651B:	02
+7E/651C:	02
+7E/651D:	02
+7E/651E:	02
+7E/651F:	02
+7E/6520:	02
+7E/6521:	02
+7E/6522:	02
+7E/6523:	02
+7E/6524:	02
+7E/6525:	02
+7E/6526:	02
+7E/6527:	02
+7E/6528:	02
+7E/6529:	02
+7E/652A:	02
+7E/652B:	02
+7E/652C:	02
+7E/652D:	02
+7E/652E:	02
+7E/652F:	02
+7E/6530:	05
+7E/6531:	05
+7E/6532:	05
+7E/6533:	05
+7E/6534:	05
+7E/6535:	05
+7E/6536:	05
+7E/6537:	05
+7E/6538:	03
+7E/6539:	03
+7E/653A:	03
+7E/653B:	05
+7E/653C:	05
+7E/653D:	03
+7E/653E:	03
+7E/653F:	03
+7E/6540:	03
+7E/6541:	03
+7E/6542:	03
+7E/6543:	03
+7E/6544:	03
+7E/6545:	03
+7E/6546:	03
+7E/6547:	03
+7E/6548:	02
+7E/6549:	02
+7E/654A:	05
+7E/654B:	05
+7E/654C:	05
+7E/654D:	05
+7E/654E:	03
+7E/654F:	03
+7E/6550:	03
+7E/6551:	03
+7E/6552:	03
+7E/6553:	03
+7E/6554:	03
+7E/6555:	03
+7E/6556:	03
+7E/6557:	03
+7E/6558:	02
+7E/6559:	02
+7E/655A:	03
+7E/655B:	02
+7E/655C:	02
+7E/655D:	02
+7E/655E:	03
+7E/655F:	03
+7E/6560:	03
+7E/6561:	03
+7E/6562:	03
+7E/6563:	03
+7E/6564:	03
+7E/6565:	03
+7E/6566:	03
+7E/6567:	02
+7E/6568:	02
+7E/6569:	03
+7E/656A:	02
+7E/656B:	02
+7E/656C:	02
+7E/656D:	03
+7E/656E:	03
+7E/656F:	02
+7E/6570:	03
+7E/6571:	03
+7E/6572:	03
+7E/6573:	03
+7E/6574:	03
+7E/6575:	04
+7E/6576:	02
+7E/6577:	02
+7E/6578:	02
+7E/6579:	02
+7E/657A:	02
+7E/657B:	02
+7E/657C:	02
+7E/657D:	02
+7E/657E:	02
+7E/657F:	02
+7E/6580:	02
+7E/6581:	02
+7E/6582:	02
+7E/6583:	02
+7E/6584:	02
+7E/6585:	02
+7E/6586:	02
+7E/6587:	02
+7E/6588:	02
+7E/6589:	02
+7E/658A:	02
+7E/658B:	02
+7E/658C:	02
+7E/658D:	02
+7E/658E:	02
+7E/658F:	02
+7E/6590:	02
+7E/6591:	02
+7E/6592:	02
+7E/6593:	02
+7E/6594:	00
+7E/6595:	02
+7E/6596:	02
+7E/6597:	02
+
+Text data for opening credits (pointer, value to write, value for use at 7E/5EDF, text)
+7E/6598:	5844
+7E/659A:	24
+7E/659B:	00
+7E/659C:	2C2E2B20311F212E00                     ("PRODUCER")
+7E/65A5:	CE44
+7E/65A7:	20
+7E/65A8:	00
+7E/65A9:	090A13100F1003160114020C02081604090A00 ("HIRONOBU SAKAGUCHI")
+7E/65BC:	5844
+7E/65BE:	24
+7E/65BF:	01
+7E/65C0:	20252E211F302B2E00                     ("DIRECTOR")
+7E/65C9:	D044
+7E/65CB:	20
+7E/65CC:	01
+7E/65CD:	1A1014090A0F10130A010C0A15021406       ("YOSHINORI KITASE<line> HIROYUKI ITOU")
+        	FE01090A13101A160C0A010A15101600
+7E/65ED:	5044
+7E/65EF:	24
+7E/65F0:	02
+7E/65F1:	291D252A012C2E2B232E1D2929212E00       ("MAIN PROGRAMMER")
+7E/6601:	D244
+7E/6603:	20
+7E/6604:	02
+7E/6605:	01010C060F010F02130A1502FE0C0A1A       ("KEN NARITA<line>KIYOSHI YOSHII")
+        	1014090A011A1014090A0A00
+7E/6621:	5044
+7E/6623:	24
+7E/6624:	03
+7E/6625:	232E1D2C24251F0120252E211F302B2E00     ("GRAPHIC DIRECTOR")
+7E/6636:	CE44
+7E/6638:	20
+7E/6639:	03
+7E/663A:	15061514161A020115020C02090214090A     ("TETSUYA TAKAHASHI<line>  KAZUKO SHIBUYA")
+        	FE01010C021B160C100114090A03161A0200
+7E/665D:	D244
+7E/665F:	20
+7E/6660:	00
+7E/6661:	01090A050610010E0A0F020302FE15061514   (" HIDEO MINABA<line>TETSUYA NOMURA")
+        	161A02010F100E16130200
+7E/667E:	5A44
+7E/6680:	24
+7E/6681:	00
+7E/6682:	29312F251F00                           ("MUSIC")
+7E/6688:	D244
+7E/668A:	20
+7E/668B:	00
+7E/668C:	0F100316100116060E0215141600           ("NOBUO UEMATSU")
+7E/669A:	5244
+7E/669C:	24
+7E/669D:	03
+7E/669E:	25291D23210120212F25232A212E00         ("IMAGE DESIGNER")
+7E/66AD:	D044
+7E/66AF:	20
+7E/66B0:	03
+7E/66B1:	1A1014090A15020C0201020E020F1000       ("YOSHITAKA AMANO")
+7E/66C1:	5244
+7E/66C3:	24
+7E/66C4:	04
+7E/66C5:	1E1D30302821012C281D2A2A212E00         ("BATTLE PLANNER")
+7E/66D4:	D044
+7E/66D6:	20
+7E/66D7:	04
+7E/66D8:	1A0214161A160C0A01090214060306FE       ("YASUYUKI HASEBE<line> AKIYOSHI OOTA")
+        	01020C0A1A1014090A011010150200
+7E/66F7:	5244
+7E/66F9:	24
+7E/66FA:	05
+7E/66FB:	2225212820012C281D2A2A212E00           ("FIELD PLANNER")
+7E/6709:	CE44
+7E/670B:	20
+7E/670C:	05
+7E/670D:	1A1014090A090A0C10010E02060C021802FE   ("YOSHIHIKO MAEKAWA<line>   KEITA ETOH")
+        	010101010C060A1502010615100900
+7E/672E:	CE44
+7E/6730:	20
+7E/6731:	02
+7E/6732:	010101140215101316011514160B0AFE0109   ("   SATORU TSUJI<line> HIDETOSHI KEZUKA")
+        	0A0506151014090A010C061B160C0200
+7E/6754:	5244
+7E/6756:	24
+7E/6757:	06
+7E/6758:	2132212A30012C281D2A2A212E00           ("EVENT PLANNER")
+7E/6766:	CE44
+7E/6768:	20
+7E/6769:	06
+7E/676A:	01011514160C0214020107160B0A1502FE0C   ("  TSUKASA FUJITA<line>KEISUKE MATSUHARA")
+        	060A14160C06010E021514160902130200
+7E/678D:	4E44
+7E/678F:	24
+7E/6790:	06
+7E/6791:	212222211F30012C2E2B232E1D2929212E00   ("EFFECT PROGRAMMER")
+7E/67A3:	D244
+7E/67A5:	20
+7E/67A6:	06
+7E/67A7:	090A131014090A01090213021502FE140215   ("HIROSHI HARATA<line>SATOSHI OGATA")
+        	1014090A01100802150200
+7E/67C4:	4E44
+7E/67C6:	24
+7E/67C7:	05
+7E/67C8:	1E1D30302821012C2E2B232E1D2929212E00   ("BATTLE PROGRAMMER")
+7E/67DA:	CE44
+7E/67DC:	20
+7E/67DD:	05
+7E/67DE:	020C0A090A1310011A020E02081604090A00   ("AKIHIRO YAMAGUCHI")
+7E/67F0:	5044
+7E/67F2:	24
+7E/67F3:	03
+7E/67F4:	2F2B312A20012C2E2B232E1D2929212E00     ("SOUND PROGRAMMER")
+7E/6805:	D444
+7E/6807:	20
+7E/6808:	03
+7E/6809:	0E0A0F10131601020C021000               ("MINORU AKAO")
+7E/6815:	4844
+7E/6817:	24
+7E/6818:	02
+7E/6819:	212222211F3001232E1D2C24251F0120212F   ("EFFECT GRAPHIC DESIGNER")
+        	25232A212E00
+7E/6831:	D044
+7E/6833:	20
+7E/6834:	02
+7E/6835:	090A13100C0215141601140214020C0A00     ("HIROKATSU SASSAKI")
+7E/6846:	4A44
+7E/6848:	24
+7E/6849:	04
+7E/684A:	222521282001232E1D2C24251F0120212F25   ("FIELD GRAPHIC DESIGNER")
+7E/685C:	232A212E00
+7E/6861:	D044
+7E/6863:	20
+7E/6864:	03
+7E/6865:	15020C0209021316010E0215141610FE0101   ("TAKAHARU MATSUO<line>  YUSUKE NAORA<line>NOBUYUKI IKEDA")
+        	1A1614160C06010F02101302FE010F100316
+        	1A160C0A010A0C06050200
+7E/6894:	CE44
+7E/6896:	20
+7E/6897:	07
+7E/6898:	010115100E1006010A0F021B021802FE0101   ("  TOMOE INAZAWA<line>   KAORI TANAKA<line>TAKAMICHI SHIBUYA")
+        	010C0210130A0115020F020C02FE15020C02
+        	0E0A04090A0114090A03161A0200
+7E/68CA:	CC44
+7E/68CC:	20
+7E/68CD:	01
+7E/68CE:	14090A0F0A04090A1310160109020E021402   ("SHINICHIROU HAMASAKA<line>  AKIYOSHI MASUDA")
+        	0C02FE0101020C0A1A1014090A010E021416
+                050200
+7E/68F5:	4844
+7E/68F7:	24
+7E/68F8:	00
+7E/68F9:	292B2A2F30212E01232E1D2C24251F012021   ("MONSTER GRAPHIC DESIGNER")
+        	2F25232A212E00
+7E/6912:	D244
+7E/6914:	20
+7E/6915:	00
+7E/6916:	090A151014090A01140214020C0A00         ("HITOSHI SASAKI")
+7E/6925:	4644
+7E/6927:	24
+7E/6928:	05
+7E/6929:	2B1E26211F3001232E1D2C24251F0120212F   ("OBJECT GRAPHIC DESIGNER")
+        	25232A212E00
+7E/6941:	CE44
+7E/6943:	20
+7E/6944:	05
+7E/6945:	0C021B16090A13100110090C02180200       ("KAZUHIRO OHKAWA")
+7E/6955:	5244
+7E/6957:	24
+7E/6958:	03
+7E/6959:	2F2B312A2001212A23252A21212E00         ("SOUND ENGINEER")
+7E/6968:	D244
+7E/696A:	20
+7E/696B:	03
+7E/696C:	060A0B0A010F020C020E16130200           ("EIJI NAKAMURA")
+7E/697A:	5244
+7E/697C:	24
+7E/697D:	03
+7E/697E:	2E21291D2721012C281D2A2A212E00         ("REMAKE PLANNER")
+7E/698D:	D644
+7E/698F:	20
+7E/6990:	03
+7E/6991:	18060A0E0A0F010D0AFE01020A0C10010A15   ("WEIMIN LI<line> AIKO ITO")
+        	1000
+7E/69A5:	5844
+7E/69A7:	24
+7E/69A8:	03
+7E/69A9:	302E1D2A2F281D302B2E00                 ("TRANSLATOR")
+7E/69B4:	D644
+7E/69B6:	20
+7E/69B7:	03
+7E/69B8:	150605011810100D14061A00               ("TED WOOLSEY")
+
+Rise of the Floating Continent
+7E/69C4:	08      	PHP
+7E/69C5:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/69C7:	48      	PHA
+7E/69C8:	DA      	PHX
+7E/69C9:	5A      	PHY
+7E/69CA:	8B      	PHB
+7E/69CB:	0B      	PHD
+7E/69CC:	202F50  	JSR $502F      (Set DBR, DPR, NMI address, IRQ address; zero $00)
+7E/69CF:	20E169  	JSR $69E1
+7E/69D2:	20106A  	JSR $6A10
+7E/69D5:	204E50  	JSR $504E      (Turn off the screen; disable DMA, HDMA, NMI, etc.) (JMP $6D03...)
+7E/69D8:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/69DA:	2B      	PLD
+7E/69DB:	AB      	PLB
+7E/69DC:	7A      	PLY
+7E/69DD:	FA      	PLX
+7E/69DE:	68      	PLA
+7E/69DF:	28      	PLP
+7E/69E0:	6B      	RTL
+
+7E/69E1:	201177  	JSR $7711      (Initialize various registers)
+7E/69E4:	20F469  	JSR $69F4
+7E/69E7:	201578  	JSR $7815
+7E/69EA:	204F78  	JSR $784F      (Clear VRAM)
+7E/69ED:	208574  	JSR $7485
+7E/69F0:	20E56B  	JSR $6BE5      (JMP...)
+7E/69F3:	60      	RTS
+
+7E/69F4:	8B      	PHB
+7E/69F5:	A900    	LDA #$00       (TDC...)
+7E/69F7:	48      	PHA
+7E/69F8:	AB      	PLB            (Set data bank register to 00)
+7E/69F9:	A903    	LDA #$03
+7E/69FB:	8D0121  	STA $2101      (Set 8x8 and 16x16 sprite sizes, store character data to $C000 in VRAM)
+7E/69FE:	A600    	LDX $00        (Zero X)
+7E/6A00:	8E0221  	STX $2102      (OAM address; OAM priority rotation)
+7E/6A03:	A907    	LDA #$07
+7E/6A05:	8D0521  	STX $3205
+7E/6A08:	7B      	TDC            (Zero A)
+7E/6A09:	A980    	LDA #$80
+7E/6A0B:	8D1A21  	STX $211A      (Mode 7 settings)
+7E/6A0E:	AB      	PLB
+7E/6A0F:	60      	RTS
+
+7E/6A10:	7B      	TDC            (Zero A)
+7E/6A11:	A519    	LDA $19
+7E/6A13:	300D    	BMI $6A22
+7E/6A15:	0A      	ASL A          (Multiply by 2)
+7E/6A16:	AA      	TAX            (Transfer A to X)
+7E/6A17:	FC3C6A  	JSR ($6A3C,X)
+7E/6A1A:	200F75  	JSR $750F
+7E/6A1D:	20FD71  	JSR $71FD
+7E/6A20:	80EE    	BRA $6A10      (Loop)
+7E/6A22:	A00F00  	LDY #$000F
+7E/6A25:	8415    	STY $15
+7E/6A27:	A900A0  	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6A29:	A0A055  	LDY #$55A0
+7E/6A2C:	20DC74  	JSR $74DC      (Put 7E/55A0 in queue)
+7E/6A2F:	A415    	LDY $15
+7E/6A31:	F008    	BEQ $6A3B
+7E/6A33:	200F75  	JSR $750F
+7E/6A36:	20FD71  	JSR $71FD
+7E/6A39:	80F4    	BRA $6A2F      (Loop)
+7E/6A3B:	60      	RTS
+
+Jump table
+7E/6A3C:	486A
+7E/6A3E:	876A
+7E/6A40:	9E6A
+7E/6A42:	AD6A
+7E/6A44:	BC6A
+7E/6A46:	C66A
+
+7E/6A48:	20C36B  	JSR $6BC3
+7E/6A4B:	A20031  	LDX #$3100     (Destination address)
+7E/6A4E:	A06574  	LDY #$7465     (Source address)
+7E/6A51:	202473  	JSR $7324      (Transfer palette)
+7E/6A54:	A20030  	LDX #$3000     (Destination address)
+7E/6A57:	A06574  	LDY #$7465     (Source address)
+7E/6A5A:	202473  	JSR $7324      (Transfer palette)
+7E/6A5D:	A20031  	LDX #$3100
+7E/6A60:	A0D26C  	LDY #$6CD2     (Data location; 7E/6CD2)
+7E/6A63:	A902    	LDA #$02
+7E/6A65:	203A73  	JSR $733A
+7E/6A68:	A20030  	LDX #$3000
+7E/6A6B:	A0D26C  	LDY #$6CD2     (Data location; 7E/6CD2)
+7E/6A6E:	A902    	LDA #$02
+7E/6A70:	203A73  	JSR $733A
+7E/6A72:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6A75:	A08C6B  	LDY #$6B8C
+7E/6A78:	20DC74  	JSR $74DC      (Put 7E/6B8C in queue)
+7E/6A7B:	E619    	INC $19
+7E/6A7E:	A90F    	LDA #$0F
+7E/6A7F:	8532    	STA $32        (Set screen to reach full brightness)
+7E/6A81:	A01000  	LDY #$0010
+7E/6A84:	8415    	STY $15
+7E/6A86:	60      	RTS
+
+7E/6A87:	A415    	LDY $15
+7E/6A89:	D00F    	BNE $6A9A
+7E/6A8B:	E619    	INC $19
+7E/6A8D:	A05802  	LDY #$0258
+7E/6A90:	8415    	STY $15
+7E/6A92:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6A94:	A0186B  	LDY #$6B18
+7E/6A97:	20DC74  	JSR $74DC      (Put 7E/6B18 in queue)
+7E/6A9A:	20CF6A  	JSR $6ACF      (Set matrix and center X and Y values for Mode 7) (BRA...)
+7E/6A9D:	60      	RTS
+
+7E/6A9E:	A415    	LDY $15
+7E/6AA0:	D007    	BNE $6AA9
+7E/6AA2:	E619    	INC $19
+7E/6AA4:	A03C00  	LDY #$003C
+7E/6AA7:	8415    	STY $15        (BRA $6AB6...)
+7E/6AA9:	20CF6A  	JSR $6ACF      (Set matrix and center X and Y values for Mode 7) (BRA...)
+7E/6AAC:	60      	RTS
+
+7E/6AAD:	A415    	LDY $15
+7E/6AAF:	D007    	BNE $6AB8
+7E/6AB1:	E619    	INC $19
+7E/6AB3:	A00100  	LDY #$0001
+7E/6AB6:	8415    	STY $15
+7E/6AB8:	20CF6A  	JSR $6ACF      (Set matrix and center X and Y values for Mode 7) (BRA...)
+7E/6ABB:	60      	RTS
+
+7E/6ABC:	A415    	LDY $15
+7E/6ABE:	D002    	BNE $6AC2
+7E/6AC0:	E619    	INC $19
+7E/6AC2:	20CF6A  	JSR $6ACF      (Set matrix and center X and Y values for Mode 7) (BRA...)
+7E/6AC5:	60      	RTS
+
+7E/6AC6:	A9FF    	LDA #$FF
+7E/6AC8:	8519    	STA $19
+7E/6ACA:	7B      	TDC            (Zero A)
+7E/6ACB:	8D0002  	STA $0200
+7E/6ACE:	60      	RTS
+
+Set matrix and center X and Y values for Mode 7
+7E/6ACF:	A53F    	LDA $3F
+7E/6AD1:	8F1F2100	STA $00211F    (Mode 7 center X, low byte)
+7E/6AD5:	A540    	LDA $40
+7E/6AD7:	8F1F2100	STA $00211F    (Mode 7 center X, high byte)
+7E/6ADB:	A541    	LDA $41
+7E/6ADD:	8F202100	STA $002120    (Mode 7 center Y, low byte)
+7E/6AE1:	A542    	LDA $42
+7E/6AE3:	8F202100	STA $002120    (Mode 7 center Y, high byte)
+7E/6AE7:	A544    	LDA $44
+7E/6AE9:	8F1B2100	STA $00211B    (Mode 7 matrix A, low byte)
+7E/6AED:	A545    	LDA $45
+7E/6AEF:	8F1B2100	STA $00211B    (Mode 7 matrix A, high byte)
+7E/6AF3:	A546    	LDA $46
+7E/6AF5:	8F1C2100	STA $00211C    (Mode 7 matrix B, low byte)
+7E/6AF9:	A547    	LDA $47
+7E/6AFB:	8F1C2100	STA $00211C    (Mode 7 matrix B, high byte)
+7E/6AFF:	A548    	LDA $48
+7E/6B01:	8F1D2100	STA $00211D    (Mode 7 matrix C, low byte)
+7E/6B05:	A549    	LDA $49
+7E/6B07:	8F1D2100	STA $00211D    (Mode 7 matrix C, high byte)
+7E/6B0B:	A54A    	LDA $4A
+7E/6B0D:	8F1E2100	STA $00211E    (Mode 7 matrix D, low byte)
+7E/6B11:	A54B    	LDA $4B
+7E/6B13:	8F1E2100	STA $00211E    (Mode 7 matrix D, high byte)
+7E/6B17:	60      	RTS
+
+7E/6B18:	AA      	TAX            (Transfer A to X)
+7E/6B19:	7C1C6B  	JMP ($6B1C,X)
+
+Jump table
+7E/6B1C:	206B
+7E/6B1E:	516B
+
+7E/6B20:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6B22:	FE003A  	INC $3A00,X
+7E/6B25:	A980    	LDA #$80
+7E/6B27:	8F302100	STA $002130
+7E/6B2B:	A957    	LDA #$57
+7E/6B2D:	8F312100	STA $002131    (Enable color math (half) for BG1, BG2, BG3, OBJ, and backdrop)
+7E/6B31:	A917    	LDA #$17
+7E/6B33:	8F2C2100	STA $00212C    (Enable BG1, BG2, BG3, and OBJ for main screen)
+7E/6B37:	A917    	LDA #$17       (...)
+7E/6B39:	8F2D2100	STA $00212D    (Enable BG1, BG2, BG3, and OBJ for subscreen)
+7E/6B3D:	A988    	LDA #$88
+7E/6B3F:	9D0133  	STA $3301,X
+7E/6B42:	A920    	LDA #$20
+7E/6B44:	9D0233  	STA $3302,X
+7E/6B47:	A942    	LDA #$42
+7E/6B49:	9D0134  	STA $3401,X
+7E/6B4C:	A920    	LDA #$20
+7E/6B4E:	9D0036  	STA $3600,X
+7E/6B51:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6B53:	BD0036  	LDA $3600,X
+7E/6B56:	D02F    	BNE $6B87
+7E/6B58:	BD0133  	LDA $3301,X
+7E/6B5B:	C997    	CMP #$97
+7E/6B5D:	B007    	BCS $6B66
+7E/6B5F:	8F322100	STA $002132
+7E/6B63:	FE0133  	INC $3301,X
+7E/6B66:	BD0233  	LDA $3302,X
+7E/6B69:	C98F    	CMP #$8F
+7E/6B6B:	B007    	BCS $6B74
+7E/6B6D:	8F322100	STA $002132
+7E/6B71:	FE0233  	INC $3302,X
+7E/6B74:	BD0134  	LDA $3401,X
+7E/6B77:	C991    	CMP #$91
+7E/6B79:	B007    	BCS $6B82
+7E/6B7B:	8F322100	STA $002132
+7E/6B7F:	FE0134  	INC $3401,X
+7E/6B82:	A920    	LDA #$20
+7E/6B84:	9D0036  	STA $3600,X
+7E/6B87:	DE0036  	DEC $3600,X
+7E/6B8A:	38      	SEC            (Mark function address to remain in queue)
+7E/6B8B:	60      	RTS
+
+7E/6B8C:	209D6B  	JSR $6B9D
+7E/6B8F:	A518    	LDA $18        (NMI counter)
+7E/6B91:	2907    	AND #$07       (Remain between 0 and 7)
+7E/6B93:	D006    	BNE $6B9B      (Branch unless null)
+7E/6B95:	C220    	REP #$20       (16-bit accumulator)
+7E/6B97:	E627    	INC $27
+7E/6B99:	E220    	SEP #$20       (8-bit accumulator)
+7E/6B9B:	38      	SEC
+7E/6B9C:	60      	RTS
+
+7E/6B9D:	A519    	LDA $19
+7E/6B9F:	C903    	CMP #$03
+7E/6BA1:	F00A    	BEQ $6BAD
+7E/6BA3:	C904    	CMP #$04
+7E/6BA5:	F00F    	BEQ $6BB6
+7E/6BA7:	A518    	LDA $18        (NMI counter)
+7E/6BA9:	2901    	AND #$01
+7E/6BAB:	D008    	BNE $6BB5
+7E/6BAD:	C220    	REP #$20       (16-bit accumulator)
+7E/6BAF:	E644    	INC $44
+7E/6BB1:	E64A    	INC $4A
+7E/6BB3:	E220    	SEP #$20       (8-bit accumulator)
+7E/6BB5:	60      	RTS
+
+7E/6BB6:	C220    	REP #$20       (16-bit accumulator)
+7E/6BB8:	E644    	INC $44
+7E/6BBA:	E644    	INC $44
+7E/6BBC:	E64A    	INC $4A
+7E/6BBE:	E64A    	INC $4A
+7E/6BC0:	E220    	SEP #$20       (8-bit accumulator)
+7E/6BC2:	60      	RTS
+
+7E/6BC3:	A04000  	LDY #$0040
+7E/6BC6:	843F    	STY $3F
+7E/6BC8:	A02000  	LDY #$0020
+7E/6BCB:	8441    	STY $41
+7E/6BCD:	A0A0FF  	LDY #$FFA0
+7E/6BD0:	8425    	STY $25
+7E/6BD2:	A0C0FF  	LDY #$FFC0
+7E/6BD5:	8427    	STY $27
+7E/6BD7:	7B      	TDC            (Zero A)
+7E/6BD8:	A8      	TAY            (Zero Y)
+7E/6BD9:	8446    	STY $46
+7E/6BDB:	8448    	STY $48
+7E/6BDD:	A00100  	LDY #$0001
+7E/6BE0:	8444    	STY $44
+7E/6BE2:	844A    	STY $4A
+7E/6BE4:	60      	RTS
+
+7E/6BE5:	A0964E  	LDY #$4E96
+7E/6BE8:	84F3    	STY $F3        (Source address)
+7E/6BEA:	A9D9    	LDA #$D9
+7E/6BEC:	85F5    	STA $F5        (Source bank; D9/4E96)
+7E/6BEE:	A00000  	LDY #$0000     (Zero Y)
+7E/6BF1:	84F6    	STY $F6        (Destination address)
+7E/6BF3:	A97F    	LDA #$7F
+7E/6BF5:	85F8    	STA $F8        (Destination bank; 7F/0000)
+7E/6BF7:	226DFFC2	JSL $C2FF6D    (LZSS decompression routine)
+7E/6BFB:	A00000  	LDY #$0000     (Zero Y)
+7E/6BFE:	84E7    	STY $E7
+7E/6C00:	A97F    	LDA #$7F
+7E/6C02:	85E9    	STA $E9        (7F/0000)
+7E/6C04:	A00098  	LDY #$9800
+7E/6C07:	84EB    	STY $EB        (Destination address)
+7E/6C09:	A97F    	LDA #$7F
+7E/6C0B:	85ED    	STA $ED        (Destination bank; 7F/9800)
+7E/6C0D:	A0C007  	LDY #$07C0
+7E/6C10:	84EF    	STY $EF        (Number of bytes: #$07C0)
+7E/6C12:	20CC62  	JSR $62CC      (Copy Y bytes from [$E7] to [$EB])
+7E/6C15:	A940    	LDA #$40
+7E/6C17:	85ED    	STA $ED
+7E/6C19:	A20098  	LDX #$9800
+7E/6C1C:	A97F    	LDA #$7F       (7F/9800)
+7E/6C1E:	207A6C  	JSR $6C7A
+7E/6C21:	203D6C  	JSR $6C3D
+7E/6C24:	A000B8  	LDY #$B800
+7E/6C27:	84E7    	STY $E7
+7E/6C29:	A97F    	LDA #$7F
+7E/6C2B:	85E9    	STA $E9        (7F/B800)
+7E/6C2D:	64ED    	STZ $ED
+7E/6C2F:	64EE    	STZ $EE
+7E/6C31:	A00020  	LDY #$2000
+7E/6C34:	84EB    	STY $EB        (Number of bytes to copy)
+7E/6C36:	A00000  	LDY #$0000     (VRAM pointer: $0000)
+7E/6C39:	20187A  	JSR $7A18      (VRAM-related function) (JMP...)
+7E/6C3C:	60      	RTS
+
+7E/6C3D:	8B      	PHB
+7E/6C3E:	A97F    	LDA #$7F
+7E/6C40:	48      	PHA
+7E/6C41:	AB      	PLB            (Set data bank register to 7F)
+7E/6C42:	7B      	TDC            (Zero A)
+7E/6C43:	AA      	TAX            (Zero X)
+7E/6C44:	9D00B8  	STA $B800,X
+7E/6C47:	E8      	INX
+7E/6C48:	E8      	INX
+7E/6C49:	E00020  	CPX #$2000
+7E/6C4C:	D0F6    	BNE $6C44      (If not, loop)
+7E/6C4E:	7B      	TDC            (Zero A)
+7E/6C4F:	A8      	TAY            (Zero Y)
+7E/6C50:	84E7    	STY $E7
+7E/6C52:	A90A    	LDA #$0A
+7E/6C54:	85E0    	STA $E0
+7E/6C56:	A920    	LDA #$20
+7E/6C58:	85E1    	STA $E1
+7E/6C5A:	A6E7    	LDX $E7
+7E/6C5C:	B9C007  	LDA $07C0,Y
+7E/6C5F:	9D00B8  	STA $B800,X
+7E/6C62:	C8      	INY
+7E/6C63:	E8      	INX
+7E/6C64:	E8      	INX
+7E/6C65:	C6E1    	DEC $E1
+7E/6C67:	D0F3    	BNE $6C5C
+7E/6C69:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/6C6B:	A5E7    	LDA $E7
+7E/6C6D:	690001  	ADC #$0100
+7E/6C70:	85E7    	STA $E7        (Save changes)
+7E/6C72:	E220    	SEP #$20       (8-bit accumulator)
+7E/6C74:	C6E0    	DEC $E0
+7E/6C76:	D0DE    	BNE $6C56
+7E/6C78:	AB      	PLB
+7E/6C79:	60      	RTS
+
+7E/6C7A:	85E9    	STA $E9
+7E/6C7C:	86E7    	STX $E7        (Set source address)
+7E/6C7E:	8B      	PHB
+7E/6C7F:	A97F    	LDA #$7F
+7E/6C81:	48      	PHA
+7E/6C82:	AB      	PLB            (Set data bank register to 7F)
+7E/6C83:	7B      	TDC            (Zero A)
+7E/6C84:	AA      	TAX            (Zero X)
+7E/6C85:	A908    	LDA #$08
+7E/6C87:	85E6    	STA $E6
+7E/6C89:	C220    	REP #$20       (16-bit accumulator)
+7E/6C8B:	A01000  	LDY #$0010
+7E/6C8E:	A7E7    	LDA [$E7]
+7E/6C90:	85F1    	STA $F1
+7E/6C92:	B7E7    	LDA [$E7],Y
+7E/6C94:	85EF    	STA $EF
+7E/6C96:	7B      	TDC            (...)
+7E/6C97:	E220    	SEP #$20       (8-bit accumulator)
+7E/6C99:	A00800  	LDY #$0008
+7E/6C9C:	7B      	TDC            (Zero A)
+7E/6C9D:	06F0    	ASL $F0
+7E/6C9F:	2A      	ROL A
+7E/6CA0:	06EF    	ASL $EF
+7E/6CA2:	2A      	ROL A
+7E/6CA3:	06F2    	ASL $F2
+7E/6CA5:	2A      	ROL A
+7E/6CA6:	06F1    	ASL $F1
+7E/6CA8:	2A      	ROL A
+7E/6CA9:	290F    	AND #$0F
+7E/6CAB:	F000    	BEQ $6CAD      (...)
+7E/6CAD:	9D01B8  	STA $B801,X
+7E/6CB0:	E8      	INX
+7E/6CB1:	E8      	INX
+7E/6CB2:	88      	DEY
+7E/6CB3:	D0E7    	BNE $6C9C
+7E/6CB5:	A4E7    	LDY $E7
+7E/6CB7:	C8      	INY
+7E/6CB8:	C8      	INY
+7E/6CB9:	84E7    	STY $E7
+7E/6CBB:	C6E6    	DEC $E6
+7E/6CBD:	D0CA    	BNE $6C89
+7E/6CBF:	C220    	REP #$20       (16-bit accumulator) (REP #$21...)
+7E/6CC1:	A5E7    	LDA $E7
+7E/6CC3:	18      	CLC            (Clear Carry for addition)
+7E/6CC4:	691000  	ADC #$0010
+7E/6CC7:	85E7    	STA $E7        (Save changes)
+7E/6CC9:	7B      	TDC            (Zero A)
+7E/6CCA:	E220    	SEP #$20       (8-bit accumulator)
+7E/6CCC:	C6ED    	DEC $ED
+7E/6CCE:	D0B5    	BNE $6C85
+7E/6CD0:	AB      	PLB
+7E/6CD1:	60      	RTS
+
+Data: palette for rise of Floating Continent
+7E/6CD2:	2F5E 763E 8E29 0A21 C81C 8614 6414 4310
+7E/6CE2:	230C 2204 0000 0000 0000 0000 0000 A418
+
+World being torn apart
+7E/6CF2:	08      	PHP
+7E/6CF3:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/6CF5:	48      	PHA
+7E/6CF6:	DA      	PHX
+7E/6CF7:	5A      	PHY
+7E/6CF8:	8B      	PHB
+7E/6CF9:	0B      	PHD
+7E/6CFA:	202F50  	JSR $502F      (Set DBR, DPR, NMI address, IRQ address; zero $00)
+7E/6CFD:	200F6D  	JSR $6D0F
+7E/6D00:	20476D  	JSR $6D47
+7E/6D03:	204E50  	JSR $504E      (Turn off the screen; disable DMA, HDMA, NMI, etc.)
+7E/6D06:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/6D08:	2B      	PLD
+7E/6D09:	AB      	PLB
+7E/6D0A:	7A      	PLY
+7E/6D0B:	FA      	PLX
+7E/6D0C:	68      	PLA
+7E/6D0D:	28      	PLP
+7E/6D0E:	6B      	RTL
+
+7E/6D0F:	201177  	JSR $7711      (Initialize various registers)
+7E/6D12:	20226D  	JSR $6D22
+7E/6D15:	201578  	JSR $7815
+7E/6D18:	204F78  	JSR $784F      (Clear VRAM)
+7E/6D1B:	208574  	JSR $7485
+7E/6D1E:	20FB6F  	JSR $6FFB      (JMP...)
+7E/6D21:	60      	RTS
+
+7E/6D22:	8B      	PHB
+7E/6D23:	A900    	LDA #$00
+7E/6D25:	48      	PHA
+7E/6D26:	AB      	PLB            (Set data bank register to 00)
+7E/6D27:	A903    	LDA #$03
+7E/6D29:	8D0121  	STA $2101      (Set 8x8 and 16x16 sprite sizes, store character data to $C000 in VRAM)
+7E/6D2C:	A982    	LDA #$82
+7E/6D2E:	8D3021  	STA $2130
+7E/6D31:	A950    	LDA #$50
+7E/6D33:	8D3121  	STA $2131      (Enable color math (half) for OBJ)
+7E/6D36:	A917    	LDA #$17
+7E/6D38:	8D2C21  	STA $212C      (Enable BG1, BG2, BG3, and OBJ for main screen)
+7E/6D3B:	A901    	LDA #$01
+7E/6D3D:	8D2D21  	STA $212D      (Enable BG1 for subscreen)
+7E/6D40:	A9E0    	LDA #$E0
+7E/6D42:	8D3221  	STA $2132
+7E/6D45:	AB      	PLB
+7E/6D46:	60      	RTS
+
+7E/6D47:	7B      	TDC            (Zero A)
+7E/6D48:	A519    	LDA $19
+7E/6D4A:	300D    	BMI $6D59
+7E/6D4C:	0A      	ASL A          (Multiply by 2)
+7E/6D4D:	AA      	TAX            (Transfer A to X)
+7E/6D4E:	FC736D  	JSR ($6D73,X)
+7E/6D51:	200F75  	JSR $750F
+7E/6D54:	20FD71  	JSR $71FD
+7E/6D57:	80EE    	BRA $6D47      (Loop)
+7E/6D59:	A00F00  	LDY #$000F
+7E/6D5C:	8415    	STY $15
+7E/6D5E:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6D60:	A0A055  	LDY #$55A0
+7E/6D63:	20DC74  	JSR $74DC      (Put 7E/55A0 in queue)
+7E/6D66:	A415    	LDY $15
+7E/6D68:	F008    	BEQ $6D72
+7E/6D6A:	200F75  	JSR $750F
+7E/6D6D:	20FD71  	JSR $71FD
+7E/6D70:	80F4    	BRA $6D66      (Loop)
+7E/6D72:	60      	RTS
+
+Jump table
+7E/6D73:	7D6D
+7E/6D75:	276E
+7E/6D77:	416E
+7E/6D79:	746E
+7E/6D7B:	816E
+
+7E/6D7D:	6434    	STZ $34
+7E/6D7F:	A980    	LDA #$80
+7E/6D81:	8535    	STA $35
+7E/6D83:	A20030  	LDX #$3000     (Destination address)
+7E/6D86:	A06574  	LDY #$7465     (Source address)
+7E/6D89:	202473  	JSR $7324      (Transfer palette)
+7E/6D8C:	A28031  	LDX #$3180     (Destination address)
+7E/6D8F:	A06574  	LDY #$7465     (Source address)
+7E/6D92:	202473  	JSR $7324      (Transfer palette)
+7E/6D95:	A2A031  	LDX #$31A0     (Destination address)
+7E/6D98:	A06574  	LDY #$7465     (Source address)
+7E/6D9B:	202473  	JSR $7324      (Transfer palette)
+7E/6D9E:	A20030  	LDX #$3000
+7E/6DA1:	A07D71  	LDY #$717D     (Data location; 7E/717D)
+7E/6DA4:	A904    	LDA #$04
+7E/6DA6:	203A73  	JSR $733A
+7E/6DA9:	A28031  	LDX #$3180
+7E/6DAC:	A0BD71  	LDY #$71BD     (Data location; 7E/71BD)
+7E/6DAF:	A904    	LDA #$04
+7E/6DB1:	203A73  	JSR $733A
+7E/6DB4:	A2A031  	LDX #$31A0
+7E/6DB7:	A0DD71  	LDY #$71DD     (Data location; 7E/71DD)
+7E/6DBA:	A904    	LDA #$04
+7E/6DBC:	203A73  	JSR $733A
+7E/6DBF:	A902    	LDA #$02       (Start from $3240 to find an unoccupied queue slot)
+7E/6DC1:	A0FD6E  	LDY #$6EFD
+7E/6DC4:	20DC74  	JSR $74DC      (Put 7E/6EFD in queue)
+7E/6DC7:	C220    	REP #$20       (16-bit accumulator)
+7E/6DC9:	A97A70  	LDA #$707A
+7E/6DCC:	9D0035  	STA $3500,X
+7E/6DCF:	A9FCFF  	LDA #$FFFC
+7E/6DD2:	9D0038  	STA $3800,X
+7E/6DD5:	A90400  	LDA #$0004
+7E/6DD8:	9D0037  	STA $3700,X
+7E/6DDB:	A96801  	LDA #$0168
+7E/6DDE:	9D0036  	STA $3600,X
+7E/6DE1:	E220    	SEP #$20       (8-bit accumulator)
+7E/6DE3:	A972    	LDA #$72
+7E/6DE5:	9D0133  	STA $3301,X
+7E/6DE8:	A980    	LDA #$80
+7E/6DEA:	9D0134  	STA $3401,X
+7E/6DED:	A902    	LDA #$02       (Start from $3240 to find an unoccupied queue slot)
+7E/6DEF:	A0FD6E  	LDY #$6EFD
+7E/6DF2:	20DC74  	JSR $74DC      (Put 7E/6EFD in queue)
+7E/6DF5:	C220    	REP #$20       (16-bit accumulator)
+7E/6DF7:	A9A670  	LDA #$70A6
+7E/6DFA:	9D0035  	STA $3500,X
+7E/6DFD:	A90400  	LDA #$0004
+7E/6E00:	9D0038  	STA $3800,X
+7E/6E03:	A9FEFF  	LDA #$FFFE
+7E/6E06:	9D0037  	STA $3700,X
+7E/6E09:	A96801  	LDA #$0168
+7E/6E0C:	9D0036  	STA $3600,X
+7E/6E0F:	E220    	SEP #$20       (8-bit accumulator)
+7E/6E11:	A950    	LDA #$50
+7E/6E13:	9D0133  	STA $3301,X
+7E/6E16:	A9A0    	LDA #$A0
+7E/6E18:	9D0134  	STA $3401,X
+7E/6E1B:	E619    	INC $19
+7E/6E1D:	A90F    	LDA #$0F
+7E/6E1F:	8532    	STA $32        (Set screen to reach full brightness)
+7E/6E21:	A0B400  	LDY #$00B4
+7E/6E24:	8415    	STY $15
+7E/6E26:	60      	RTS
+
+7E/6E27:	A415    	LDY $15
+7E/6E29:	D00F    	BNE $6E3A
+7E/6E2B:	E619    	INC $19
+7E/6E2D:	A03804  	LDY #$0438
+7E/6E30:	8415    	STY $15
+7E/6E32:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6E34:	A08A6E  	LDY #$6E8A
+7E/6E37:	20DC74  	JSR $74DC      (Put 7E/6E8A in queue)
+7E/6E3A:	20976F  	JSR $6F97      (BRA $6E7A...)
+7E/6E3D:	204C6F  	JSR $6F4C
+7E/6E40:	60      	RTS
+
+7E/6E41:	A415    	LDY $15
+7E/6E43:	D028    	BNE $6E6D
+7E/6E45:	E619    	INC $19
+7E/6E47:	A0B400  	LDY #$00B4
+7E/6E4A:	8415    	STY $15
+7E/6E4C:	A20030  	LDX #$3000
+7E/6E4F:	A06574  	LDY #$7465     (Data location; 7E/7465)
+7E/6E52:	A908    	LDA #$08
+7E/6E54:	203A73  	JSR $733A
+7E/6E57:	A28031  	LDX #$3180
+7E/6E5A:	A06574  	LDY #$7465     (Data location; 7E/7465)
+7E/6E5D:	A908    	LDA #$08
+7E/6E5F:	203A73  	JSR $733A
+7E/6E62:	A2A031  	LDX #$31A0
+7E/6E65:	A06574  	LDY #$7465     (Data location; 7E/7465)
+7E/6E68:	A908    	LDA #$08
+7E/6E6A:	203A73  	JSR $733A
+7E/6E6D:	20976F  	JSR $6F97      (BRA $6E7A...)
+7E/6E70:	204C6F  	JSR $6F4C
+7E/6E73:	60      	RTS
+
+7E/6E74:	A415    	LDY $15
+7E/6E76:	D002    	BNE $6E7A
+7E/6E78:	E619    	INC $19
+7E/6E7A:	20976F  	JSR $6F97
+7E/6E7D:	204C6F  	JSR $6F4C      (JMP...)
+7E/6E80:	60      	RTS
+
+7E/6E81:	A9FF    	LDA #$FF
+7E/6E83:	8519    	STA $19
+7E/6E85:	7B      	TDC            (Zero A)
+7E/6E86:	8D0002  	STA $0200
+7E/6E89:	60      	RTS
+
+7E/6E8A:	AA      	TAX            (Transfer A to X)
+7E/6E8B:	7C8E6E  	JMP ($6E8E,X)
+
+Jump table
+7E/6E8E:	926E
+7E/6E90:	976E
+
+7E/6E92:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6E94:	FE003A  	INC $3A00,X
+7E/6E97:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6E99:	BD0036  	LDA $3600,X
+7E/6E9C:	D039    	BNE $6ED7
+7E/6E9E:	BC0039  	LDY $3900,X
+7E/6EA1:	5A      	PHY            (Save Y)
+7E/6EA2:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6EA4:	A0DB76  	LDY #$76DB
+7E/6EA7:	20DC74  	JSR $74DC      (Put 7E/76DB in queue)
+7E/6EAA:	7A      	PLY            (Restore Y)
+7E/6EAB:	C220    	REP #$20       (16-bit accumulator)
+7E/6EAD:	A91971  	LDA #$7119
+7E/6EB0:	9D0035  	STA $3500,X
+7E/6EB3:	E220    	SEP #$20       (8-bit accumulator)
+7E/6EB5:	B9E96E  	LDA $6EE9,Y    (X coordinate for flame)
+7E/6EB8:	9D0133  	STA $3301,X
+7E/6EBB:	C8      	INY            (Point to next coordinate)
+7E/6EBC:	B9E96E  	LDA $6EE9,Y    (Y coordinate for flame)
+7E/6EBF:	9D0134  	STA $3401,X
+7E/6EC2:	C8      	INY            (Point to next coordinate)
+7E/6EC3:	C01400  	CPY #$0014     (Copied all coordinates?)
+7E/6EC6:	F016    	BEQ $6EDE      (Branch if so)
+7E/6EC8:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6ECA:	C220    	REP #$20       (16-bit accumulator)
+7E/6ECC:	98      	TYA            (Transfer Y to A)
+7E/6ECD:	9D0039  	STA $3900,X
+7E/6ED0:	E220    	SEP #$20       (8-bit accumulator)
+7E/6ED2:	A910    	LDA #$10
+7E/6ED4:	9D0036  	STA $3600,X
+7E/6ED7:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6ED9:	DE0036  	DEC $3600,X
+7E/6EDC:	38      	SEC            (Mark function address to remain in queue)
+7E/6EDD:	60      	RTS            (Exit)
+7E/6EDE:	A28031  	LDX #$3180     (Destination address)
+7E/6EE1:	A09D71  	LDY #$719D     (Source address)
+7E/6EE4:	202473  	JSR $7324      (Transfer palette)
+7E/6EE7:	18      	CLC            (Mark function address to be removed from queue)
+7E/6EE8:	60      	RTS
+
+Data: coordinates for flame sprites
+7E/6EE9:	709D    	(112, 157)
+7E/6EEB:	74A0    	(116, 160)
+7E/6EED:	789E    	(120, 158)
+7E/6EEF:	7C9D    	(124, 157)
+7E/6EF1:	809C    	(128, 156)
+7E/6EF3:	849F    	(132, 159)
+7E/6EF5:	88A0    	(136, 160)
+7E/6EF7:	8C9F    	(140, 159)
+7E/6EF9:	90A4    	(144, 164)
+7E/6EFB:	94A5    	(148, 165)
+
+7E/6EFD:	AA      	TAX            (Transfer A to X)
+7E/6EFE:	7C016F  	JMP ($6F01,X)
+
+Jump table
+7E/6F01:	056F
+7E/6F03:	156F
+
+7E/6F05:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6F07:	FE003A  	INC $3A00,X
+7E/6F0A:	205F75  	JSR $755F
+7E/6F0D:	C220    	REP #$20       (16-bit accumulator)
+7E/6F0F:	A99402  	LDA #$0294
+7E/6F12:	9D0039  	STA $3900,X
+7E/6F15:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/6F17:	BC0039  	LDY $3900,X
+7E/6F1A:	F02B    	BEQ $6F47
+7E/6F1C:	BC0036  	LDY $3600,X
+7E/6F1F:	D017    	BNE $6F38
+7E/6F21:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/6F23:	BD0033  	LDA $3300,X
+7E/6F26:	7D0037  	ADC $3700,X
+7E/6F29:	9D0033  	STA $3300,X
+7E/6F2C:	BD0034  	LDA $3400,X
+7E/6F2F:	18      	CLC            (Clear Carry for addition)
+7E/6F30:	7D0038  	ADC $3800,X
+7E/6F33:	9D0034  	STA $3400,X
+7E/6F36:	E220    	SEP #$20       (8-bit accumulator)
+7E/6F38:	C220    	REP #$20       (16-bit accumulator)
+7E/6F3A:	DE0039  	DEC $3900,X
+7E/6F3D:	BD0036  	LDA $3600,X
+7E/6F40:	F003    	BEQ $6F45
+7E/6F42:	DE0036  	DEC $3600,X
+7E/6F45:	E220    	SEP #$20       (8-bit accumulator)
+7E/6F47:	208D75  	JSR $758D
+7E/6F4A:	38      	SEC            (Mark function address to remain in queue)
+7E/6F4B:	60      	RTS
+
+7E/6F4C:	20836F  	JSR $6F83      (Load a random number)
+7E/6F4F:	291F    	AND #$1F       (Remain between 0 and 31)
+7E/6F51:	D027    	BNE $6F7A      (Exit unless null)
+7E/6F53:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6F55:	A05A70  	LDY #$705A
+7E/6F58:	20DC74  	JSR $74DC      (Put 7E/705A in queue)
+7E/6F5B:	C220    	REP #$20       (16-bit accumulator)
+7E/6F5D:	A9F670  	LDA #$70F6
+7E/6F60:	9D0035  	STA $3500,X
+7E/6F63:	E220    	SEP #$20       (8-bit accumulator)
+7E/6F65:	DA      	PHX            (Save X)
+7E/6F66:	20836F  	JSR $6F83      (Load a random number)
+7E/6F69:	2903    	AND #$03       (Remain between 0 and 3)
+7E/6F6B:	0A      	ASL A          (Multiply by 2)
+7E/6F6C:	A8      	TAY            (Transfer A to Y)
+7E/6F6D:	FA      	PLX            (Restore X)
+7E/6F6E:	B97B6F  	LDA $6F7B,Y    (X coordinate)
+7E/6F71:	9D0133  	STA $3301,X
+7E/6F74:	B97C6F  	LDA $6F7C,Y    (Y coordinate)
+7E/6F77:	9D0134  	STA $3401,X
+7E/6F7A:	60      	RTS
+
+Data: coordinates for crescent-shaped explosions
+7E/6F7B:	729A    	(114, 154)
+7E/6F7D:	7A92    	(122, 146)
+7E/6F7F:	62AA    	(98, 170)
+7E/6F81:	52BA    	(82, 186)
+
+Random-number generator, type 2
+7E/6F83:	7B      	TDC            (Zero A)
+7E/6F84:	E634    	INC $34
+7E/6F86:	A534    	LDA $34
+7E/6F88:	AA      	TAX            (Transfer A to X)
+7E/6F89:	BF00FDC0	LDA $C0FD00,X  (Random-number table)
+7E/6F8D:	8535    	STA $35
+7E/6F8F:	AA      	TAX            (Transfer A to X)
+7E/6F90:	BF00FDC0	LDA $C0FD00,X  (Random-number table)
+7E/6F94:	6535    	ADC $35
+7E/6F96:	60      	RTS
+
+7E/6F97:	20836F  	JSR $6F83      (Load a random number)
+7E/6F9A:	2907    	AND #$07       (Remain between 0 and 7)
+7E/6F9C:	D02A    	BNE $6FC8      (Exit unless null)
+7E/6F9E:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6FA0:	A05A70  	LDY #$705A     (7E/705A)
+7E/6FA3:	20DC74  	JSR $74DC      (Put 7E/705A in queue)
+7E/6FA6:	C220    	REP #$20       (16-bit accumulator)
+7E/6FA8:	A9DA70  	LDA #$70DA     (7E/70DA)
+7E/6FAB:	9D0035  	STA $3500,X
+7E/6FAE:	E220    	SEP #$20       (8-bit accumulator)
+7E/6FB0:	DA      	PHX            (Save X)
+7E/6FB1:	20836F  	JSR $6F83      (Load a random number)
+7E/6FB4:	FA      	PLX            (Restore X)
+7E/6FB5:	293F    	AND #$3F       (Remain between 0 and 63)
+7E/6FB7:	6968    	ADC #$68
+7E/6FB9:	9D0133  	STA $3301,X
+7E/6FBC:	DA      	PHX            (Save X)
+7E/6FBD:	20836F  	JSR $6F83      (Load a random number)
+7E/6FC0:	FA      	PLX            (Restore X)
+7E/6FC1:	293F    	AND #$3F       (Remain between 0 and 63)
+7E/6FC3:	6998    	ADC #$98
+7E/6FC5:	9D0134  	STA $3401,X
+7E/6FC8:	60      	RTS
+
+Unused function?
+7E/6FC9:	20836F  	JSR $6F83      (Load a random number)
+7E/6FCC:	290F    	AND #$0F       (Remain between 0 and 15)
+7E/6FCE:	D02A    	BNE $6FFA      (Exit unless null)
+7E/6FD0:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/6FD2:	A05A70  	LDY #$705A
+7E/6FD5:	20DC74  	JSR $74DC      (Put 7E/705A in queue)
+7E/6FD8:	C220    	REP #$20       (16-bit accumulator)
+7E/6FDA:	A94271  	LDA #$7142     (7E/7142)
+7E/6FDD:	9D0035  	STA $3500,X
+7E/6FE0:	E220    	SEP #$20       (8-bit accumulator)
+7E/6FE2:	DA      	PHX            (Save X)
+7E/6FE3:	20836F  	JSR $6F83      (Load a random number)
+7E/6FE6:	FA      	PLX            (Restore X)
+7E/6FE7:	291F    	AND #$1F       (Remain between 0 and 31)
+7E/6FE9:	6968    	ADC #$68
+7E/6FEB:	9D0133  	STA $3301,X
+7E/6FEE:	DA      	PHX            (Save X)
+7E/6FEF:	20836F  	JSR $6F83      (Load a random number)
+7E/6FF2:	FA      	PLX            (Restore X)
+7E/6FF3:	291F    	AND #$1F       (Remain between 0 and 31)
+7E/6FF5:	6998    	ADC #$98
+7E/6FF7:	9D0134  	STA $3401,X
+7E/6FFA:	60      	RTS
+
+Decompress planet tilemap, among other things
+7E/6FFB:	A000E9  	LDY #$E900
+7E/6FFE:	84F3    	STY $F3        (Source address)
+7E/7000:	A9EC    	LDA #$EC
+7E/7002:	85F5    	STA $F5        (Source bank; EC/E900)
+7E/7004:	A00000  	LDY #$0000     (Zero Y)
+7E/7007:	84F6    	STY $F6        (Destination address)
+7E/7009:	A97F    	LDA #$7F
+7E/700B:	85F8    	STA $F8        (Destination bank; 7F/0000)
+7E/700D:	226DFFC2	JSL $C2FF6D    (LZSS decompression routine)
+7E/7011:	A00000  	LDY #$0000     (Zero Y)
+7E/7014:	84E7    	STY $E7
+7E/7016:	A97F    	LDA #$7F
+7E/7018:	85E9    	STA $E9        (7F/0000)
+7E/701A:	64ED    	STZ $ED
+7E/701C:	64EE    	STZ $EE
+7E/701E:	A0E00F  	LDY #$0FE0
+7E/7021:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7023:	A00030  	LDY #$3000     (VRAM pointer: $6000)
+7E/7026:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7029:	A0E00F  	LDY #$0FE0
+7E/702C:	84E7    	STY $E7
+7E/702E:	A97F    	LDA #$7F
+7E/7030:	85E9    	STA $E9        (7F/0FE0)
+7E/7032:	64ED    	STZ $ED
+7E/7034:	64EE    	STZ $EE
+7E/7036:	A00007  	LDY #$0700
+7E/7039:	84EB    	STY $EB        (Number of bytes to copy)
+7E/703B:	A00000  	LDY #$0000     (VRAM pointer: $0000)
+7E/703E:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7041:	A0E016  	LDY #$16E0
+7E/7044:	84E7    	STY $E7
+7E/7046:	A97F    	LDA #$7F
+7E/7048:	85E9    	STA $E9        (7F/16E0)
+7E/704A:	64ED    	STZ $ED
+7E/704C:	64EE    	STZ $EE
+7E/704E:	A0E00D  	LDY #$0DE0
+7E/7051:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7053:	A00060  	LDY #$6000     (VRAM pointer: $C000)
+7E/7056:	20187A  	JSR $7A18      (VRAM-related function) (JMP...)
+7E/7059:	60      	RTS
+
+7E/705A:	AA      	TAX            (Transfer A to X)
+7E/705B:	7C5E70  	JMP ($705E,X)
+
+Jump table
+7E/705E:	6270
+7E/7060:	6A70
+
+7E/7062:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/7064:	FE003A  	INC $3A00,X
+7E/7067:	205F75  	JSR $755F
+7E/706A:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/706C:	BD013B  	LDA $3B01,X
+7E/706F:	C9FE    	CMP #$FE
+7E/7071:	F005    	BEQ $7078
+7E/7073:	208D75  	JSR $758D
+7E/7076:	38      	SEC            (Mark function address to remain in queue)
+7E/7077:	60      	RTS            (Exit)
+7E/7078:	18      	CLC            (Mark function address to be removed from queue)
+7E/7079:	60      	RTS
+
+Data
+7E/707A:	7D70    	(7E/707D)
+7E/707C:	FE
+
+Data (OAM?)
+7E/707D:	0A
+7E/707E:	90
+7E/707F:	00
+7E/7080:	12
+7E/7081:	38
+7E/7082:	A0
+7E/7083:	00
+7E/7084:	14
+7E/7085:	38
+7E/7086:	B0
+7E/7087:	00
+7E/7088:	16
+7E/7089:	38
+7E/708A:	80
+7E/708B:	10
+7E/708C:	30
+7E/708D:	38
+7E/708E:	90
+7E/708F:	10
+7E/7090:	32
+7E/7091:	38
+7E/7092:	A0
+7E/7093:	10
+7E/7094:	34
+7E/7095:	38
+7E/7096:	B0
+7E/7097:	10
+7E/7098:	36
+7E/7099:	38
+7E/709A:	80
+7E/709B:	20
+7E/709C:	50
+7E/709D:	38
+7E/709E:	90
+7E/709F:	20
+7E/70A0:	52
+7E/70A1:	38
+7E/70A2:	A0
+7E/70A3:	20
+7E/70A4:	54
+7E/70A5:	38
+
+Data
+7E/70A6:	A970    	(7E/70A9)
+7E/70A8:	FE
+
+Data (OAM?)
+7E/70A9:	0C
+7E/70AA:	80
+7E/70AB:	18
+7E/70AC:	10
+7E/70AD:	38
+7E/70AE:	90
+7E/70AF:	00
+7E/70B0:	18
+7E/70B1:	38
+7E/70B2:	A0
+7E/70B3:	00
+7E/70B4:	1A
+7E/70B5:	38
+7E/70B6:	B0
+7E/70B7:	00
+7E/70B8:	1C
+7E/70B9:	38
+7E/70BA:	C0
+7E/70BB:	00
+7E/70BC:	1E
+7E/70BD:	38
+7E/70BE:	90
+7E/70BF:	10
+7E/70C0:	38
+7E/70C1:	38
+7E/70C2:	A0
+7E/70C3:	10
+7E/70C4:	3A
+7E/70C5:	38
+7E/70C6:	B0
+7E/70C7:	10
+7E/70C8:	3C
+7E/70C9:	38
+7E/70CA:	C0
+7E/70CB:	10
+7E/70CC:	3E
+7E/70CD:	38
+7E/70CE:	A0
+7E/70CF:	20
+7E/70D0:	5A
+7E/70D1:	38
+7E/70D2:	B0
+7E/70D3:	20
+7E/70D4:	5C
+7E/70D5:	38
+7E/70D6:	C0
+7E/70D7:	20
+7E/70D8:	5E
+7E/70D9:	38
+7E/70DA:	E7
+7E/70DB:	70
+7E/70DC:	08
+7E/70DD:	EC
+7E/70DE:	70
+7E/70DF:	08
+7E/70E0:	F1
+7E/70E1:	70
+7E/70E2:	08
+7E/70E3:	E6
+7E/70E4:	70
+7E/70E5:	FE
+7E/70E6:	00
+7E/70E7:	01
+7E/70E8:	00
+7E/70E9:	00
+7E/70EA:	00
+7E/70EB:	3A
+
+Data (OAM?)
+7E/70EC:	01
+7E/70ED:	00
+7E/70EE:	00
+7E/70EF:	01
+7E/70F0:	3A
+
+Data (OAM?)
+7E/70F1:	01
+7E/70F2:	00
+7E/70F3:	00
+7E/70F4:	02
+7E/70F5:	3A
+
+Data (OAM?)
+7E/70F6:	02
+7E/70F7:	71
+7E/70F8:	08
+7E/70F9:	07
+7E/70FA:	71
+7E/70FB:	08
+7E/70FC:	0C
+7E/70FD:	71
+7E/70FE:	08
+
+Unused data?
+7E/70FF:	0C
+7E/7100:	71
+7E/7101:	FE
+
+Data (OAM?)
+7E/7102:	01
+7E/7103:	04
+7E/7104:	04
+7E/7105:	03
+7E/7106:	3A
+7E/7107:	01
+7E/7108:	02
+7E/7109:	02
+7E/710A:	04
+7E/710B:	3A
+7E/710C:	03
+7E/710D:	00
+7E/710E:	00
+7E/710F:	05
+7E/7110:	3A
+7E/7111:	08
+7E/7112:	00
+7E/7113:	06
+7E/7114:	3A
+7E/7115:	00
+7E/7116:	08
+7E/7117:	07
+7E/7118:	3A
+7E/7119:	2E
+7E/711A:	71
+7E/711B:	08
+7E/711C:	33
+7E/711D:	71
+7E/711E:	08
+7E/711F:	38
+7E/7120:	71
+7E/7121:	08
+7E/7122:	3D
+7E/7123:	71
+7E/7124:	08
+7E/7125:	38
+7E/7126:	71
+7E/7127:	08
+7E/7128:	33
+7E/7129:	71
+7E/712A:	08
+7E/712B:	2E
+7E/712C:	71
+7E/712D:	FF
+7E/712E:	01
+7E/712F:	00
+7E/7130:	00
+7E/7131:	08
+7E/7132:	3A
+7E/7133:	01
+7E/7134:	00
+7E/7135:	00
+7E/7136:	09
+7E/7137:	3A
+7E/7138:	01
+7E/7139:	00
+7E/713A:	00
+7E/713B:	0A
+7E/713C:	3A
+7E/713D:	01
+7E/713E:	00
+7E/713F:	00
+7E/7140:	0B
+7E/7141:	3A
+
+Data (pointers to OAM?)
+7E/7142:	5171    	(7E/7151)
+7E/7144:	08
+7E/7145:	5671
+7E/7147:	08
+7E/7148:	5F71
+7E/714A:	08
+7E/714B:	6C71
+7E/714D:	08
+7E/714E:	6C71
+7E/7150:	FE
+
+Data (OAM?)
+7E/7151:	01
+7E/7152:	00
+7E/7153:	00
+7E/7154:	0C
+7E/7155:	3A
+
+Data (OAM?)
+7E/7156:	02
+7E/7157:	00
+7E/7158:	00
+7E/7159:	0C
+7E/715A:	3A
+7E/715B:	08
+7E/715C:	00
+7E/715D:	0D
+7E/715E:	3A
+
+Data (OAM?)
+7E/715F:	03
+7E/7160:	00
+7E/7161:	00
+7E/7162:	0C
+7E/7163:	3A
+7E/7164:	08
+7E/7165:	00
+7E/7166:	0D
+7E/7167:	3A
+7E/7168:	10
+7E/7169:	00
+7E/716A:	0E
+7E/716B:	3A
+
+Data (OAM?)
+7E/716C:	03
+7E/716D:	00
+7E/716E:	00
+7E/716F:	0C
+7E/7170:	3A
+7E/7171:	08
+7E/7172:	00
+7E/7173:	0D
+7E/7174:	3A
+7E/7175:	10
+7E/7176:	00
+7E/7177:	0E
+7E/7178:	3A
+
+Unused data?
+7E/7179:	18
+7E/717A:	00
+7E/717B:	0F
+7E/717C:	3A
+
+Data: palette for planet and universe
+7E/717D:	E71C BD7B 7A77 5877 1773 D46E 8F66 4D62
+7E/718D:	E859 864D 253D E330 A324 821C 6218 4210
+
+Data: palette for moving land
+7E/719D:	0000 BF26 FF01 9542 3236 1132 F02D CF29
+7E/71AD:	AE21 8D1D 4B19 0915 C810 A60C 5901 B200
+
+Data: palette for non-moving land
+7E/71BD:	0000 CF29 AE21 9542 3236 1132 F02D CF29
+7E/71CD:	AE21 8D1D 4B19 0915 C810 A60C CF29 AE21
+
+Data: palette for flames and explosions
+7E/71DD:	0000 7F47 BF26 FF01 5901 B200 0000 0000
+7E/71ED:	0000 0000 0000 0000 0000 0000 0000 0000
+
+7E/71FD:	A981    	LDA #$81
+7E/71FF:	8F004200	STA $004200    (Enable NMI and auto joypad read; disable IRQ)
+7E/7203:	8517    	STA $17
+7E/7205:	58      	CLI            (Enable IRQ)
+7E/7206:	A517    	LDA $17
+7E/7208:	D0FC    	BNE $7206      (Loop until an NMI occurs)
+7E/720A:	78      	SEI            (Disable IRQ)
+7E/720B:	A532    	LDA $32
+7E/720D:	8F002100	STA $002100    (Set brightness; turn the screen on or off based on high bit)
+7E/7211:	A531    	LDA $31
+7E/7213:	8F0C4200	STA $00420C    (Enable designed HDMA channels)
+7E/7217:	201B72  	JSR $721B      (...)
+7E/721A:	60      	RTS            (...)
+
+Controller-related function
+7E/721B:	C220    	REP #$20       (16-bit accumulator)
+7E/721D:	A508    	LDA $08
+7E/721F:	49FFFF  	EOR #$FFFF     (Toggle all bits)
+7E/7222:	2504    	AND $04        (Shared controller bits)
+7E/7224:	8506    	STA $06
+7E/7226:	A404    	LDY $04        (Load shared controller bits)
+7E/7228:	8408    	STY $08
+7E/722A:	AF184200	LDA $004218    (Joypad 1 status)
+7E/722E:	8504    	STA $04        (Save to shared controller bits)
+7E/7230:	E220    	SEP #$20       (8-bit accumulator)
+7E/7232:	60      	RTS
+
+NMI function
+7E/7233:	08      	PHP
+7E/7234:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/7236:	48      	PHA
+7E/7237:	DA      	PHX
+7E/7238:	5A      	PHY
+7E/7239:	8B      	PHB
+7E/723A:	0B      	PHD
+7E/723B:	E220    	SEP #$20       (8-bit accumulator)
+7E/723D:	AD1042  	LDA $4210      (Clear NMI flag)
+7E/7240:	A900    	LDA #$00
+7E/7242:	48      	PHA
+7E/7243:	AB      	PLB            (Set data bank register to 00)
+7E/7244:	A20000  	LDX #$0000     (Zero X) (PEA $0000, PLD...)
+7E/7247:	DA      	PHX
+7E/7248:	2B      	PLD            (Set direct page register to 0000)
+7E/7249:	A517    	LDA $17
+7E/724B:	F00C    	BEQ $7259
+7E/724D:	206572  	JSR $7265
+7E/7250:	A415    	LDY $15
+7E/7252:	F003    	BEQ $7257
+7E/7254:	88      	DEY
+7E/7255:	8415    	STY $15
+7E/7257:	E618    	INC $18        (Increase NMI counter)
+7E/7259:	6417    	STZ $17
+7E/725B:	C230    	REP #$30       (16-bit accumulator and indexes)
+7E/725D:	2B      	PLD
+7E/725E:	AB      	PLB
+7E/725F:	7A      	PLY
+7E/7260:	FA      	PLX
+7E/7261:	68      	PLA
+7E/7262:	28      	PLP
+7E/7263:	40      	RTI
+
+IRQ function
+7E/7264:	40      	RTI
+
+From the NMI function
+7E/7265:	9C0C42  	STZ $420C      (Disable HDMA)
+7E/7268:	9C0B42  	STZ $420B      (Disable DMA)
+7E/726B:	A525    	LDA $25
+7E/726D:	8D0D21  	STA $210D      (BG1/Mode 7 BG horizontal scroll, low byte)
+7E/7270:	A526    	LDA $26
+7E/7272:	8D0D21  	STA $210D      (BG1/Mode 7 BG horizontal scroll, high byte)
+7E/7275:	A527    	LDA $27
+7E/7277:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, low byte)
+7E/727A:	A528    	LDA $28
+7E/727C:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, high byte)
+7E/727F:	A529    	LDA $29
+7E/7281:	8D0F21  	STA $210F      (BG2 horizontal scroll, low byte)
+7E/7284:	A52A    	LDA $2A
+7E/7286:	8D0F21  	STA $210F      (BG2 horizontal scroll, high byte)
+7E/7289:	A52B    	LDA $2B
+7E/728B:	8D1021  	STA $2110      (BG2 vertical scroll, low byte)
+7E/728E:	A52C    	LDA $2C
+7E/7290:	8D1021  	STA $2110      (BG2 vertical scroll, high byte)
+7E/7293:	A52D    	LDA $2D
+7E/7295:	8D1121  	STA $2111      (BG3 horizontal scroll, low byte)
+7E/7298:	A52E    	LDA $2E
+7E/729A:	8D1121  	STA $2111      (BG3 horizontal scroll, high byte)
+7E/729D:	A52F    	LDA $2F
+7E/729F:	8D1221  	STA $2112      (BG3 vertical scroll, low byte)
+7E/72A2:	A530    	LDA $30
+7E/72A4:	8D1221  	STA $2112      (BG3 vertical scroll, high byte)
+7E/72A7:	20B072  	JSR $72B0      (OAM-related function)
+7E/72AA:	20FE72  	JSR $72FE      (Transfer palettes from RAM to CGRAM)
+7E/72AD:	4CD572  	JMP $72D5      (VRAM-related function)
+
+OAM-related function
+7E/72B0:	A600    	LDX $00        (Zero X)
+7E/72B2:	8E0221  	STX $2102      (OAM address; OAM priority rotation)
+7E/72B5:	8A      	TXA            (Zero A)
+7E/72B6:	8D0443  	STA $4304      (Source bank for channel 0; 00/0300)
+7E/72B9:	A902    	LDA #$02
+7E/72BB:	8D0043  	STA $4300      (Control for DMA channel 0)
+7E/72BE:	A904    	LDA #$04       (ASL A...)
+7E/72C0:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2104: OAM)
+7E/72C3:	A00003  	LDY #$0300
+7E/72C6:	8C0243  	STY $4302      (Source address for channel 0)
+7E/72C9:	A02002  	LDY #$0220
+7E/72CC:	8C0543  	STY $4305      (Number of bytes: #$0220)
+7E/72CF:	A901    	LDA #$01
+7E/72D1:	8D0B42  	STA $420B      (Enable DMA channel 0)
+7E/72D4:	60      	RTS
+
+VRAM-related function
+7E/72D5:	A410    	LDY $10
+7E/72D7:	C0FFFF  	CPY #$FFFF     (Is this function set to be skipped?)
+7E/72DA:	F021    	BEQ $72FD      (Exit if so)
+7E/72DC:	8C1621  	STY $2116      (VRAM pointer)
+7E/72DF:	A901    	LDA #$01
+7E/72E1:	8D0043  	STA $4300      (Control for DMA channel 0)
+7E/72E4:	A918    	LDA #$18
+7E/72E6:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2118: VRAM)
+7E/72E9:	A412    	LDY $12
+7E/72EB:	8C0243  	STY $4302      (Source address for channel 0)
+7E/72EE:	A514    	LDA $14
+7E/72F0:	8D0443  	STA $4304      (Source bank for channel 0)
+7E/72F3:	A40E    	LDY $0E
+7E/72F5:	8C0543  	STY $4305      (Number of bytes)
+7E/72F8:	A901    	LDA #$01
+7E/72FA:	8D0B42  	STA $420B      (Enable DMA channel 0)
+7E/72FD:	60      	RTS
+
+Transfer palettes from RAM to CGRAM
+7E/72FE:	A500    	LDA $00        (Zero A)
+7E/7300:	8D2121  	STA $2121      (Zero CGRAM address)
+7E/7303:	A902    	LDA #$02
+7E/7305:	8D0043  	STA $4300      (Control for DMA channel 0)
+7E/7308:	A922    	LDA #$22
+7E/730A:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2122: CGRAM)
+7E/730D:	A00030  	LDY #$3000
+7E/7310:	8C0243  	STY $4302      (Source address for channel 0)
+7E/7313:	A97E    	LDA #$7E
+7E/7315:	8D0443  	STA $4304      (Source bank for channel 0; 7E/3000)
+7E/7318:	A00002  	LDY #$0200
+7E/731B:	8C0543  	STY $4305      (Number of bytes: #$0200)
+7E/731E:	A901    	LDA #$01
+7E/7320:	8D0B42  	STA $420B      (Enable DMA channel 0)
+
+Transfer a palette
+7E/7324:	86E7    	STX $E7        (Set destination address)
+7E/7326:	84EB    	STY $EB        (Set source address)
+7E/7328:	A400    	LDY $00        (Zero Y)
+7E/732A:	C220    	REP #$20       (16-bit accumulator)
+7E/732C:	B1EB    	LDA ($EB),Y    (Color from designed source)
+7E/732E:	91E7    	STA ($E7),Y    (Save to designed destination)
+7E/7330:	C8      	INY
+7E/7331:	C8      	INY            (Point to next color)
+7E/7332:	C02000  	CPY #$0020     (Copied the entire palette?)
+7E/7335:	D0F5    	BNE $732C      (If not, loop)
+7E/7337:	E220    	SEP #$20       (8-bit accumulator)
+7E/7339:	60      	RTS
+
+7E/733A:	48      	PHA
+7E/733B:	86E7    	STX $E7
+7E/733D:	84EB    	STY $EB
+7E/733F:	A900    	LDA #$00       (Start from $3200 to find an unoccupied queue slot)
+7E/7341:	A05A73  	LDY #$735A
+7E/7344:	20DC74  	JSR $74DC      (Put 7E/735A in queue)
+7E/7347:	68      	PLA
+7E/7348:	9D0139  	STA $3901,X
+7E/734B:	C220    	REP #$20       (16-bit accumulator)
+7E/734D:	A5E7    	LDA $E7
+7E/734F:	9D0033  	STA $3300,X
+7E/7352:	A5EB    	LDA $EB
+7E/7354:	9D0034  	STA $3400,X
+7E/7357:	E220    	SEP #$20       (8-bit accumulator)
+7E/7359:	60      	RTS
+
+7E/735A:	AA      	TAX            (Transfer A to X)
+7E/735B:	7C5E73  	JMP ($735E,X)
+
+Jump table
+7E/735E:	6273
+7E/7360:	7173
+
+7E/7362:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/7364:	A91F    	LDA #$1F
+7E/7366:	9D0036  	STA $3600,X
+7E/7369:	9E0136  	STZ $3601,X
+7E/736C:	FE003A  	INC $3A00,X
+7E/736F:	38      	SEC            (Mark function address to remain in queue)
+7E/7370:	60      	RTS
+
+7E/7371:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/7373:	BD0039  	LDA $3900,X
+7E/7376:	D02B    	BNE $73A3
+7E/7378:	BD0139  	LDA $3901,X
+7E/737B:	9D0039  	STA $3900,X
+7E/737E:	C220    	REP #$20       (16-bit accumulator)
+7E/7380:	BD0033  	LDA $3300,X
+7E/7383:	85E0    	STA $E0
+7E/7385:	BD0034  	LDA $3400,X
+7E/7388:	85E3    	STA $E3
+7E/738A:	BD0036  	LDA $3600,X
+7E/738D:	85F1    	STA $F1
+7E/738F:	20A873  	JSR $73A8      (Color-related function)
+7E/7392:	E220    	SEP #$20       (8-bit accumulator)
+7E/7394:	AE1D00  	LDX $001D
+7E/7397:	BD0036  	LDA $3600,X
+7E/739A:	F005    	BEQ $73A1
+7E/739C:	DE0036  	DEC $3600,X
+7E/739F:	D002    	BNE $73A3
+7E/73A1:	18      	CLC            (Mark function address to be removed from queue)
+7E/73A2:	60      	RTS            (Exit)
+7E/73A3:	DE0039  	DEC $3900,X
+7E/73A6:	38      	SEC            (Mark function address to remain in queue)
+7E/73A7:	60      	RTS
+
+Color-related function
+7E/73A8:	A21000  	LDX #$0010     (Loop counter)
+7E/73AB:	A400    	LDY $00        (Zero Y)
+7E/73AD:	B1E0    	LDA ($E0),Y
+7E/73AF:	85E7    	STA $E7
+7E/73B1:	B1E3    	LDA ($E3),Y
+7E/73B3:	85E9    	STA $E9
+7E/73B5:	20C273  	JSR $73C2      (Progressive color alteration)
+7E/73B8:	A5E7    	LDA $E7
+7E/73BA:	91E0    	STA ($E0),Y
+7E/73BC:	C8      	INY
+7E/73BD:	C8      	INY
+7E/73BE:	CA      	DEX            (Decrease loop counter)
+7E/73BF:	D0EC    	BNE $73AD      (Loop unless null)
+7E/73C1:	60      	RTS
+
+Progressive alteration of a color
+7E/73C2:	A5E7    	LDA $E7        (Processed color)
+7E/73C4:	291F00  	AND #$001F     (Isolate red component)
+7E/73C7:	85EB    	STA $EB
+7E/73C9:	A5E9    	LDA $E9
+7E/73CB:	291F00  	AND #$001F     (Isolate red component)
+7E/73CE:	38      	SEC            (Set Carry for subtraction)
+7E/73CF:	E5EB    	SBC $EB
+7E/73D1:	F00C    	BEQ $73DF      (Branch if null)
+7E/73D3:	9008    	BCC $73DD
+7E/73D5:	C5F1    	CMP $F1
+7E/73D7:	9006    	BCC $73DF
+7E/73D9:	E6EB    	INC $EB        (Increase red component)
+7E/73DB:	8002    	BRA $73DF      (Skip next instruction)
+
+Fork: green component
+7E/73DD:	C6EB    	DEC $EB        (Decrease red component)
+7E/73DF:	A5E7    	LDA $E7        (Processed color)
+7E/73E1:	29E003  	AND #$03E0     (Isolate green component)
+7E/73E4:	85ED    	STA $ED
+7E/73E6:	A5E9    	LDA $E9
+7E/73E8:	29E003  	AND #$03E0     (Isolate green component)
+7E/73EB:	38      	SEC            (Set Carry for subtraction)
+7E/73EC:	E5ED    	SBC $ED
+7E/73EE:	F01C    	BEQ $740C      (Branch if null)
+7E/73F0:	9012    	BCC $7404
+7E/73F2:	0A      	ASL A          (Multiply by 2)
+7E/73F3:	0A      	ASL A          (Multiply by 4)
+7E/73F4:	0A      	ASL A          (Multiply by 8)
+7E/73F5:	EB      	XBA            (Exchange B and A)
+7E/73F6:	C5F1    	CMP $F1
+7E/73F8:	9012    	BCC $740C
+7E/73FA:	18      	CLC            (Clear Carry for addition)
+7E/73FB:	A5ED    	LDA $ED
+7E/73FD:	692000  	ADC #$0020
+7E/7400:	85ED    	STA $ED        (Save changes)
+7E/7402:	8008    	BRA $740C      (Skip next four instructions)
+
+Fork: blue component
+7E/7404:	A5ED    	LDA $ED
+7E/7406:	38      	SEC            (Set Carry for subtraction)
+7E/7407:	E92000  	SBC #$0020
+7E/740A:	85ED    	STA $ED        (Save changes)
+7E/740C:	A5E7    	LDA $E7        (Processed color)
+7E/740E:	29007C  	AND #$7C00     (Isolate blue component)
+7E/7411:	85EF    	STA $EF
+7E/7413:	A5E9    	LDA $E9
+7E/7415:	29007C  	AND #$7C00     (Isolate blue component)
+7E/7418:	38      	SEC            (Set Carry for subtraction)
+7E/7419:	E5EF    	SBC $EF
+7E/741B:	F01F    	BEQ $743C      (Branch if null)
+7E/741D:	9015    	BCC $7434
+7E/741F:	E220    	SEP #$20       (8-bit accumulator)
+7E/7421:	EB      	XBA            (Exchange B and A)
+7E/7422:	4A      	LSR A          (Divide by 2)
+7E/7423:	4A      	LSR A          (Divide by 4)
+7E/7424:	C220    	REP #$20       (16-bit accumulator)
+7E/7426:	C5F1    	CMP $F1
+7E/7428:	9012    	BCC $743C
+7E/742A:	18      	CLC            (Clear Carry for addition)
+7E/742B:	A5EF    	LDA $EF
+7E/742D:	690004  	ADC #$0400
+7E/7430:	85EF    	STA $EF        (Save changes)
+7E/7432:	8008    	BRA $743C      (Skip next four instructions)
+7E/7434:	A5EF    	LDA $EF
+7E/7436:	38      	SEC            (Set Carry for subtraction)
+7E/7437:	E90004  	SBC #$0400
+7E/743A:	85EF    	STA $EF        (Save changes)
+7E/743C:	A5EB    	LDA $EB        (Red component)
+7E/743E:	05ED    	ORA $ED        (Merge with green component)
+7E/7440:	05EF    	ORA $EF        (Merge with blue component)
+7E/7442:	85E7    	STA $E7        (Save updated color)
+7E/7444:	60      	RTS
+
+Data: palette for white logo (magitek armor picture in SFC version)
+7E/7445:	0000 FF7F FF7F FF7F FF7F FF7F FF7F FF7F
+7E/7455:	FF7F FF7F FF7F FF7F FF7F FF7F FF7F FF7F
+
+Data: palette for general fade-in effect
+7E/7465:	0000 0000 0000 0000 0000 0000 0000 0000
+7E/7475:	0000 0000 0000 0000 0000 0000 0000 0000
+
+7E/7485:	A600    	LDX $00        (Zero X)
+7E/7487:	861D    	STX $1D
+7E/7489:	861F    	STX $1F        (Zero the registered number of queued functions)
+7E/748B:	C220    	REP #$20       (16-bit accumulator)
+7E/748D:	20B774  	JSR $74B7
+7E/7490:	E210    	SEP #$10       (8-bit indexes)
+7E/7492:	7B      	TDC            (Zero A)
+7E/7493:	AA      	TAX            (Zero X)
+7E/7494:	9E0032  	STZ $3200,X    (Clear all queue slots)
+7E/7497:	9E003A  	STZ $3A00,X
+7E/749A:	9E003C  	STZ $3C00,X
+7E/749D:	9E0033  	STZ $3300,X
+7E/74A0:	9E0034  	STZ $3400,X
+7E/74A3:	9E0037  	STZ $3700,X
+7E/74A6:	9E0038  	STZ $3800,X
+7E/74A9:	9E0039  	STZ $3900,X
+7E/74AC:	E8      	INX
+7E/74AD:	E8      	INX
+7E/74AE:	E000    	CPX #$00       (Superfluous...)
+7E/74B0:	D0E2    	BNE $7494      (If not, loop)
+7E/74B2:	E220    	SEP #$20       (8-bit accumulator)
+7E/74B4:	C210    	REP #$10       (16-bit indexes)
+7E/74B6:	60      	RTS
+
+7E/74B7:	7B      	TDC            (Zero A)
+7E/74B8:	AA      	TAX            (Zero X)
+7E/74B9:	A901E0  	LDA #$E001
+7E/74BC:	9D0003  	STA $0300,X
+7E/74BF:	E8      	INX
+7E/74C0:	E8      	INX
+7E/74C1:	A90100  	LDA #$0001     (TDC, INC A...)
+7E/74C4:	9D0003  	STA $0300,X
+7E/74C7:	E8      	INX
+7E/74C8:	E8      	INX
+7E/74C9:	E00002  	CPX #$0200
+7E/74CC:	D0EB    	BNE $74B9      (If not, loop)
+7E/74CE:	A400    	LDY $00        (Zero Y) (TDC, TAY...)
+7E/74D0:	98      	TYA            (Zero A)
+7E/74D1:	990005  	STA $0500,Y
+7E/74D4:	C8      	INY
+7E/74D5:	C8      	INY
+7E/74D6:	C02000  	CPY #$0020
+7E/74D9:	D0F6    	BNE $74D1      (If not, loop)
+7E/74DB:	60      	RTS
+
+Put function address in queue, among other things
+7E/74DC:	20E974  	JSR $74E9      (Put a function address in queue)
+7E/74DF:	E220    	SEP #$20       (8-bit accumulator)
+7E/74E1:	A51D    	LDA $1D
+7E/74E3:	9D013C  	STA $3C01,X
+7E/74E6:	E61F    	INC $1F        (Increase registered number of queued functions)
+7E/74E8:	60      	RTS
+
+Put function address in queue
+7E/74E9:	EB      	XBA            (Exchange B and A) (PHA, TDC, PLA...)
+7E/74EA:	A900    	LDA #$00
+7E/74EC:	EB      	XBA            (Exchange B and A; clears high byte of A)
+7E/74ED:	0A      	ASL A          (Multiply by 2)
+7E/74EE:	0A      	ASL A          (Multiply by 4)
+7E/74EF:	0A      	ASL A          (Multiply by 8)
+7E/74F0:	0A      	ASL A          (Multiply by 16)
+7E/74F1:	0A      	ASL A          (Multiply by 32)
+7E/74F2:	C220    	REP #$20       (16-bit accumulator)
+7E/74F4:	AA      	TAX            (Transfer A to X)
+7E/74F5:	BD0032  	LDA $3200,X    (Contents of current queue slot)
+7E/74F8:	D005    	BNE $74FF      (Branch if slot is occupied)
+7E/74FA:	98      	TYA            (Transfer address to Y)
+7E/74FB:	9D0032  	STA $3200,X    (Store address in slot)
+7E/74FE:	60      	RTS            (Exit)
+7E/74FF:	E8      	INX
+7E/7500:	E8      	INX            (Point to next slot)
+7E/7501:	E00001  	CPX #$0100     (Reached the last slot?)
+7E/7504:	D0EF    	BNE $74F5      (If not, loop)
+7E/7506:	CA      	DEX            (...)
+7E/7507:	CA      	DEX            (...)
+7E/7508:	98      	TYA            (...)
+7E/7509:	9D0032  	STA $3200,X    (...)
+7E/750C:	80FE    	BRA $750C      (Infinite loop...)
+7E/750E:	60      	RTS            (...)
+
+7E/750F:	A20003  	LDX #$0300
+7E/7512:	860A    	STX $0A
+7E/7514:	A20005  	LDX #$0500
+7E/7517:	860C    	STX $0C
+7E/7519:	A903    	LDA #$03
+7E/751B:	8523    	STA $23
+7E/751D:	6424    	STZ $24
+7E/751F:	A28000  	LDX #$0080
+7E/7522:	8621    	STX $21
+7E/7524:	A600    	LDX $00        (Start from first slot)
+7E/7526:	C220    	REP #$20       (16-bit accumulator)
+7E/7528:	BD0032  	LDA $3200,X    (Contents of current queue slot)
+7E/752B:	F022    	BEQ $754F      (Branch if empty)
+7E/752D:	861D    	STX $1D        (Save slot number)
+7E/752F:	DA      	PHX            (Save X)
+7E/7530:	851B    	STA $1B        (Save function address)
+7E/7532:	E220    	SEP #$20       (8-bit accumulator)
+7E/7534:	7B      	TDC            (Zero A)
+7E/7535:	BD003A  	LDA $3A00,X
+7E/7538:	0A      	ASL A          (Multiply by 2)
+7E/7539:	205C75  	JSR $755C      (Execute queued function)
+7E/753C:	C220    	REP #$20       (16-bit accumulator)
+7E/753E:	FA      	PLX            (Restore X with slot number)
+7E/753F:	B00E    	BCS $754F
+7E/7541:	9E0032  	STZ $3200,X    (Remove function address from queue)
+7E/7544:	9E003A  	STZ $3A00,X
+7E/7547:	9E003C  	STZ $3C00,X
+7E/754A:	9E0039  	STZ $3900,X
+7E/754D:	C61F    	DEC $1F        (Decrease registered number of queued functions)
+7E/754F:	E8      	INX
+7E/7550:	E8      	INX
+7E/7551:	E00001  	CPX #$0100
+7E/7554:	D0D2    	BNE $7528      (If not, loop)
+7E/7556:	208F76  	JSR $768F
+7E/7559:	E220    	SEP #$20       (8-bit accumulator)
+7E/755B:	60      	RTS
+
+Execute a queued function
+7E/755C:	6C1B00  	JMP ($001B)
+
+7E/755F:	7B      	TDC            (Zero A)
+7E/7560:	9D003B  	STA $3B00,X
+7E/7563:	C220    	REP #$20       (16-bit accumulator)
+7E/7565:	BD0035  	LDA $3500,X
+7E/7568:	85EB    	STA $EB
+7E/756A:	E220    	SEP #$20       (8-bit accumulator)
+7E/756C:	A00200  	LDY #$0002
+7E/756F:	B1EB    	LDA ($EB),Y
+7E/7571:	9D013B  	STA $3B01,X
+7E/7574:	60      	RTS
+
+7E/7575:	DA      	PHX            (Save X; destination address)
+7E/7576:	209375  	JSR $7593
+7E/7579:	E210    	SEP #$10       (8-bit indexes)
+7E/757B:	BD003B  	LDA $3B00,X
+7E/757E:	A8      	TAY            (Transfer A to Y)
+7E/757F:	C220    	REP #$20       (16-bit accumulator)
+7E/7581:	B1EB    	LDA ($EB),Y
+7E/7583:	C210    	REP #$10       (16-bit indexes)
+7E/7585:	A8      	TAY            (Transfer A to Y; source address)
+7E/7586:	E220    	SEP #$20       (8-bit accumulator)
+7E/7588:	FA      	PLX            (Restore destination address)
+7E/7589:	202473  	JSR $7324      (Transfer palette) (JMP...)
+7E/758C:	60      	RTS
+
+7E/758D:	209375  	JSR $7593
+7E/7590:	4CDA75  	JMP $75DA
+
+7E/7593:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/7595:	A400    	LDY $00        (Zero Y)
+7E/7597:	C220    	REP #$20       (16-bit accumulator)
+7E/7599:	BD0035  	LDA $3500,X
+7E/759C:	85EB    	STA $EB
+7E/759E:	E220    	SEP #$20       (8-bit accumulator)
+7E/75A0:	BD013B  	LDA $3B01,X
+7E/75A3:	C9FE    	CMP #$FE
+7E/75A5:	F022    	BEQ $75C9
+7E/75A7:	C9FF    	CMP #$FF
+7E/75A9:	D008    	BNE $75B3
+7E/75AB:	9E003B  	STZ $3B00,X
+7E/75AE:	20CA75  	JSR $75CA
+7E/75B1:	80ED    	BRA $75A0      (Loop)
+7E/75B3:	BD013B  	LDA $3B01,X
+7E/75B6:	D00E    	BNE $75C6
+7E/75B8:	BD003B  	LDA $3B00,X
+7E/75BB:	18      	CLC            (Clear Carry for addition)
+7E/75BC:	6903    	ADC #$03
+7E/75BE:	9D003B  	STA $3B00,X    (Save changes)
+7E/75C1:	20CA75  	JSR $75CA
+7E/75C4:	80DA    	BRA $75A0      (Loop)
+7E/75C6:	DE013B  	DEC $3B01,X
+7E/75C9:	60      	RTS
+
+7E/75CA:	E210    	SEP #$10       (8-bit indexes)
+7E/75CC:	BD003B  	LDA $3B00,X
+7E/75CF:	A8      	TAY            (Transfer A to Y)
+7E/75D0:	C8      	INY
+7E/75D1:	C8      	INY
+7E/75D2:	B1EB    	LDA ($EB),Y
+7E/75D4:	9D013B  	STA $3B01,X
+7E/75D7:	C210    	REP #$10       (16-bit indexes)
+7E/75D9:	60      	RTS
+
+7E/75DA:	E210    	SEP #$10       (8-bit indexes)
+7E/75DC:	BD003B  	LDA $3B00,X
+7E/75DF:	A8      	TAY            (Transfer A to Y)
+7E/75E0:	C220    	REP #$20       (16-bit accumulator)
+7E/75E2:	B1EB    	LDA ($EB),Y
+7E/75E4:	85E7    	STA $E7
+7E/75E6:	C8      	INY
+7E/75E7:	C8      	INY
+7E/75E8:	E220    	SEP #$20       (8-bit accumulator)
+7E/75EA:	C210    	REP #$10       (16-bit indexes)
+7E/75EC:	A400    	LDY $00        (Zero Y)
+7E/75EE:	A521    	LDA $21
+7E/75F0:	F06A    	BEQ $765C
+7E/75F2:	B1E7    	LDA ($E7),Y
+7E/75F4:	85E6    	STA $E6
+7E/75F6:	F064    	BEQ $765C
+7E/75F8:	C8      	INY
+7E/75F9:	B1E7    	LDA ($E7),Y
+7E/75FB:	85E0    	STA $E0
+7E/75FD:	1012    	BPL $7611
+7E/75FF:	7B      	TDC            (Zero A)
+7E/7600:	A523    	LDA $23
+7E/7602:	AA      	TAX            (Zero X)
+7E/7603:	BD8B76  	LDA $768B,X
+7E/7606:	18      	CLC            (Clear Carry for addition)
+7E/7607:	6524    	ADC $24
+7E/7609:	8524    	STA $24
+7E/760B:	920C    	STA ($0C)
+7E/760D:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/760F:	8004    	BRA $7615      (Skip next two instructions)
+7E/7611:	A524    	LDA $24
+7E/7613:	920C    	STA ($0C)
+7E/7615:	A5E0    	LDA $E0
+7E/7617:	297F    	AND #$7F
+7E/7619:	85E0    	STA $E0        (Save changes)
+7E/761B:	BD013A  	LDA $3A01,X
+7E/761E:	8901    	BIT #$01
+7E/7620:	F00D    	BEQ $762F
+7E/7622:	64E1    	STZ $E1
+7E/7624:	C220    	REP #$20       (16-bit accumulator)
+7E/7626:	A5E0    	LDA $E0
+7E/7628:	38      	SEC            (Set Carry for subtraction)
+7E/7629:	E525    	SBC $25
+7E/762B:	85E0    	STA $E0        (Save changes)
+7E/762D:	E220    	SEP #$20       (8-bit accumulator)
+7E/762F:	205D76  	JSR $765D
+7E/7632:	C623    	DEC $23
+7E/7634:	100A    	BPL $7640
+7E/7636:	A903    	LDA #$03
+7E/7638:	8523    	STA $23
+7E/763A:	6424    	STZ $24
+7E/763C:	C220    	REP #$20       (16-bit accumulator)
+7E/763E:	E60C    	INC $0C
+7E/7640:	C220    	REP #$20       (16-bit accumulator)
+7E/7642:	A5E0    	LDA $E0
+7E/7644:	920A    	STA ($0A)
+7E/7646:	E60A    	INC $0A
+7E/7648:	E60A    	INC $0A
+7E/764A:	A5E2    	LDA $E2
+7E/764C:	920A    	STA ($0A)
+7E/764E:	E60A    	INC $0A
+7E/7650:	E60A    	INC $0A
+7E/7652:	E220    	SEP #$20       (8-bit accumulator)
+7E/7654:	C621    	DEC $21
+7E/7656:	F004    	BEQ $765C
+7E/7658:	C6E6    	DEC $E6
+7E/765A:	D09D    	BNE $75F9
+7E/765C:	60      	RTS
+
+7E/765D:	A5E0    	LDA $E0
+7E/765F:	18      	CLC            (Clear Carry for addition)
+7E/7660:	7D0133  	ADC $3301,X
+7E/7663:	85E0    	STA $E0
+7E/7665:	C8      	INY
+7E/7666:	B1E7    	LDA ($E7),Y
+7E/7668:	18      	CLC            (Clear Carry for addition)
+7E/7669:	7D0134  	ADC $3401,X
+7E/766C:	85E1    	STA $E1
+7E/766E:	C8      	INY
+7E/766F:	B1E7    	LDA ($E7),Y
+7E/7671:	85E2    	STA $E2
+7E/7673:	C8      	INY
+7E/7674:	BD013A  	LDA $3A01,X
+7E/7677:	8902    	BIT #$02
+7E/7679:	F006    	BEQ $7681
+7E/767B:	B1E7    	LDA ($E7),Y
+7E/767D:	0940    	ORA #$40
+7E/767F:	8002    	BRA $7683      (Skip next instruction)
+7E/7681:	B1E7    	LDA ($E7),Y
+7E/7683:	18      	CLC            (Clear Carry for addition)
+7E/7684:	7D003C  	ADC $3C00,X
+7E/7687:	85E3    	STA $E3
+7E/7689:	C8      	INY
+7E/768A:	60      	RTS
+
+Data
+7E/768B:	80
+7E/768C:	20
+7E/768D:	08
+7E/768E:	02
+
+7E/768F:	A421    	LDY $21
+7E/7691:	F010    	BEQ $76A3
+7E/7693:	A2FC01  	LDX #$01FC
+7E/7696:	A901E0  	LDA #$E001
+7E/7699:	9D0003  	STA $0300,X
+7E/769C:	CA      	DEX
+7E/769D:	CA      	DEX
+7E/769E:	CA      	DEX
+7E/769F:	CA      	DEX
+7E/76A0:	88      	DEY
+7E/76A1:	D0F6    	BNE $7699
+7E/76A3:	60      	RTS
+
+7E/76A4:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/76A6:	A400    	LDY $00        (Zero Y)
+7E/76A8:	C220    	REP #$20       (16-bit accumulator)
+7E/76AA:	BD0035  	LDA $3500,X
+7E/76AD:	85EB    	STA $EB
+7E/76AF:	E220    	SEP #$20       (8-bit accumulator)
+7E/76B1:	BD013B  	LDA $3B01,X
+7E/76B4:	C9FE    	CMP #$FE
+7E/76B6:	F022    	BEQ $76DA
+7E/76B8:	C9FF    	CMP #$FF
+7E/76BA:	D008    	BNE $76C4
+7E/76BC:	9E003B  	STZ $3B00,X
+7E/76BF:	20CA75  	JSR $75CA
+7E/76C2:	80ED    	BRA $76B1      (Loop)
+7E/76C4:	BD013B  	LDA $3B01,X
+7E/76C7:	D00E    	BNE $76D7
+7E/76C9:	BD003B  	LDA $3B00,X
+7E/76CC:	18      	CLC            (Clear Carry for addition)
+7E/76CD:	6903    	ADC #$03
+7E/76CF:	9D003B  	STA $3B00,X    (Save changes)
+7E/76D2:	20CA75  	JSR $75CA
+7E/76D5:	80DA    	BRA $76B1      (Loop)
+7E/76D7:	DE013B  	DEC $3B01,X
+7E/76DA:	60      	RTS
+
+7E/76DB:	AA      	TAX            (Transfer A to X)
+7E/76DC:	7CDF76  	JMP ($76DF,X)
+
+Jump table
+7E/76DF:	E376
+7E/76E1:	EB76
+
+7E/76E3:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/76E5:	FE003A    	LDY $00        (Zero Y)
+7E/76E8:	205F75  	JSR $755F
+7E/76EB:	A533    	LDA $33
+7E/76ED:	8940    	BIT #$40
+7E/76EF:	D01E    	BNE $770F
+7E/76F1:	A61D    	LDX $1D        (Load X with queue slot number)
+7E/76F3:	C221    	REP #$21       (16-bit accumulator; clear Carry)
+7E/76F5:	BD0033  	LDA $3300,X
+7E/76F8:	7D0037  	ADC $3700,X
+7E/76FB:	9D0033  	STA $3300,X
+7E/76FE:	BD0034  	LDA $3400,X
+7E/7701:	18      	CLC            (Clear Carry for addition)
+7E/7702:	7D0038  	ADC $3800,X
+7E/7705:	9D0034  	STA $3400,X    (Save changes)
+7E/7708:	E220    	SEP #$20       (8-bit accumulator)
+7E/770A:	208D75  	JSR $758D
+7E/770D:	38      	SEC
+7E/770E:	60      	RTS
+7E/770F:	18      	CLC
+7E/7710:	60      	RTS
+
+Initialization of various registers
+7E/7711:	8B      	PHB
+7E/7712:	A900    	LDA #$00       (TDC...)
+7E/7714:	48      	PHA
+7E/7715:	AB      	PLB            (Set data bank register to 00)
+7E/7716:	7B      	TDC            (Zero A)
+7E/7717:	A8      	TAY            (Zero Y)
+7E/7718:	8C8121  	STY $2181      (WRAM address)
+7E/771B:	8C0221  	STY $2102      (OAM address; OAM priority rotation)
+7E/771E:	8D0421  	STA $2104
+7E/7721:	8D0421  	STA $2104
+7E/7724:	8D0621  	STA $2106      (Deactivate the mosaic effect)
+7E/7727:	8D0C42  	STA $420C      (Disable HDMA)
+7E/772A:	8D0B42  	STA $420B      (Disable DMA)
+7E/772D:	8D0D21  	STA $210D      (BG1/Mode 7 BG horizontal scroll, low byte)
+7E/7730:	8D0D21  	STA $210D      (BG1/Mode 7 BG horizontal scroll, high byte)
+7E/7733:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, low byte)
+7E/7736:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, high byte)
+7E/7739:	8D0F21  	STA $210F      (BG2 horizontal scroll, low byte)
+7E/773C:	8D0F21  	STA $210F      (BG2 horizontal scroll, high byte)
+7E/773F:	8D1021  	STA $2110      (BG2 vertical scroll, low byte)
+7E/7742:	8D1021  	STA $2110      (BG2 vertical scroll, high byte)
+7E/7745:	8D1121  	STA $2111      (BG3 horizontal scroll, low byte)
+7E/7748:	8D1121  	STA $2111      (BG3 horizontal scroll, high byte)
+7E/774B:	8D1221  	STA $2112      (BG3 vertical scroll, low byte)
+7E/774E:	8D1221  	STA $2112      (BG3 vertical scroll, high byte)
+7E/7751:	8D1321  	STA $2113      (BG4 horizontal scroll, low byte)
+7E/7754:	8D1321  	STA $2113      (BG4 horizontal scroll, high byte)
+7E/7757:	8D1421  	STA $2114      (BG4 vertical scroll, low byte)
+7E/775A:	8D1421  	STA $2114      (BG4 vertical scroll, high byte)
+7E/775D:	8C1621  	STY $2116      (Set VRAM pointer to $0000)
+7E/7760:	8C1821  	STY $2118      (VRAM data write: 0000)
+7E/7763:	8D1A21  	STA $211A      (Mode 7 settings)
+7E/7766:	8D2121  	STA $2121      (CGRAM address...)
+7E/7769:	8D2221  	STA $2122      (CGRAM data write...)
+7E/776C:	8D2221  	STA $2122      (CGRAM data write...)
+7E/776F:	8D2321  	STA $2123      (Window mask settings for BG1 and BG2)
+7E/7772:	8D2421  	STA $2124      (Window mask settings for BG3 and BG4)
+7E/7775:	8D2521  	STA $2125      (Window mask settings for OBJ and color window)
+7E/7778:	8D2621  	STA $2126      (Window 1 left position)
+7E/777B:	8D2821  	STA $2128      (Window 2 left position)
+7E/777E:	8D2721  	STA $2127      (Window 1 right position)
+7E/7781:	8D2921  	STA $2129      (Window 2 right position)
+7E/7784:	8D2A21  	STA $212A      (Window mask logic for BGs)
+7E/7787:	8D2B21  	STA $212B      (Window mask logic for OBJs and Color Window)
+7E/778A:	8D2E21  	STA $212E      (Disable window masking on main screen)
+7E/778D:	8D2F21  	STA $212F      (Disable window masking on subscreen)
+7E/7790:	8D3321  	STA $2133      (Screen mode/video select)
+7E/7793:	8D0042  	STA $4200      (Disable NMI, IRQ, and auto joypad read)
+7E/7796:	8D0242  	STA $4202      (Zero multiplicand A...)
+7E/7799:	8D0342  	STA $4203      (Zero multiplier B...)
+7E/779C:	8D0442  	STA $4204      (Zero dividend C, low byte...)
+7E/779F:	8D0442  	STA $4204      (Again...)
+7E/77A2:	8D0542  	STA $4205      (Zero dividend C, high byte...)
+7E/77A5:	8D0642  	STA $4206      (Zero divisor B...)
+7E/77A8:	8D0742  	STA $4207      (Zero H-Count timer, low byte)
+7E/77AB:	8D0742  	STA $4207      (Again...)
+7E/77AE:	8D0842  	STA $4208      (Zero H-Count timer, high byte)
+7E/77B1:	8D0942  	STA $4209      (Zero V-Count timer, low byte)
+7E/77B4:	8D0942  	STA $4209      (Again...)
+7E/77B7:	8D0A42  	STA $420A      (Zero V-Count timer, high byte)
+7E/77BA:	8D0B42  	STA $420B      (Disable DMA again...)
+7E/77BD:	8D0C42  	STA $420C      (Disable HDMA again...)
+7E/77C0:	A963    	LDA #$63
+7E/77C2:	8D0121  	STA $2101      (Set 16x32 and 32x64 sprite sizes, store character data to $4000 in VRAM)
+7E/77C5:	A600    	LDX $00        (Zero X)
+7E/77C7:	8E0221  	STX $2102      (OAM address; OAM priority rotation)
+7E/77CA:	A901    	LDA #$01
+7E/77CC:	8D0521  	STA $2105      (BG mode and character size settings)
+7E/77CF:	A903    	LDA #$03
+7E/77D1:	8D0721  	STA $2107
+7E/77D4:	A911    	LDA #$11
+7E/77D6:	8D0821  	STA $2108
+7E/77D9:	A919    	LDA #$19
+7E/77DB:	8D0921  	STA $2109
+7E/77DE:	8D0A21  	STA $210A
+7E/77E1:	A923    	LDA #$23
+7E/77E3:	8D0B21  	STA $210B
+7E/77E6:	A922    	LDA #$22       (DEC A...)
+7E/77E8:	8D0C21  	STA $210C
+7E/77EB:	A980    	LDA #$80
+7E/77ED:	8D1521  	STA $2115      (VRAM pointer increases by a word when $2119 or $213A is accessed)
+7E/77F0:	A9FF    	LDA #$FF
+7E/77F2:	8D0142  	STA $4201      (Programmable I/O port)
+7E/77F5:	A97E    	LDA #$7E
+7E/77F7:	8D8321  	STA $2183      (WRAM bank; 7E/0000)
+7E/77FA:	A91F    	LDA #$1F
+7E/77FC:	8D2C21  	STA $212C      (Enable all layers for main screen)
+7E/77FF:	A904    	LDA #$04
+7E/7801:	8D2D21  	STA $212D      (Enable BG3 for subscreen)
+7E/7804:	A902    	LDA #$02       (LSR A...)
+7E/7806:	8D3021  	STA $2130      (Color addition select)
+7E/7809:	A942    	LDA #$42
+7E/780B:	8D3121  	STA $2131      (Enable color math (half) for BG2)
+7E/780E:	A9E0    	LDA #$E0
+7E/7810:	8D3221  	STA $2132      (Fixed color data)
+7E/7813:	AB      	PLB
+7E/7814:	60      	RTS
+
+7E/7815:	7B      	TDC            (Zero A)
+7E/7816:	A8      	TAY            (Zero Y)
+7E/7817:	8425    	STY $25
+7E/7819:	8427    	STY $27
+7E/781B:	8429    	STY $29
+7E/781D:	842B    	STY $2B
+7E/781F:	842D    	STY $2D
+7E/7821:	842F    	STY $2F
+7E/7823:	8415    	STY $15
+7E/7825:	8404    	STY $04        (Clear shared controller bits)
+7E/7827:	8406    	STY $06
+7E/7829:	8408    	STY $08
+7E/782B:	8533    	STA $33
+7E/782D:	8518    	STA $18        (Clear NMI counter)
+7E/782F:	8519    	STA $19
+7E/7831:	851A    	STA $1A
+7E/7833:	8517    	STA $17
+7E/7835:	8531    	STA $31
+7E/7837:	8532    	STA $32
+7E/7839:	8536    	STA $36
+7E/783B:	8412    	STY $12
+7E/783D:	840E    	STY $0E
+7E/783F:	A97E    	LDA #$7E
+7E/7841:	8514    	STA $14
+7E/7843:	A0FFFF  	LDY #$FFFF
+7E/7846:	8410    	STY $10        (Skip the VRAM-related function at 7E/72D5)
+7E/7848:	206478  	JSR $7864      (Zero $3D00 through $477F)
+7E/784B:	207078  	JSR $7870      (BRA...)
+7E/784E:	60      	RTS
+
+Clear VRAM
+7E/784F:	C220    	REP #$20       (16-bit accumulator)
+7E/7851:	7B      	TDC            (Zero A)
+7E/7852:	8F162100	STA $002116    (Set VRAM pointer to $0000)
+7E/7856:	A8      	TAY            (Zero Y)
+7E/7857:	8F182100	STA $002118    (VRAM data write: 0000)
+7E/785B:	C8      	INY            (Increase number of zeroed VRAM words)
+7E/785C:	C00080  	CPY #$8000     (Cleared all of VRAM?)
+7E/785F:	D0F6    	BNE $7857      (If not, loop)
+7E/7861:	E220    	SEP #$20       (8-bit accumulator)
+7E/7863:	60      	RTS
+
+Zero $3D00 through $477F
+7E/7864:	7B      	TDC            (Zero A)
+7E/7865:	AA      	TAX            (Zero X)
+7E/7866:	9E003D  	STZ $3D00,X
+7E/7869:	E8      	INX            (Point to next byte)
+7E/786A:	E0800A  	CPX #$0A80     (Pointing to $4780?)
+7E/786D:	D0F7    	BNE $7866      (If not, loop)
+7E/786F:	60      	RTS
+
+7E/7870:	C220    	REP #$20       (16-bit accumulator)
+7E/7872:	7B      	TDC            (Zero A)
+7E/7873:	AA      	TAX            (Zero X)
+7E/7874:	A91F01  	LDA #$011F
+7E/7877:	9D023D  	STA $3D02,X
+7E/787A:	E8      	INX
+7E/787B:	E8      	INX
+7E/787C:	E8      	INX
+7E/787D:	E8      	INX
+7E/787E:	E08003  	CPX #$0380     (Pointing to $4082?)
+7E/7881:	D0F4    	BNE $7877      (If not, loop)
+7E/7883:	7B      	TDC            (Zero A)
+7E/7884:	AA      	TAX            (Zero X)
+7E/7885:	A90001  	LDA #$0100     (INC A, XBA...)
+7E/7888:	9DFC3D  	STA $3DFC,X
+7E/788B:	E8      	INX
+7E/788C:	E8      	INX
+7E/788D:	E8      	INX
+7E/788E:	E8      	INX
+7E/788F:	E00401  	CPX #$0104     (Pointing to $3F00?)
+7E/7892:	D0F4    	BNE $7888      (If not, loop)
+7E/7894:	E220    	SEP #$20       (8-bit accumulator)
+7E/7896:	60      	RTS
+
+Display the fiery logo ([???] Eh... I'm only seeing DMA setups)
+7E/7897:	8B      	PHB
+7E/7898:	A900    	LDA #$00
+7E/789A:	48      	PHA
+7E/789B:	AB      	PLB            (Set data bank register to 00)
+7E/789C:	A943    	LDA #$43
+7E/789E:	8D2043  	STA $4320      (Control for DMA channel 2)
+7E/78A1:	8D3043  	STA $4330      (Control for DMA channel 3)
+7E/78A4:	8D4043  	STA $4340      (Control for DMA channel 4)
+7E/78A7:	A97E    	LDA #$7E
+7E/78A9:	8D2443  	STA $4324      (Source bank for channel 2; 7E/78E4)
+7E/78AC:	8D3443  	STA $4334      (Source bank for channel 3; 7E/78EB)
+7E/78AF:	8D4443  	STA $4344      (Source bank for channel 4; 7E/78F2)
+7E/78B2:	A97E    	LDA #$7E
+7E/78B4:	8D2743  	STA $4327      (Set indirect bank for HDMA channel 2 to 7E)
+7E/78B7:	8D3743  	STA $4337      (Set indirect bank for HDMA channel 3 to 7E)
+7E/78BA:	8D4743  	STA $4347      (Set indirect bank for HDMA channel 4 to 7E)
+7E/78BD:	A90D    	LDA #$0D
+7E/78BF:	8D2143  	STA $4321      (Set destination for DMA channel 2 to $210D: BG1/Mode 7 BG horizontal scroll)
+7E/78C2:	A0E478  	LDY #$78E4
+7E/78C5:	8C2243  	STY $4322      (Source address for channel 2)
+7E/78C8:	A90F    	LDA #$0F
+7E/78CA:	8D3143  	STA $4331      (Set destination for DMA channel 3 to $210F: BG2 horizontal scroll)
+7E/78CD:	A0EB78  	LDY #$78EB
+7E/78D0:	8C3243  	STY $4332      (Source address for channel 3)
+7E/78D3:	A911    	LDA #$11
+7E/78D5:	8D4143  	STA $4341      (Set destination for DMA channel 4 to $2111: BG3 horizontal scroll)
+7E/78D8:	A0F278  	LDY #$78F2
+7E/78DB:	8C4243  	STY $4342      (Source address for channel 4)
+7E/78DE:	A91C    	LDA #$1C
+7E/78E0:	0431    	TSB $31
+7E/78E2:	AB      	PLB
+7E/78E3:	60      	RTS
+
+Data: black mask settings
+7E/78E4:	E4
+7E/78E5:	00
+7E/78E6:	3D
+7E/78E7:	FB
+7E/78E8:	90
+7E/78E9:	3E
+7E/78EA:	00
+
+Data: red box settings
+7E/78EB:	E4
+7E/78EC:	80
+7E/78ED:	40
+7E/78EE:	FB
+7E/78EF:	10
+7E/78F0:	42
+7E/78F1:	00
+
+Data: blaze settings
+7E/78F2:	E4
+7E/78F3:	00
+7E/78F4:	44
+7E/78F5:	FB
+7E/78F6:	90
+7E/78F7:	45
+7E/78F8:	00
+7E/78F9:	68
+
+7E/78FA:	20017A  	JSR $7A01      (Decompression-related function)
+7E/78FD:	A03079  	LDY #$7930
+7E/7900:	84E7    	STY $E7
+7E/7902:	A97F    	LDA #$7F
+7E/7904:	85E9    	STA $E9        (7F/7930)
+7E/7906:	A00002  	LDY #$0200
+7E/7909:	84EB    	STY $EB        (Number of bytes to copy)
+7E/790B:	A00014  	LDY #$1400
+7E/790E:	84ED    	STY $ED
+7E/7910:	A00019  	LDY #$1900     (VRAM pointer: $3200)
+7E/7913:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7916:	A0307B  	LDY #$7B30
+7E/7919:	84E7    	STY $E7
+7E/791B:	A97F    	LDA #$7F
+7E/791D:	85E9    	STA $E9        (7F/7B30)
+7E/791F:	A0B006  	LDY #$06B0
+7E/7922:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7924:	64ED    	STZ $ED
+7E/7926:	64EE    	STZ $EE
+7E/7928:	A00020  	LDY #$2000     (VRAM pointer: $4000)
+7E/792B:	20187A  	JSR $7A18      (VRAM-related function)
+7E/792E:	A0E081  	LDY #$81E0
+7E/7931:	84E7    	STY $E7
+7E/7933:	A97F    	LDA #$7F
+7E/7935:	85E9    	STA $E9        (7F/81E0)
+7E/7937:	A00002  	LDY #$0200
+7E/793A:	84EB    	STY $EB        (Number of bytes to copy)
+7E/793C:	A08000  	LDY #$0080
+7E/793F:	84ED    	STY $ED
+7E/7941:	A00011  	LDY #$1100     (VRAM pointer: $2200)
+7E/7944:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7947:	A0C01B  	LDY #$1BC0
+7E/794A:	84E7    	STY $E7
+7E/794C:	A97F    	LDA #$7F
+7E/794E:	85E9    	STA $E9        (7F/1BC0)
+7E/7950:	A00018  	LDY #$1800
+7E/7953:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7955:	64ED    	STZ $ED
+7E/7957:	64EE    	STZ $EE
+7E/7959:	A00000  	LDY #$0000     (VRAM pointer: $0000)
+7E/795C:	20187A  	JSR $7A18      (VRAM-related function)
+7E/795F:	A0C033  	LDY #$33C0
+7E/7962:	84E7    	STY $E7
+7E/7964:	A97F    	LDA #$7F
+7E/7966:	85E9    	STA $E9        (7F/33C0)
+7E/7968:	A00042  	LDY #$4200
+7E/796B:	84EB    	STY $EB        (Number of bytes to copy)
+7E/796D:	64ED    	STZ $ED
+7E/796F:	64EE    	STZ $EE
+7E/7971:	A00040  	LDY #$4000     (VRAM pointer: $8000)
+7E/7974:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7977:	7B      	TDC            (Zero A)
+7E/7978:	AA      	TAX            (Zero X)
+7E/7979:	C220    	REP #$20       (16-bit accumulator) (REP #$21...)
+7E/797B:	BFE1DADF	LDA $DFDAE1,X
+7E/797F:	18      	CLC            (Clear Carry for addition)
+7E/7980:	6900DB  	ADC #$DB00
+7E/7983:	85E7    	STA $E7
+7E/7985:	E8      	INX
+7E/7986:	E8      	INX
+7E/7987:	E220    	SEP #$20       (8-bit accumulator)
+7E/7989:	BFE1DADF	LDA $DFDAE1,X
+7E/798D:	69DF    	ADC #$DF       (Add #DF, as the pointer is relative)
+7E/798F:	85E9    	STA $E9
+7E/7991:	A00020  	LDY #$2000
+7E/7994:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7996:	64ED    	STZ $ED
+7E/7998:	64EE    	STZ $EE
+7E/799A:	A00030  	LDY #$3000     (VRAM pointer: $6000)
+7E/799D:	20187A  	JSR $7A18      (VRAM-related function)
+7E/79A0:	A0E083  	LDY #$83E0
+7E/79A3:	84E7    	STY $E7
+7E/79A5:	A97F    	LDA #$7F
+7E/79A7:	85E9    	STA $E9        (7F/83E0)
+7E/79A9:	A00008  	LDY #$0800
+7E/79AC:	84EB    	STY $EB        (Number of bytes to copy)
+7E/79AE:	64ED    	STZ $ED
+7E/79B0:	64EE    	STZ $EE
+7E/79B2:	A00028  	LDY #$2800     (VRAM pointer: $5000)
+7E/79B5:	20187A  	JSR $7A18      (VRAM-related function)
+7E/79B8:	20337A  	JSR $7A33      (VRAM-related function)
+7E/79BB:	A0E08B  	LDY #$8BE0
+7E/79BE:	84E7    	STY $E7
+7E/79C0:	A97F    	LDA #$7F
+7E/79C2:	85E9    	STA $E9        (7F/8BE0)
+7E/79C4:	A00002  	LDY #$0200
+7E/79C7:	84EB    	STY $EB        (Number of bytes to copy)
+7E/79C9:	A07707  	LDY #$0777
+7E/79CC:	84ED    	STY $ED
+7E/79CE:	A00005  	LDY #$0500     (VRAM pointer: $0A00)
+7E/79D1:	20187A  	JSR $7A18      (VRAM-related function)
+7E/79D4:	A0E08D  	LDY #$8DE0
+7E/79D7:	84E7    	STY $E7
+7E/79D9:	A97F    	LDA #$7F
+7E/79DB:	85E9    	STA $E9        (7F/8DE0)
+7E/79DD:	A01011  	LDY #$1110
+7E/79E0:	84EB    	STY $EB        (Number of bytes to copy)
+7E/79E2:	64ED    	STZ $ED
+7E/79E4:	64EE    	STZ $EE
+7E/79E6:	A07067  	LDY #$6770     (VRAM pointer: $CEE0)
+7E/79E9:	20187A  	JSR $7A18      (VRAM-related function)
+7E/79EC:	A0F09E  	LDY #$9EF0
+7E/79EF:	84E7    	STY $E7
+7E/79F1:	A97F    	LDA #$7F
+7E/79F3:	85E9    	STA $E9        (7F/9EF0)
+7E/79F5:	A0B80F  	LDY #$0FB8
+7E/79F8:	84EB    	STY $EB        (Number of bytes to copy)
+7E/79FA:	A00070  	LDY #$7000     (VRAM pointer: $E000)
+7E/79FD:	20187A  	JSR $7A18      (VRAM-related function) (BRA...)
+7E/7A00:	60      	RTS
+
+Decompression-related function
+7E/7A01:	A000F0  	LDY #$F000
+7E/7A04:	84F3    	STY $F3        (Source address)
+7E/7A06:	A9D8    	LDA #$D8
+7E/7A08:	85F5    	STA $F5        (Source bank; D8/F000)
+7E/7A0A:	A00000  	LDY #$0000     (Zero Y)
+7E/7A0D:	84F6    	STY $F6        (Destination address)
+7E/7A0F:	A97F    	LDA #$7F
+7E/7A11:	85F8    	STA $F8        (Destination bank; 7F/0000)
+7E/7A13:	226DFFC2	JSL $C2FF6D    (LZSS decompression routine)
+7E/7A17:	60      	RTS
+
+VRAM-related function
+7E/7A18:	C220    	REP #$20       (16-bit accumulator)
+7E/7A1A:	98      	TYA            (Transfer Y to A)
+7E/7A1B:	8F162100	STA $002116    (VRAM pointer)
+7E/7A1F:	7B      	TDC            (Zero A)
+7E/7A20:	A8      	TAY            (Zero Y)
+7E/7A21:	B7E7    	LDA [$E7],Y
+7E/7A23:	18      	CLC            (Clear Carry for addition)
+7E/7A24:	65ED    	ADC $ED
+7E/7A26:	8F182100	STA $002118    (VRAM data write)
+7E/7A2A:	C8      	INY
+7E/7A2B:	C8      	INY
+7E/7A2C:	C4EB    	CPY $EB
+7E/7A2E:	D0F1    	BNE $7A21      (If not, loop)
+7E/7A30:	E220    	SEP #$20       (8-bit accumulator)
+7E/7A32:	60      	RTS
+
+VRAM-related function
+7E/7A33:	C220    	REP #$20       (16-bit accumulator)
+7E/7A35:	A90004  	LDA #$0400
+7E/7A38:	8F162100	STA $002116    (Set VRAM pointer to $0800)
+7E/7A3C:	204C7A  	JSR $7A4C      (VRAM-related function)
+7E/7A3F:	A9000C  	LDA #$0C00
+7E/7A42:	8F162100	STA $002116    (Set VRAM pointer to $1800)
+7E/7A46:	204C7A  	JSR $7A4C      (VRAM-related function)
+7E/7A49:	E220    	SEP #$20       (8-bit accumulator)
+7E/7A4B:	60      	RTS
+
+VRAM-related function, called from above function
+7E/7A4C:	7B      	TDC            (Zero A)
+7E/7A4D:	A8      	TAY            (Zero Y)
+7E/7A4E:	A97707  	LDA #$0777
+7E/7A51:	8F182100	STA $002118    (VRAM data write: 0777)
+7E/7A55:	C8      	INY
+7E/7A56:	C00004  	CPY #$0400
+7E/7A59:	D0F6    	BNE $7A51      (If not, loop)
+7E/7A5B:	60      	RTS
+
+Data: pointers to OAM
+7E/7A5C:	627A
+7E/7A5E:	FE
+7E/7A5F:	977A
+7E/7A61:	FE
+
+Data: OAM for copyright notice, excluding "NINTENDO"
+7E/7A62:	0D      	(13 sprites)
+7E/7A63:	00000033
+7E/7A67:	10000233
+7E/7A6B:	20000433
+7E/7A6F:	30000633
+7E/7A73:	40000833
+7E/7A77:	58002A33
+7E/7A7B:	68002C33
+7E/7A7F:	78002E33
+7E/7A83:	00102033
+7E/7A87:	10102233
+7E/7A8B:	20102433
+7E/7A8F:	30102633
+7E/7A93:	40102833
+
+Data: OAM for "NINTENDO" from copyright notice
+7E/7A97:	04      	(4 sprites)
+7E/7A98:	00104033
+7E/7A9C:	10104233
+7E/7AA0:	20104433
+7E/7AA4:	30104633
+
+7E/7AA8:	20017A  	JSR $7A01      (Decompression-related function)
+7E/7AAB:	A04009  	LDY #$0940
+7E/7AAE:	84E7    	STY $E7        (Source address)
+7E/7AB0:	A97F    	LDA #$7F
+7E/7AB2:	85E9    	STA $E9        (Source bank; 7F/0940)
+7E/7AB4:	A000B0  	LDY #$B000
+7E/7AB7:	84EB    	STY $EB        (Destination address)
+7E/7AB9:	A97F    	LDA #$7F
+7E/7ABB:	85ED    	STA $ED        (Destination bank; 7F/B000)
+7E/7ABD:	A00004  	LDY #$0400
+7E/7AC0:	84EF    	STY $EF        (Number of bytes: #$0400)
+7E/7AC2:	20CC62  	JSR $62CC      (Copy Y bytes from [$E7] to [$EB])
+7E/7AC5:	A00000  	LDY #$0000     (Zero Y)
+7E/7AC8:	84E7    	STY $E7        (Source address)
+7E/7ACA:	A97F    	LDA #$7F
+7E/7ACC:	85E9    	STA $E9        (Source bank; 7F/0000)
+7E/7ACE:	A04009  	LDY #$0940
+7E/7AD1:	84EB    	STY $EB        (Number of bytes: #$0940)
+7E/7AD3:	64ED    	STZ $ED
+7E/7AD5:	64EE    	STZ $EE
+7E/7AD7:	A00064  	LDY #$6400     (VRAM pointer: $C800)
+7E/7ADA:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7ADD:	A0C053  	LDY #$53C0
+7E/7AE0:	84E7    	STY $E7        (Source address)
+7E/7AE2:	A97F    	LDA #$7F
+7E/7AE4:	85E9    	STA $E9        (Source bank; 7F/53C0)
+7E/7AE6:	A00022  	LDY #$2200
+7E/7AE9:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7AEB:	64ED    	STZ $ED
+7E/7AED:	64EE    	STZ $EE
+7E/7AEF:	A00040  	LDY #$4000     (VRAM pointer: $8000)
+7E/7AF2:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7AF5:	A0C023  	LDY #$23C0
+7E/7AF8:	84E7    	STY $E7        (Source address)
+7E/7AFA:	A97F    	LDA #$7F
+7E/7AFC:	85E9    	STA $E9        (Source bank; 7F/23C0)
+7E/7AFE:	A00008  	LDY #$0800
+7E/7B01:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7B03:	A00020  	LDY #$2000
+7E/7B06:	84ED    	STY $ED
+7E/7B08:	A0007C  	LDY #$7C00     (VRAM pointer: $F800)
+7E/7B0B:	20187A  	JSR $7A18      (VRAM-related function)
+7E/7B0E:	202A7B  	JSR $7B2A
+7E/7B11:	A0C075  	LDY #$75C0
+7E/7B14:	84E7    	STY $E7        (Source address)
+7E/7B16:	A97F    	LDA #$7F
+7E/7B18:	85E9    	STA $E9        (Source bank; 7F/75C0)
+7E/7B1A:	A07003  	LDY #$0370
+7E/7B1D:	84EB    	STY $EB        (Number of bytes to copy)
+7E/7B1F:	64ED    	STZ $ED
+7E/7B21:	64EE    	STZ $EE
+7E/7B23:	A00070  	LDY #$7000     (VRAM pointer: $E000)
+7E/7B26:	20187A  	JSR $7A18      (VRAM-related function) (JMP...)
+7E/7B29:	60      	RTS
+
+VRAM-related function
+7E/7B2A:	C220    	REP #$20       (16-bit accumulator)
+7E/7B2C:	A9007C  	LDA #$7C00
+7E/7B2F:	8F162100	STA $002116    (Set VRAM pointer to $F800)
+7E/7B33:	A22002  	LDX #$0220
+7E/7B36:	A9873E  	LDA #$3E87
+7E/7B39:	8F182100	STA $002118    (VRAM data write: 3E87)
+7E/7B3D:	CA      	DEX
+7E/7B3E:	D0F9    	BNE $7B39
+7E/7B40:	E220    	SEP #$20       (8-bit accumulator)
+7E/7B42:	60      	RTS
+
+Data: palette for copyright notice and lightning bolts (yellow in SNES, purple in SFC)
+7E/7B43:	0000 0000 E824 8620 6310 BD77 5C4B FA2A
+7E/7B53:	0000 7626 D421 B215 0000 EB0C 8810 6310
+
+Data: black palette for pictures fading in or out
+7E/7B63:	6310 6310 6310 6310 6310 6310 6310 6310
+7E/7B73:	6310 6310 6310 6310 6310 6310 6310 6310
+
+Data: palette for fiery logo (BG2)
+7E/7B83:	6310 9F6F 5F57 FF46 7E36 1E26 1932 BB21
+7E/7B93:	9B15 761D 3611 F110 B008 AD08 8B08 5000
+
+Data: palette for "(R)" and fiery logo (BG1, BG3) (second half is purposeless)
+7E/7BA3:	0000 6310 BD77 0000 0000 1E26 9B15 F110
+7E/7BB3:	0000 0000 0000 0000 0000 0000 0000 0000
+
+Data: initial palette for fiery logo
+7E/7BC3:	0821 6310 6310 6310 0000 1E26 9B15 F110
+7E/7BD3:	0000 0000 0000 0000 0000 0000 0000 0000
+
+Data: palette for apex of clouds
+7E/7BE3:	0000 C61C A51C 851C 8418 6414 6310 0000
+7E/7BF3:	6310 0000 1E26 9B15 F110 5B56 B445 2E35
+
+Data: palette for cloud sections illuminated prior to storm
+7E/7C03:	0000 DE66 5B56 B445 2E35 0831 E82C C728
+7E/7C13:	A624 A51C 8418 6414 6310 BB21 3611 7F73
+
+Data: palette for animating cloud sections illuminated by lightning
+7E/7C23:	0000 DE66 5B56 B445 2E35 0831 E82C C728
+7E/7C33:	A624 A51C 8418 6414 6310 7F73 7F73 7F73
+
+Data: Palette for animated mountains
+7E/7C43:	0000 7E36 3611 420C 4108 CD45 6A3D 2835
+7E/7C53:	2825 E72C E624 C520 C518 A318 8314 6310

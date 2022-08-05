@@ -1,0 +1,66 @@
+Set Name	Byte Offset	Bytes	Bits	Description	Modified
+Location Properties	0	1	FF	Location Name Index	8/1/2003
+Location Properties	1	1	FF	???	8/1/2003
+Location Properties	2	1	FF	???	8/6/2003
+Location Properties	3	1	FF	???	8/1/2003
+Location Properties	4	1	FF	Location Tile Properties Index	8/1/2003
+Location Properties	5	1	7F	"???, always 0"	8/6/2003
+Location Properties	5	1	80	Area has random encounters	8/6/2003
+Location Properties	6	1	FF	???	8/6/2003
+Location Properties	7	1	007F	Tileset1	8/1/2003
+Location Properties	7	2	3F80	Tileset2	8/1/2003
+Location Properties	8	2	1FC0	Tileset3	8/1/2003
+Location Properties	9	2	0FE0	Tileset4	8/1/2003
+Location Properties	10	2	03F0	Index for Layer 3 related data (0x26CF60)	8/6/2003
+Location Properties	11	2	01FC	Tile Assembly Layer 1	8/1/2003
+Location Properties	12	1	FE	Tile Assembly Layer 2	8/1/2003
+Location Properties	13	2	03FF	Map Layer 1	8/1/2003
+Location Properties	14	2	0FFC	Map Layer 2	8/1/2003
+Location Properties	15	2	3FF0	Map Layer 3	8/1/2003
+Location Properties	16	1	C0	Ignored	8/1/2003
+Location Properties	17	1	FF	Index to pointer table at 0x00F6A0	8/1/2003
+Location Properties	18	1	FF	BG0 Left Shift Amount	8/6/2003
+Location Properties	19	1	FF	BG0 Upward Shift Amount	8/6/2003
+Location Properties	20	1	FF	BG2 Left Shift Amount	8/6/2003
+Location Properties	21	1	FF	BG2 Upward Shift Amount	8/6/2003
+Location Properties	22	1	FF	Gets layer scrolling information from 0x010040 (Byte22 * 8)	8/1/2003
+Location Properties	23	1	03	Layer 2 Height (16 << L2H)	8/6/2003
+Location Properties	23	1	0C	Layer 2 Width	8/1/2003
+Location Properties	23	1	30	Layer 1 Height	8/1/2003
+Location Properties	23	1	C0	Layer 1 Width	8/1/2003
+Location Properties	24	1	0F	???	8/1/2003
+Location Properties	24	1	30	Layer 3 Height	8/1/2003
+Location Properties	24	1	C0	Layer 3 Width	8/1/2003
+Location Properties	25	1	FF	Palette index (PI * 0x100 bytes)	8/1/2003
+Location Properties	26	1	FF	Index to unknown 12 byte data at 0x009A25	8/1/2003
+Location Properties	27	1	1F	"Index to pointer table at 0x0093D5, gets animated Location tiles"	8/6/2003
+Location Properties	27	1	E0	Index to map animation at 0x00999F and compressed graphics at 0x26CFA0	8/1/2003
+Location Properties	28	1	FF	Song Index	8/6/2003
+Location Properties	29	1	FF	"???, Always 0"	8/12/2003
+Location Properties	30	1	FF	Viewable width	8/6/2003
+Location Properties	31	1	FF	Viewable height	8/6/2003
+Location Properties	32	1	FF	Index to 3 byte data at 0x010000	8/1/2003
+Location Tile Assembly	0	1	FF	Northwest chunk	8/1/2003
+Location Tile Assembly	256	1	FF	Northeast chunk	8/1/2003
+Location Tile Assembly	512	1	FF	Southwest chunk	8/1/2003
+Location Tile Assembly	768	1	FF	Southeast chunk	8/1/2003
+Location Tile Assembly	1024	1	03	"Northwest chunk tileset (00 = TS1, 01 = TS2, 02 = TS4)"	8/1/2003
+Location Tile Assembly	1024	1	1C	Palette Index (PI * 16 colors)	8/1/2003
+Location Tile Assembly	1024	1	20	Chunk has priority if set	8/5/2003
+Location Tile Assembly	1024	1	40	Flip chunk horizontally	8/1/2003
+Location Tile Assembly	1024	1	80	Flip chunk vertically	8/1/2003
+Location Tile Assembly	1280	1	FF	Northeast chunk details	8/1/2003
+Location Tile Assembly	1536	1	FF	Southwest chunk details	8/1/2003
+Location Tile Assembly	1792	1	FF	Southeast chunk details	8/1/2003
+Location Tile Properties	0	1	03	???	8/1/2003
+Location Tile Properties	0	1	04	Tile cannot be walked on (overrides individual direction settings)	8/1/2003
+Location Tile Properties	0	1	38	???	8/1/2003
+Location Tile Properties	0	1	40	"Tile uses stair movement (NE, SW)"	8/1/2003
+Location Tile Properties	0	1	80	"Tile uses stair movement (NW, SE) (overrides bit 40)"	8/1/2003
+Location Tile Properties	256	1	01	Tile can be entered from the west	8/1/2003
+Location Tile Properties	256	1	02	Tile can be entered from the east	8/1/2003
+Location Tile Properties	256	1	04	Tile can be entered from the north	8/1/2003
+Location Tile Properties	256	1	08	Tile can be entered from the south	8/1/2003
+Location Tile Properties	256	1	30	???	8/1/2003
+Location Tile Properties	256	1	40	Character always faces up (if only this bit set)	8/1/2003
+Location Tile Properties	256	1	80	???	8/1/2003

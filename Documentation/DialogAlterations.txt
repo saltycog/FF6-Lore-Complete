@@ -1,0 +1,22 @@
+﻿-	Locke: "If the Empire keeps going on this way, etc."
+	--> "I joined the Returners when I realized the Empire was rotten to the core. I wanted to make a difference."
+-	Terra: "But... I don't have an "important person."
+	-->	"But...I have no such friends in my life..."
+-	Locke: "Ah, that's not true, etc."
+	--> "That's not entirely true. I'm sure there are people who feel YOU'RE important to them, 
+	and counting on you."
+-	"Son of a submariner" to something along the lines of "Grrr, SHIT! I'll get you for this!"
+	But should be polite and "feminine."
+-	Change Cider to Sake.
+-	When Edgar welcomes Empire as allies, one of soldiers says 
+	"Allies? Hah! A pathetic little country like this?"
+-	Vargas, when asked if he was shadowing party, responds with basically, "What are you talking about?"
+-	Change "bodybuilder" line in Sabin intro to "bear-like," which Sabin appreciates.
+-	Edgar should be extra formal when talking to Banon.
+	Banon, in turn, is formal with Terra, but informal/short with Edgar.
+-	Banon: "We now confront those evils" 
+	--> "Free will has been in jeopardy ever since."
+-	Sabin: "You can trust [Edgar], TERRA, etc"
+	--> "I think you can trust my brother. Er, but don't tell him I said that. I'd get embarassed."
+-	Edgar: "I had Locke look into the rumor, etc."
+	--> "Locke: I looked into the rumor that the Empire is forcing the world's finest scholars to study Espers."

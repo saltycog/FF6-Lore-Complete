@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5676A7E2-412D-4B2C-9792-CA60DBDFA973}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FF6Hack</RootNamespace>
+    <AssemblyName>FF6Hack</AssemblyName>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Patchers\Dialogue.cs" />
+    <Compile Include="Patchers\Dialogue.FormatTag.cs" />
+    <Compile Include="Patchers\EventPatcher.cs" />
+    <Compile Include="Patchers\FF6Patcher.cs" />
+    <Compile Include="Patchers\MovedBytesReport.cs" />
+    <Compile Include="Patches\RestrictedEsperHack.cs" />
+    <Compile Include="Patches\BooksHack.cs" />
+    <Compile Include="Patches\SpeedEvadeHack.cs" />
+    <Compile Include="Patches\StaminaDefenseHack.cs" />
+    <Compile Include="Patches\TieredEspers.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ReferenceDoc.cs" />
+    <Compile Include="Tables\Tables.DteCompression.cs" />
+    <Compile Include="Values\BattleCommand.cs" />
+    <Compile Include="Values\Actor.cs" />
+    <Compile Include="Values\EventBit.cs" />
+    <Compile Include="Values\Item.cs" />
+    <Compile Include="Values\Spell.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="SnesEditing\SnesEditing.csproj">
+      <Project>{031f5603-1ffd-46d5-b619-9e54cd0ec292}</Project>
+      <Name>SnesEditing</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Patchers\EventPatcher.Values.cs" />
+    <Compile Include="Tables\Tables.CharacterEncoding.cs" />
+    <None Include="Resources\ff6.smc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Documentation\Bank7E.txt" />
+    <Content Include="Documentation\BooksDialogue.txt" />
+    <Content Include="Documentation\BankC0.txt" />
+    <Content Include="Documentation\BankC1.txt" />
+    <Content Include="Documentation\BankC2.txt" />
+    <Content Include="Documentation\BankC3.txt" />
+    <Content Include="Documentation\BankC5.txt" />
+    <Content Include="Documentation\BankD4.txt" />
+    <Content Include="Documentation\BankE5.txt" />
+    <Content Include="Documentation\BankEE.txt" />
+    <Content Include="Documentation\EventBits.txt" />
+    <Content Include="Documentation\EventCommands.txt" />
+    <Content Include="Documentation\EventDump.txt" />
+    <Content Include="Documentation\RomInfo.txt" />
+    <Content Include="Documentation\ExpandedLore.txt" />
+    <Content Include="Documentation\MapDataFormat.txt" />
+    <Content Include="Documentation\Offsets.txt" />
+    <Content Include="Documentation\RamMap.txt" />
+    <Content Include="Resources\btlBigCaption_script.txt" />
+    <Content Include="Resources\btlSmallCaption_script.txt" />
+    <None Include="Resources\dialog_table.txt" />
+    <None Include="Resources\readme.txt" />
+    <None Include="Resources\dialog_script.txt" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

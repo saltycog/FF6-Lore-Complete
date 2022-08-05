@@ -1,0 +1,675 @@
+FirstByte	LastByte	Type	Compressed	Description	Modified
+000000	0001FF	ROM	No	FIG Header	6/24/2002
+000200	000530	CODE	No	Unknown routines	4/21/2003
+000531	00054D	???	No	Unknown data	4/21/2003
+00054E	00066B	CODE	No	Unknown routines	5/22/2003
+00066C	0006F7	CODE	No	Decompression routine	5/22/2003
+0006F8	001979	CODE	No	Unknown routines	7/28/2003
+00197A	00197D	DATA	No	Location Size Data	7/28/2003
+00197E	00197E	---	No	UNUSED SPACE (1 byte)	7/28/2003
+00197F	004766	CODE	No	Unknown routines	7/28/2003
+004767	0047A6	???	No	Unknown 32 byte data	7/28/2003
+0047A7	0047E6	CODE	No	Unknown routines	7/28/2003
+0047E7	004826	???	No	Unknown 16 byte data	7/28/2003
+004827	005D5A	CODE	No	Unknown routines	7/28/2003
+005D5B	005D8A	PTR	No	Pointers to map sprites in memory	4/22/2003
+005D8B	0080C9	CODE	No	Unknown routines	4/21/2003
+0080CA	0080D3	DATA	No	"Movement Speed (00 No movement, 01 Slow movement, 02 Half-speed, 04 Walk, 08 Sprint, 10 Run, 20 Very fast (game starts to break))"	4/22/2003
+0080D4	0080F3	DATA	No	Controls horizontal movement amount	4/22/2003
+0080F4	008113	DATA	No	Controls horizontal movement direction	4/22/2003
+008114	008133	DATA	No	Controls vertical movement amount	4/22/2003
+008134	008153	DATA	No	Controls vertical movement direction	4/22/2003
+008154	008163	???	No	Unknown data	4/21/2003
+008164	0093D4	CODE	No	Unknown routines	7/29/2003
+0093D5	0093FE	PTR2	No	"Double pointers to animated location graphics (+0093FF, first at 0093FF, 21 addresses), (+009401, first at 009401)"	8/6/2003
+0093FF	00999E	PTR2	No	"Pointers to animated location graphics (+260200) with some extra data, accessed twice, 2 bytes of data followed by 8 bytes of pointers"	8/6/2003
+00999F	0099AC	PTR2	No	Pointer offsets to Locations Layer 3 animation (+0099AD)	8/12/2003
+0099AD	009A24	DATA	No	20 byte data controlling Layer 3 Locations animation	8/12/2003
+009A25	009A9C	???	No	Unknown 12 byte data related to Locations	7/29/2003
+009A9D	00CE72	CODE	No	Unknown routines	7/29/2003
+00CE73	00CE7C	???	No	Unknown data	4/21/2003
+00CE7D	00CE94	???	No	Unknown data	4/21/2003
+00CE95	00CF39	CODE	No	Unknown routines	4/21/2003
+00CF3A	00CFB9	???	No	Appears to have something to do with upper half of actors	4/22/2003
+00CFBA	00D039	???	No	Appears to have something to do with lower half of actors	4/22/2003
+00D03A	00D2F1	GFX	No	"Offsets of Map Character Sprite Parts (2x3, 2 bytes each)"	6/24/2002
+00D2F2	00D43B	GFX	No	Pointers to Map Character Graphics (2 bytes each) (+150200)	6/24/2002
+00D43C	00D585	GFX	No	Bank pointers and Number of Bytes to Copy for Map Character Gfx (2 bytes each)	6/24/2002
+00D586			No		6/24/2002
+00D813	00E19F	---	No	UNUSED SPACE (2445 bytes)	6/24/2002
+00E1A0	00E29F	DATA	No	DTE Table	7/16/2002
+00E2A0			No		6/24/2002
+00E400	00E579	GFX	No	"Incomplete alphabet, used in ??? (not used by blue fonts in menu)"	6/24/2002
+00E580			No		6/24/2002
+00EE20	00F09F	---	No	UNUSED SPACE (640 bytes)	6/24/2002
+00F0A0			No		6/24/2002
+00F6A0	00F6F9	PTR	No	"Pointers to unknown compressed Locations data (+00F700, first at 00F700, 45 addresses)"	8/12/2003
+00F6FA	00F6FF	---	No	UNUSED SPACE (6 bytes)	7/28/2003
+00F700	00FEAA	???	Yes	Unknown compressed Locations data	8/12/2003
+00FEAB	00FEFF	---	No	UNUSED SPACE (85 bytes)	6/24/2002
+00FF00			No		6/24/2002
+010000	010038	???	No	Unknown 3 byte data related to Locations	7/29/2003
+010039	01003F	---	No	UNUSED SPACE (7 bytes)	6/24/2002
+010040	0100E7	DATA	No	Controls scrolling of top layer of locations	4/22/2003
+0100E8	0100FF	---	No	UNUSED SPACE (24 bytes)	6/24/2002
+010100	010106	CODE	No	Entry point in SMC (finish w/ jump to 000219)	9/23/2002
+010107	01010F	---	No	UNUSED SPACE (10 bytes)	9/23/2002
+010110	010117	CODE	No	NMI vector code (executed in memory)	9/23/2002
+010118	0101AF	---	No	UNUSED SPACE (152 bytes)	6/24/2002
+0101B0			No		6/24/2002
+0101C0	0101D4	ROM	No	ROM Title (ASCII)	6/24/2002
+0101D5	0101D5	ROM	No	"ROM Makeup (Speed & Bank Size) - Value: Fast, Hi"	6/24/2002
+0101D6	0101D6	ROM	No	Rom Type - Value: ROM and SRAM	6/24/2002
+0101D7	0101D7	ROM	No	Rom Size - Value: 32 megabit	6/24/2002
+0101D8	0101D8	ROM	No	SRAM size - Value: 64k	6/24/2002
+0101D9	0101D9	ROM	No	Country code - Value: USA	6/24/2002
+0101DA	0101DA	ROM	No	License - Value: Nintendo(?)	6/24/2002
+0101DB	0101DB	ROM	No	Version - Value: 1.0	6/24/2002
+0101DC	0101DD	ROM	No	Inverse Checksum - Value: A0CD	4/22/2003
+0101DE	0101DF	ROM	No	Checksum - Value: 5F32	4/22/2003
+0101E0			No		4/22/2003
+0101EA	0101EB	ROM	No	NMI Vector (value: FF10)	6/24/2002
+0101FC	0101FD	ROM	No	Reset Vector - Value: FF00	6/24/2002
+0101FE			No		6/24/2002
+010200	0201E4	CODE	No	Unknown routines	3/19/2003
+0201E5	0201FF	---	No	UNUSED SPACE (28 bytes)	3/19/2003
+020200	020E90	CODE	No	Battle Code	9/9/2002
+020E91	020E92	DATA	No	Damage is truncated when above this value (graphical glitches when raised above 9999) (May only be physical)	6/24/2002
+020E93	020E95	CODE	No	Battle Code	9/9/2002
+020E96	020E97	DATA	No	Damage is truncated to this value (May only be physical)	6/24/2002
+020E98	026668	CODE	No	Battle Code	9/9/2002
+026669	0269FF	---	No	UNUSED SPACE (919 bytes)	6/24/2002
+026A00	026A6B	CODE	No	Unknown routines	8/28/2002
+026A6C	028C5F	DATA	Yes	"???, intro credits near the end of this segment"	8/28/2002
+028C5E			No		8/28/2002
+02948E	029499	TXT	No	"Ending: ""Gau"", 4 bytes per character (x, y, tile idx, const?)"	8/28/2002
+02949A			No		8/28/2002
+029944	029953	PAL	No	Palette - 8 colors	6/24/2002
+029954	029993	PAL	No	Palettes - End Credits	6/24/2002
+029994	029A53	PAL	No	"Palettes - 6 palettes, 16 colors each"	6/24/2002
+029A54			No		6/24/2002
+02A198	02A859	TXT	No	"End credit, uses two different fonts: one for the job and one for the name"	8/28/2002
+02A85A	02A9FF	---	No	UNUSED SPACE (919 bytes)	8/28/2002
+02AA00			No		8/28/2002
+02AA8F	02AFB8	CODE	No	Unknown routines	9/23/2002
+02AFB9			No		9/23/2002
+02AFE1	02B120	TXT	No	"Status Text (32 words, 10 bytes each)"	6/24/2002
+02B121			No		6/24/2002
+02B1A3	02B1F8	CODE	No	Unknown routines	6/24/2002
+02B1F9			No		6/24/2002
+02B2CD	02B33C	PTR	No	Pointer to code(?)	6/24/2002
+02B33D	02C06D	CODE	No	Unknown routines	9/23/2002
+02C06F			No		6/24/2002
+02C13B	02C13D	DATA	No	Songs to use for battle	6/24/2002
+02C13E			No		6/24/2002
+02C153	02C59A	CODE	No	Unknown routines	9/23/2002
+02C59B			No		9/23/2002
+02C889	02C890	PAL	No	"Palette: the four colors used in battle for the glove, the actor cursor, the miss tiles and harmfull count digits"	6/24/2002
+02C891	02C898	PAL	No	Palette: the four colors used in battle for curative count digits	6/24/2002
+02C899			No		6/24/2002
+02C945	02CB44	PTR	No	Pointers to sprite parts used in battle	4/22/2003
+02CB45	02CF44	???	No	Unknown - Pattern of 32 bytes beginning with 40 and each number thereafter decreasing	6/24/2002
+02CF45			No		6/24/2002
+02D02B	02D042	GFX	No	Battle Sprites Palette Assignments (1 byte each)	6/24/2002
+02D043	02D08A	PTR	No	Pointers to Character Sprites used for battle (16 addresses)	6/24/2002
+02D08B			No		6/24/2002
+02D21A	02D233	PTR	No	Pointers to Monster Formation Size Templates (13 elements) (+020200)	8/1/2003
+02D234	02D2F3	DATA	No	Monster Formation Size Templates	8/1/2003
+02D2F4	02D34F	DATA	No	Controls some battle screen drawing	4/22/2003
+02D350	02D37F	PTR	No	Pointers to battle screen data (+020200)	4/22/2003
+02D380	02D493	DATA	No	Controls lower half battle screen drawing	4/22/2003
+02D494	02D567	DATA	No	"Controls some battle screen drawing, menus, actors.."	4/22/2003
+02D568	02D59E	DATA	No	Controls some battle screen drawing (looks like a pixelation effect)	4/22/2003
+02D59F	02D5D4	???	No	"Unknown - Small increasing, then decreasing numbers"	6/24/2002
+02D5D5	02D670	CODE	No	Unknown routines	9/23/2002
+02D671			No		9/23/2002
+02DEC8	02DF1C	CODE	No	Unknown routines	9/23/2002
+02DF1D			No		9/23/2002
+02E285	02E289	TXT	No	Word: Esper	6/24/2002
+02E28A			No		6/24/2002
+02E29A	02E2DF	PTR	No	Pointers to battle menu drawing data (+020200) (starts at 02E2E0)	4/22/2003
+02E2E0	02E487	DATA	No	"Battle menu drawing data, contains words: Row, Def., R-Hand, L-Hand"	4/22/2003
+02E488			No		4/22/2003
+02E6EB	02E732	PTR	No	Pointers to unknown data (+020200) (starts at 02E733)	4/22/2003
+02E733	02E7D2	???	No	Unknown - Pattern: 00 0x xx 1x 01 FF	6/24/2002
+02E7D3	02E7EE	PTR	No	Pointers to unknown data (+020200) (starts at 02E7EF)	4/22/2003
+02E7EF	02E83C	???	No	Unknown - Pattern: 00 0x xx 1x 01 FF	6/24/2002
+02E83D			No		6/24/2002
+02E868	02EC64	CODE	No	Unknown routines	9/23/2002
+02EC65			No		9/23/2002
+02F14B	02F167	CODE	No	Unknown routines	6/24/2002
+02F168			No		6/24/2002
+02F3FA	02F410	CODE	No	Unknown routines	9/23/2002
+02F411			No		9/23/2002
+02F6B3	02FCA3	CODE	No	Unknown routines	9/23/2002
+02FCA4	02FE6C	---	No	UNUSED SPACE (457 bytes)	6/24/2002
+02FE6D	03006C	???	No	Unknown - 2 byte data (Pointers?)	6/24/2002
+03006D	0300ED	???	No	Unknown - Data increases from 00 to 7F and back again	6/24/2002
+0300EE	03016C	???	No	Unknown - Data decreases from FD to 81 and back again	6/24/2002
+03016D	0301FF	CODE	No	Decompression routine	8/8/2002
+030200	030BDA	CODE	No	Unknown routines	9/25/2002
+030BDB	030C21	???	No	Unknown data	9/25/2002
+030C22	0311DC	CODE	No	Unknown routines	9/25/2002
+0311DD			No		9/25/2002
+0312D6	031313	???	No	Unknown data - Pattern: FF 7F	9/25/2002
+031314	031B7E	CODE	No	Unknown routines	9/25/2002
+031B7F	031BC6	???	No	Unknown data	9/25/2002
+031BC7	031BFA	CODE	No	Unknown routines	9/25/2002
+031BFB			No		9/25/2002
+031C26	031C88	TXT	No	Words for Load Game screen	6/24/2002
+031C89			No		6/24/2002
+031F03	031F93	CODE	No	Unknown routines	9/23/2002
+031F94			No		9/23/2002
+032B4A	032B64	---	No	UNUSED SPACE (27 bytes)	6/24/2002
+032B65			No		6/24/2002
+032BC2	033241	CODE	No	Unknown routines	9/25/2002
+033242	03324E	???	No	Unknown data	9/25/2002
+03324F	033296	CODE	No	Unknown routines	9/25/2002
+033297	03329E	???	No	Unknown data	9/25/2002
+03329F			No		9/25/2002
+03391B	033922	TXT	No	Word: Wounded	6/24/2002
+033923	03396E	PTR	No	Pointers to menu screen data (+030200) (starts at 03396F)	4/22/2003
+03396F	033A57	TXT	No	Words for Menu screen	4/22/2003
+033A58			No		4/22/2003
+033C87	033D8B	CODE	No	Unknown routines	9/23/2002
+033D8C			No		9/23/2002
+03419B	0341AC	CODE	No	Unknown routines	9/23/2002
+0341AD			No		9/23/2002
+034258	0342CB	CODE	No	Unknown routines	9/25/2002
+0342CC			No		9/25/2002
+034B0C	034D4E	TXT	No	Words for various submenus	6/24/2002
+034D4F			No		6/24/2002
+035091	0350DB	???	No	Unknown - Pattern: 04 xx FF	6/24/2002
+0350DC			No		6/24/2002
+035A8B	035A95	TXT	No	Word: MP Needed	6/24/2002
+035A96			No		6/24/2002
+035E1C	035E39	DATA	No	"Blitz Specification Characters (14 elements, 2 bytes each [character, rotation])"	7/16/2002
+035E3A			No		6/24/2002
+035E4A	035F04	TXT	No	Words for Skills submenu	6/24/2002
+035F05			No		6/24/2002
+03666F	03672B	TXT	No	Words for Status submenu	6/24/2002
+03672C			No		6/24/2002
+036AE5	036AF9	TXT	No	Words for Name Entry screen	6/24/2002
+036AFA	037006	CODE	No	Unknown routines	9/25/2002
+037007			No		9/25/2002
+037082	0370FF	CODE	No	Unknown routines	9/25/2002
+037100	03711A	PAL	No	"Menu Portrait Palette assignment (1 byte each, 27 pointers)"	6/24/2002
+03711B	037150	PTR	No	"Pointers to Menu Portrait Graphics (2 bytes each, 27 pointers)"	6/24/2002
+037151			No		6/24/2002
+037161	0375AE	CODE	No	Unknown routines	9/25/2002
+0375AF			No		9/25/2002
+037C97	037CE3	TXT	No	Words for Form Groups screen	6/24/2002
+037CE4			No		6/24/2002
+0381D9	03835E	CODE	No	Unknown routines	9/25/2002
+03835F			No		9/25/2002
+038A56	038A9F	TXT	No	"Words for Equipment Bonuses (well, numbers actually)"	6/24/2002
+038AA0			No		6/24/2002
+038F18	038F44	TXT	No	Words for Item submenu	6/24/2002
+038F45			No		6/24/2002
+038F79	039049	TXT	No	Words for Equipment Description subscreen	6/24/2002
+03904A			No		6/24/2002
+039783	0397D3	???	No	Unknown - Pattern: 04 x0 FF	6/24/2002
+0397D4			No		6/24/2002
+03A3EA	03A419	PTR	No	Pointers to Unknown Data (+030200)	9/9/2002
+03A41A	03A4A5	???	No	"Unknown Data (6 bytes each, 24 items)"	9/9/2002
+03A4A6	03A4B9	PTR	No	Pointers to Words for Equip submenu (seems to be incomplete) (+030200)	6/24/2002
+03A4BA	03A54C	TXT	No	Words for Equip submenu	6/24/2002
+03A54D	03A570	PTR	No	"Pointers to Statistic Words (again, seems to be incomplete) (+030200)"	6/24/2002
+03A571	03A623	TXT	No	Words for Statistics	6/24/2002
+03A624	03A73C	CODE	No	Unknown routines	9/25/2002
+03A73D			No		9/25/2002
+03A996	03AA0D	CODE	No	Unknown routines	9/24/2002
+03AA0E			No		9/24/2002
+03AE8C	03AEA9	TXT	No	"Words: End, Reset, Determine Order (Final Battle Selection?)"	6/24/2002
+03AEAA			No		6/24/2002
+03AF9C	03AFB6	TXT	No	Words for Colosseum screen 1	6/24/2002
+03AFB7			No		6/24/2002
+03B611	03B626	TXT	No	Words for Colosseum screen 2	6/24/2002
+03B627			No		6/24/2002
+03C20C	03C217	PTR	No	Pointers to Shop words (+030200)	7/16/2002
+03C218			No		6/24/2002
+03C238	03C264	???	No	Unknown - Pattern: xx 00 0C	6/24/2002
+03C265			No		6/24/2002
+03C4FC	03C605	TXT	No	Words for Shops	6/24/2002
+03C606	03C718	PTR	No	Pointers to Unknown Data	6/24/2002
+03C719			No		6/24/2002
+03D463	03D5A6	CODE	No	Unknown routines	9/25/2002
+03D5A7			No		9/25/2002
+03DF61	03DF72	CODE	No	"Generic decompression sub-routine, takes reg. Y (16 LSB of add.), ACC (8 MSB of add.) as params"	9/25/2002
+03DF73			No		9/25/2002
+03F291	0401FF	---	No	UNUSED SPACE (3951 bytes)	6/24/2002
+040200	040541	PTR	No	Map Event Trigger Pointers (+040200)	7/16/2002
+040542	041BFD	TRG	No	"Map Event Triggers (5 bytes each) (src x, src y, pointer to event code)"	6/24/2002
+041BFE	041C0F	---	No	UNUSED SPACE (18 bytes)	6/24/2002
+041C10	041F51	PTR	No	NPC Data Pointers (+041C10)	7/16/2002
+041F52	046C6B	DATA	No	NPC Data	7/16/2002
+046C6C	046CBF	---	No	UNUSED SPACE (84 bytes)	6/24/2002
+046CC0	047ABF	DATA	No	"Magic Data (256 items, 14 bytes each)"	7/16/2002
+047AC0	047C3F	TXT	No	"Character Names (64 items, 6 bytes each)"	7/16/2002
+047C40	047C9F	DATA	No	"Blitz Specifications (which inputs to accept) (8 elements, 12 bytes each)"	9/16/2002
+047CA0	047CBF	DATA	No	Starting Rages	9/9/2002
+047CC0	04813F	DATA	No	"Shop Specifications (128 items, 9 bytes each [1 title byte, 8 items])"	7/16/2002
+048140	0481BF	DATA	No	"Ragnarok Metamorphosis Packages (26 items, 4 bytes each)"	7/16/2002
+0481C0	0491BF	FONT	No	"Small Font Graphics Data (8x8x2, 16 bytes each)"	6/24/2002
+0491C0	0492BF	FONT	No	Large Font Character Cell Widths (00-7F)	6/24/2002
+0492C0	04A6BF	FONT	No	"Large Font Graphics Data (16x11x1, 22 bytes each, range 0x20-0x7F), DTE dialog, some battles strings"	6/24/2002
+04A6C0	04BBFF	---	No	UNUSED SPACE (5440 bytes)	6/24/2002
+04BC00	04C1B8	FONT	Yes	End credit fonts (2 bit color)	6/24/2002
+04C1B9	04C207	---	No	UNUSED SPACE (79 bytes)	6/24/2002
+04C208	04F3C1	GFX/DATA	Yes	"End CGI: book, helmet, sword and/or bush, data at the end containing actors credit backgrounds mapping"	8/28/2002
+04F3C2	04F676	---	No	UNUSED SPACE (693 bytes)	6/24/2002
+04F677	04F8F7	GFX	Yes	End CGI: apple and ninja stars	8/28/2002
+04F8F8	04F8FA	---	No	UNUSED SPACE (3 bytes)	8/28/2002
+04F8FB	050171	GFX	Yes	End CGI: Spinning card & mini moogle	8/28/2002
+050172	0501FF	---	No	UNUSED SPACE (142 bytes)	6/24/2002
+050200	05020F	CODE	No	Jump codes to actual code	8/26/2002
+050210	05021B	PTR	No	Pointers to 6 main chunks of SPC data (+050200)	8/26/2002
+05021C	050227	DATA	No	SPC addresses for 6 main chunks of SPC data	8/26/2002
+050228	050233	PTR	No	Pointers to song data etc. (not sure these are even used)	8/26/2002
+050234	0508B8	CODE	No	Actual code for 65816	9/9/2002
+0508B9	0508F8	DATA	No	Data for SPC codes $30-$3F (shortcuts to play songs $00-$0F)	8/26/2002
+0508F9	0508FD	DATA	No	"Song indexes which need the current song to be paused then resumed (battle, sleepy time)"	8/26/2002
+0508FE	05090D	DATA	No	Jump table for SPC codes $10-$17	8/26/2002
+05090E	05090F	DATA	No	Length of Main SPC Code Loop	6/24/2002
+050910	0520C6	CODE	No	Main SPC Code Loop (Copied to SPC locations $0200-$19B6)	9/9/2002
+0520C7	0520C8	DATA	No	Length of Sound Effect Sample Data	8/26/2002
+0520C9	052215	DATA	No	Sound Effect Sample Data (Copied to SPC locations $4800-$494C)	8/26/2002
+052216	052217	DATA	No	Length of Pointer Table to Sound Effect Sample Data	8/26/2002
+052218	052237	DATA	No	Pointer Table to Sound Effect Sample Data (Copied to SPC locations $1B00-$1B1F)	8/26/2002
+052238	052239	DATA	No	Length of ADSR Data for Sound Effect Samples	8/26/2002
+05223A	052249	DATA	No	ADSR Data for Sound Effect Samples (Copied to SPC locations $1A80-$1A8F)	8/26/2002
+05224A	05224B	DATA	No	Length of Wave Rate Multiplying Values for Sound Effect Samples	8/26/2002
+05224C	05225B	DATA	No	Wave Rate Multiplying Values for Sound Effect Samples (Copied to SPC locations $1A00-$1A0F)	8/26/2002
+05225C	05225D	DATA	No	Length of Type 1 Sound Effect Instruction Pointers and Instructions	8/26/2002
+05225E	053E5D	DATA	No	Type 1 Sound Effect Instruction Pointers and Instructions	8/26/2002
+053E5E	053E5E	DATA	No	Number of Songs in the Game	8/26/2002
+053E5F	053F1B	PTR	No	Pointers to BRRs (63 addresses)	7/17/2002
+053F1C	053F99	DATA	No	"Loop Start Info for Samples (constants to be added to wave table pointers, index 0 = sample 1)"	8/26/2002
+053F9A	054017	DATA	No	Wave Rate Multiplying Data for Samples (index 0 = sample 1)	8/26/2002
+054018	054095	DATA	No	ADSR Data for Samples (index 0 = sample 1)	8/26/2002
+054096	054194	PTR	No	Pointers to SPCs - (85 addresses) (First one at 085E7A)	8/23/2002
+054195	054C34	DATA	No	"Table of Sample Indexes For Each Song (85 elements, 32 bytes each)"	5/8/2003
+054C35	085E79	BRR	No	BRR samples	8/27/2002
+085E7A	085E9F	SPC	No	(Silence) (00) (51)	10/1/2002
+085EA0	08661D	SPC	No	3.16 - The Prelude (01)	10/1/2002
+08661E	086932	SPC	No	1.03 - Awakening (05)	10/1/2002
+086933	086F68	SPC	No	2.01 - Terra (06)	10/1/2002
+086F69	0872C4	SPC	No	1.11 - Shadow (07)	10/1/2002
+0872C5	0876BE	SPC	No	2.18 - Strago (08)	10/1/2002
+0876BF	087AF7	SPC	No	1.18 - Gau (09)	10/1/2002
+087AF8	087EAE	SPC	No	1.07 - Edgar & Sabin (0A)	10/1/2002
+087EAF	088227	SPC	No	2.02 - Coin Song (0B)	10/1/2002
+088228	088637	SPC	No	1.13 - Cyan (0C)	10/1/2002
+088638	088A99	SPC	No	1.04 - Locke (0D)	10/1/2002
+088A9A	088DEC	SPC	No	2.04 - Forever Rachel (0E)	10/1/2002
+088DED	089155	SPC	No	2.19 - Relm (0F)	10/1/2002
+089156	08976E	SPC	No	2.11 - Setzer (10)	10/1/2002
+08976F	089A28	SPC	No	3.09 - Epitaph (11)	10/1/2002
+089A29	089D61	SPC	No	1.22 - Celes (12)	10/1/2002
+089D62	08A7D3	SPC	No	2.03 - Techno de Chocobo (13)	10/1/2002
+08A7D4	08AF35	SPC	No	1.24 - The Decisive Battle (14)	10/1/2002
+08AF36	08B69C	SPC	No	2.12 - Johnny C. Bad (15)	10/1/2002
+08B69D	08B9B7	SPC	No	1.01 - Opening Theme 2 (03)	10/1/2002
+08B9B8	08C1E7	SPC	No	1.08 - Kefka (16)	10/1/2002
+08C1E8	08C44B	SPC	No	1.02 - The Mines of Narshe (17)	10/1/2002
+08C44C	08CA81	SPC	No	1.15 - The Phantom Forest (18)	10/1/2002
+08CA82	08D0C0	SPC	No	1.01 - Opening Theme 3 (04)	10/1/2002
+08D0C1	08D52F	SPC	No	1.17 - Wild West (19)	10/1/2002
+08D530	08DC55	SPC	No	1.23 - Save Them! (1A)	10/1/2002
+08DC56	08DFBE	SPC	No	2.13 - The Empire Gestahl (1B)	10/1/2002
+08DFBF	08E36A	SPC	No	1.12 - Troops March On (1C)	10/1/2002
+08E36B	08E556	SPC	No	1.21 - Under Martial Law (1D)	10/1/2002
+08E557	08E5E1	SPC	No	Waterfall (1E)	10/1/2002
+08E5E2	08EC47	SPC	No	1.25 - Metamorphosis (1F)	10/1/2002
+08EC48	08F1A5	SPC	No	1.16 - The Phantom Train 1 & 2 (20)	10/1/2002
+08F1A6	08F671	SPC	No	2.20 - Another World of Beasts (21)	10/1/2002
+08F672	08FC14	SPC	No	2.10 - Grand Finale 2 (22)	10/1/2002
+08FC15	090042	SPC	No	1.09 - Mt. Koltz (23)	10/1/2002
+090043	09074A	SPC	No	1.05 - Battle Theme (24)	10/1/2002
+09074B	0907E8	SPC	No	Fanfare (25)	10/1/2002
+0907E9	090C65	SPC	No	2.09 - The Wedding Waltz 1 (26)	10/1/2002
+090C66	09169B	SPC	No	2.08 - Aria de Mezzo Caraterre (27)	10/1/2002
+09169C	091C4B	SPC	No	1.20 - Kids Run Through the City Corner (2A)	10/1/2002
+091C4C	0920DC	SPC	No	3.08 - Gogo (2D)	10/1/2002
+0920DD	09288E	SPC	No	1.10 - Returners (2E)	10/1/2002
+09288F	092B96	SPC	No	1.06 - Fanfare (2F)	10/1/2002
+092B97	09300A	SPC	No	3.11 - Umaro (30)	10/1/2002
+09300B	093457	SPC	No	2.17 - Mog (31)	10/1/2002
+093458	0939FE	SPC	No	1.14 - The Unforgiven (32)	10/1/2002
+0939FF	0941AD	SPC	No	3.03 - The Fierce Battle (33)	10/1/2002
+0941AE	094664	SPC	No	3.06 - The Day After (34)	10/1/2002
+094665	094CB2	SPC	No	2.15 - Blackjack (35)	10/1/2002
+094CB3	094F6E	SPC	No	3.02 - Catastrophe (36)	10/1/2002
+094F6F	095515	SPC	No	3.10 - The Magic House (37)	10/1/2002
+095516	0955DA	SPC	No	Nighty Night (38)	10/1/2002
+0955DB	0956C4	SPC	No	Wind (39)	10/1/2002
+0956C5	095756	SPC	No	Windy Shores (3A)	10/1/2002
+095757	0964C8	SPC	No	"3.14 - Dancing Mad 1, 2, & 3 (3B)"	10/1/2002
+0964C9	0965CC	SPC	No	The Raft and the Flowing River (3C)	10/1/2002
+0965CD	096B02	SPC	No	2.06 - Spinach Rag (3D)	10/1/2002
+096B03	096C6D	SPC	No	3.04 - Rest in Peace (3E)	10/1/2002
+096C6E	096D18	SPC	No	Train Running (3F)	10/1/2002
+096D19	096DC1	SPC	No	The Dream of a Train (40)	10/1/2002
+096DC2	0972D9	SPC	No	2.07 - Overture 1 (41)	10/1/2002
+0972DA	0973C8	SPC	No	2.07 - Overture 2 (42)	10/1/2002
+0973C9	097C05	SPC	No	2.07 - Overture 3 (43)	10/1/2002
+097C06	097EEA	SPC	No	2.09 - The Wedding Waltz 2 (44)	10/1/2002
+097EEB	09817B	SPC	No	2.09 - The Wedding Waltz 3 (45)	10/1/2002
+09817C	0985DA	SPC	No	2.09 - The Wedding Waltz 4 (46)	10/1/2002
+0985DB	098A41	SPC	No	1.01 - Opening Theme 1 (02)	10/1/2002
+098A42	098E98	SPC	No	2.14 - Devil's Lab (47)	10/1/2002
+098E99	098EE7	SPC	No	Fire! (48)	10/1/2002
+098EE8	098F84	SPC	No	Machine Running (49)	10/1/2002
+098F85	099013	SPC	No	Inside the Burning House (4A)	10/1/2002
+099014	0992B5	SPC	No	2.16 - ??? (2B)	10/1/2002
+0992B6	0995A1	SPC	No	1.19 - The Serpent Trench (28)	10/1/2002
+0995A2	09995E	SPC	No	2.05 - Slam Shuffle (29)	10/1/2002
+09995F	0999DE	SPC	No	2.10 - Grand Finale 1 (2C)	10/1/2002
+0999DF	099FBE	SPC	No	3.01 - New Continent (4B)	10/1/2002
+099FBF	09A44E	SPC	No	3.07 - Searching for Friends (4C)	10/1/2002
+09A44F	09A5D7	SPC	No	3.12 - Fanatics (4D)	10/1/2002
+09A5D8	09AE50	SPC	No	3.13 - Last Dungeon & Aura (4E)	10/1/2002
+09AE51	09B09E	SPC	No	3.05 - Dark World (4F)	10/1/2002
+09B09F	09BBB8	SPC	No	3.14 - Dancing Mad 4.2 (50)	10/1/2002
+09BBB9	09BCF8	SPC	No	3.14 - Dancing Mad 4.1 (52)	10/1/2002
+09BCF9	09E13E	SPC	No	3.15 - Ending Theme 1 (53)	10/1/2002
+09E13F	09FEEB	SPC	No	3.15 - Ending Theme 2 (54)	10/1/2002
+09FEEC	09FFFF	---	No	UNUSED SPACE (276 bytes)	6/24/2002
+0A0000			No		6/24/2002
+0A0200	0CE7FF	EVNT	No	Event Code	6/24/2002
+0CE800	0D0019	DATA	No	Pointers to Dialogue (+0D0200)	7/16/2002
+0D001A	0D01FF	---	No	UNUSED SPACE (486 bytes)	6/24/2002
+0D0200	0EF2FF	TXT	No	"Dialogue (3326 items, variable length)"	7/16/2002
+0EF300	0EF7FF	TXT	No	"Location Names (448 items [73 actual], variable length)"	7/16/2002
+0EF800			No		6/24/2002
+0EFD60	0EFD87	PTR	No	Pointers to Rare Item Descriptions (+0EFEB0)	7/16/2002
+0EFD88	0EFD9F	---	No	UNUSED SPACE (24 bytes)	6/24/2002
+0EFDA0	0EFEA3	TXT	No	"Rare Item Names (20 elements, 13 bytes each)"	7/16/2002
+0EFEA4	0EFEAF	---	No	UNUSED SPACE (12 bytes)	6/24/2002
+0EFEB0	0F01FF	TXT	No	"Rare Item Descriptions (20 elements, variable length)"	7/16/2002
+0F0200	0F31FF	DATA	No	"Monster Stats (384 elements, 32 bytes each)"	7/16/2002
+0F3200	0F37FF	DATA	No	"Monster Items Stolen and Dropped (384 elements, 4 bytes each)"	7/16/2002
+0F3800			No		6/24/2002
+0F39C0	0F3B3F	DATA	No	Apperance of main attack	6/24/2002
+0F3B40	0F3E3F	TXT	No	"Esper Descritions (27 items, variable length)"	9/11/2002
+0F3E40	0F3E9F	TXT	No	"SwordTech Names (8 items, 12 bytes each)"	7/16/2002
+0F3EA0	0F3EFF	---	No	UNUSED SPACE (96 bytes)	9/11/2002
+0F3F00	0F44FF	DATA	No	Control Skill Commands (4 bytes per monster)	6/24/2002
+0F4500	0F47FF	DATA	No	Sketch Commands (2 bytes per monster)	6/24/2002
+0F4800	0F49FF	DATA	No	Rage Commands (2 bytes per monster)	6/24/2002
+0F4A00	0F5200	DATA	No	"Assigment of monsters formations, each zone, or particular fight, can trigger one of four formations. Assigment is done word-wize.  256 zones * 4 possibilities * 2 bytes for tmp index"	6/24/2002
+0F5200	0F55FF	DATA	No	"Monster Formations used in Event Scripts (256 elements, 4 bytes each)"	7/16/2002
+0F5600			No		6/24/2002
+0F5B00	0F63FF	DATA	No	"Monster Formation Auxiliary Data (576 elements, 4 bytes each)"	7/16/2002
+0F6400	0F85BF	DATA	No	"Monster Formation Data (576 elements, 15 bytes each)"	7/16/2002
+0F85C0	0F85FF	---	No	UNUSED SPACE (64 bytes)	6/24/2002
+0F8600	0F88FF	PTR	No	Pointers to Monster AI (+0F8900)	7/16/2002
+0F8900	0FC24F	AI	No	Enemy AI	6/24/2002
+0FC250	0FD14F	TXT	No	"Enemy Names (384 items, 10 bytes each)"	7/16/2002
+0FD150	0FD2CF	---	No	UNUSED SPACE (384 bytes)	6/24/2002
+0FD2D0	0FE1CF	TXT	No	"Enemy Attack Names (384 items, 10 bytes each)"	7/16/2002
+0FE1D0	0FE1DF	---	No	UNUSED SPACE (16 bytes)	6/24/2002
+0FE1E0	0FE3DF	PTR	No	Pointers to Battle Dialogue (Bank 2) (+0F0200)	7/16/2002
+0FE3E0	0FF64F	TXT	No	"Battle Dialogue (Bank 2) (256 items, variable length)"	7/16/2002
+0FF650			No		6/24/2002
+0FFAAF	0FFAC6	TXT	No	"Ending: ""andyou"", 4 bytes per character (x, y, tile idx, const?)"	8/28/2002
+0FFAC7			No		8/28/2002
+0FFB11	0FFB68	PTR	No	Pointers to Load Screen Character Sprites	6/24/2002
+0FFB69			No		6/24/2002
+0FFE00	0FFEFF	TXT	No	"Blitz Descriptions (8 items, variable length)"	7/16/2002
+0FFF00	0FFFFF	TXT	No	"SwordTech Descriptions (8 items, variable length)"	7/16/2002
+100000			No		6/24/2002
+100080	10009F	DATA	No	Dance stuff (4 bytes each) (Each byte represents magical effect?)	6/24/2002
+1000A0			No		4/22/2003
+1000AE	100146	TXT	No	"Short Esper Bonus Descriptions (17 elements, 9 characters each)"	7/16/2002
+100147	10019D	---	No	UNUSED SPACE (87 bytes)	6/24/2002
+10019E	1001AD	PTR	No	Pointers to Blitz Descriptions (+0FFE00)	7/16/2002
+1001AE	1001BD	PTR	No	Pointers to SwordTech Descriptions (+0FFF00)	7/16/2002
+1001BE	1001FF	---	No	UNUSED SPACE (66 bytes)	6/24/2002
+100200	1081B1	ANI	No	Graphic Animation (variable length)	6/24/2002
+1081B2	108FB1	DATA	No	Synched Battle Animation and Sound Events Table (14 byte data)	6/24/2002
+109A00	109A73	PTR	No	Pointers to Battle Event Scripts (+100200) (58 elements)	7/16/2002
+109A74			No		6/24/2002
+10D200	10D3FF	PTR	No	Pointers to Battle Dialogue (Bank 1) (+100200)	7/16/2002
+10D400	10FEFF	TXT	No	"Battle Dialogue (Bank 1) (256 items, variable length)"	7/16/2002
+10FF00			No		6/24/2002
+11ECD8	11F1FF	PTR	No	Pointers to Graphic Animation (+100200) (May end sooner)	6/24/2002
+11F200	11F99F	TXT	No	"Battle Messages (256 items, variable length)"	7/16/2002
+11F9A0	11FB9F	PTR	No	Pointers to Battle Messages (+110200)	7/16/2002
+11FBA0	11FBAA	---	No	UNUSED SPACE (11 bytes)	6/24/2002
+11FBAB	11FBB2	DATA	No	Backgrounds used by each dance (1 byte each)	6/24/2002
+11FBB3	11FBCF	???	No	Leftover garbage for Dance backgrounds?	6/24/2002
+11FBD0	11FBFF	---	No	UNUSED SPACE (48 bytes)	6/24/2002
+11FC00	1201FF	PTR	No	"Pointers into Event Code, Unknown purpose (+0A0200)"	8/6/2003
+120200	1261FF	???	No	Unknown 2 byte Data (Pointers to Palettes?)	6/24/2002
+126200	1270FF	PAL	No	Palettes (120 palettes)	3/17/2003
+127100	12716F	TXT	No	"Weapon/Armor Types (16 items, 7 bytes each)"	7/16/2002
+127170	1271FF	---	No	UNUSED SPACE (144 bytes)	6/24/2002
+127200	12797F	DATA	No	"Monster Visual Specifications (384 elements, 5 bytes each)"	7/16/2002
+127980	127A1F	DATA	No	Esper Visual Specs (5 bytes each?)	5/21/2003
+127A20	12AA1F	PAL	No	"Monster Palettes (2 palettes per monster, 768 palettes, 8 colors each)"	6/24/2002
+12AA20	12AA21	PTR	No	Pointer to 8-High Monster Composition Data	6/24/2002
+12AA22	12AA23	PTR	No	Pointer to 16-High Monster Composition Data	6/24/2002
+12AA24	12AE23	DATA	No	"Monster 8-High Composition Data (128 elements, 8 bytes each)"	7/16/2002
+12AE24	12B423	DATA	No	"Monster 16-High Composition Data, Espers towards end (48 elements, 32 bytes each)"	5/21/2003
+12B424	12B4FF	---	No	UNUSED SPACE (220 bytes)	6/24/2002
+12B500	12C1FF	TXT	No	"Item Names (256 items, 13 bytes each)"	8/28/2002
+12C200			No		6/24/2002
+12E200	12ED43	GFX	Yes	"Battle tiles like numerals, miss logo, mute status.."	1/9/2003
+12ED44	12EDFF	---	No	UNUSED SPACE (188 bytes)	6/24/2002
+12EE00	12EEFF	PAL	No	"World of Balance Palettes (8 palettes, 16 colors each)"	6/24/2002
+12EF00	12EFFF	PAL	No	"World of Ruin Palettes (8 palettes, 16 colors each)"	6/24/2002
+12F000	12F01F	PAL	No	Setzer's Airship Palette (16 colors)	6/24/2002
+12F020	12F03F	PAL	No	Chocobo Palette (16 colors)	6/24/2002
+12F040	12F0FF	PAL	No	More Palettes	6/24/2002
+12F100	12F11F	PAL	No	Darryl's Airship Palette (16 colors)	6/24/2002
+12F120	12F1FF	PAL	No	More Palettes	6/24/2002
+12F200	1301FF	GFX	No	Slot Command graphics	6/24/2002
+130200			No		6/24/2002
+14CB98	14CBFF	---	No	UNUSED SPACE (104 bytes)	9/25/2002
+14CC00	14D15A	CODE	No	Unknown routines	9/25/2002
+14D15B	14D1FF	---	No	UNUSED SPACE (165 bytes)	9/25/2002
+14D200			No		9/25/2002
+14F806	1501FF	---	No	UNUSED SPACE (2554 bytes)	6/24/2002
+150200	16F31F	GFX	No	Character Sprite Graphics (4bp)	6/24/2002
+16F320	1851FF	GFX	No	Townsperson and Other Sprite Graphics (4bp)	9/17/2002
+185200	186FFF	DATA	No	"Item Data (256 items, 30 bytes each)"	8/28/2002
+187000	187127	DATA	No	"Esper Data (27 items, 11 bytes each)"	9/11/2002
+187128	1871FF	---	No	UNUSED SPACE (128 bytes)	6/24/2002
+187200	18CB9F	GFX	No	"Relates to attacks, spells, Espers?, desperado attacks sprites"	6/24/2002
+18CBA0	18D09F	TXT	No	"Spell Descriptions (64 items, variable length)"	7/16/2002
+18D0A0	18D17F	TXT	No	"Battle Command Names (32 items, 7 bytes each)"	7/16/2002
+18D180	18D1FF	PTR	No	Pointers to Spell Descriptions (+18CBA0)	7/16/2002
+18D200	18DCF1	GFX	Yes	"Airship bombarding enemies tiles (slot command), big ball of fire?"	6/24/2002
+18DCF2	18DED1	???	Yes	"Unknown, likely to be compressed data"	8/27/2002
+18DED2	18DEFF	---	No	UNUSED SPACE (46 bytes)	8/27/2002
+18DF00	18E1B7	???	No	"Unknown 2 byte data, possibly pointers"	8/27/2002
+18E1B8	18E7BE	???	Yes	"Unknown compressed data, probably a graphic"	8/27/2002
+18E7BF	18E8B9	???	Yes	"Unknown, possibly compressed data"	8/27/2002
+18E8BA	18E9B0	???	Yes	"Unknown, possibly compressed data"	8/27/2002
+18E9B1	18E9FF	---	No	UNUSED SPACE (79 bytes)	8/27/2002
+18EA00	18EA07	PAL	No	Palette: 4 colours for menu cursor	6/24/2002
+18EA08	18EA9F	PAL	No	Unknown 4 color palettes	8/27/2002
+18EAA0			No		8/27/2002
+18EB17	18EB32	PTR	No	"Pointers to Unknown Data (+180000, starts at 18EB45)"	9/17/2002
+18EB33	18EB44	PTR	No	"Pointers to Unknown Data (+180000, starts at 18EC41)"	9/17/2002
+18EB45	18EC40	???	No	Unknown 18 byte data	9/17/2002
+18EC41	18EC5B	???	No	Unknown 3 byte data	9/17/2002
+18EC5C			No		9/17/2002
+18F047	18F1FF	---	No	UNUSED SPACE (440 bytes)	8/27/2002
+18F200	195071	GFX	Yes	"Intro fonts, intro fire and storm gfx, FF3us logo/splash screen"	8/28/2002
+195072	195095	---	No	UNUSED SPACE (36 bytes)	8/28/2002
+195096	19588B	GFX	Yes	???	8/28/2002
+19588C	19588E	---	No	UNUSED SPACE (3 bytes)	8/28/2002
+19588F	199C50	GFX	Yes	"End CGI: airship over sea, big propelers, birds, data??? big airship from behind, others"	8/28/2002
+199C51	199F4A	---	No	UNUSED SPACE (762 bytes)	8/28/2002
+199F4B	19A6E3	GFX	Yes	End CGI: skull and coin	8/28/2002
+19A6E4	19A6E4	---	No	UNUSED SPACE (1 byte)	8/28/2002
+19A6E5	19A768	GFX	Yes	?? (follows mini moogle bank)	8/28/2002
+19A769	19A9FF	---	No	UNUSED SPACE (663 bytes)	6/24/2002
+19AA00	19CE4B	DATA	Yes	Location Tile Properties	7/16/2002
+19CE4C	19CF0F	---	No	UNUSED SPACE (196 bytes)	6/24/2002
+19CF10	19CF65	PTR	No	Pointers to Location Tile Properties (42 items) (+19AA00)	7/16/2002
+19CF66	19CF8F	---	No	UNUSED SPACE (42 bytes)	6/24/2002
+19CF90	19D3AF	PTR	No	Pointers to Location Map Data (351 items) (+19D3B0)	7/16/2002
+19D3B0	1E01FF	MAP	Yes	Location Map Data	7/16/2002
+1E0200	1FB5D3	MAP	Yes	Location Tile Assembly	8/1/2003
+1FB5D4	1FB5FF	---	No	UNUSED SPACE (44 bytes)	6/24/2002
+1FB600	1FB7FF	DATA	No	"Ability Points earned after each battle (1 byte each, corresponds to monster formations)"	6/24/2002
+1FB800	1FFBFF	DATA	No	Colosseum Battle Data (4 bytes each)	6/24/2002
+1FBC00	1FBCE3	PTR	No	Pointers to Location Tile Assembly (+1E0200) (75 items)	8/1/2003
+1FBCE4	1FBCFF	---	No	UNUSED SPACE (28 bytes)	6/24/2002
+1FBD00	1FC101	PTR	No	Pointers to Entrance Triggers (+1FBD00)	7/16/2002
+1FC102	1FDBFF	TRG	No	Entrance Triggers (6 bytes each)	6/24/2002
+1FDC00	1FDCF5	PTR	No	Pointers to Location Tile Graphics (+1FDD00) (82 items)	7/28/2003
+1FDCF6	1FDCFF	---	No	UNUSED SPACE (10 bytes)	6/24/2002
+1FDD00	25F5FF	GFX	No	Location Tile Graphics (3122 Tiles)	7/28/2003
+25F600			No		6/24/2002
+26001E	2600C5	???	No	Unknown - Pattern: Ax 00 (84 sets)	10/8/2002
+2600C6	2601FF	---	No	UNUSED SPACE (314 bytes)	6/24/2002
+260200	2681FF	GFX	No	"Animated Location graphics (16 sets, 0x0800 bytes each)"	8/5/2003
+268200	2685FF	PAL	No	Map Character and Townperson Sprite Palettes (16 colors each)	6/24/2002
+268600	268691	PTR	No	Pointers to Location Names (+0EF300) (73 addresses)	4/21/2003
+268692	26897F	---	No	UNUSED SPACE (750 bytes)	6/24/2002
+268980	26CF3C	MAP	Yes	Location Layer 3 related data	8/6/2003
+26CF3D	26CF5F	---	No	UNUSED SPACE (35 bytes)	6/24/2002
+26CF60	26CF9F	PTR	No	Pointer to Location Layer 3 related data (+268980) (19 pointers)	8/6/2003
+26CFA0	26CFBF	PTR	No	"Pointer to Location Layer 3 Animated Tiles (+26CFC0) (7 pointers, 6 valid)"	8/6/2003
+26CFC0	26F397	GFX	Yes	Location Layer 3 Animated Tiles	8/6/2003
+26F398	26F3FF	---	No	UNUSED SPACE (104 bytes)	6/24/2002
+26F400	26F63F	PAL	No	Palettes	6/24/2002
+26F640	26F68F	---	No	UNUSED SPACE (80 bytes)	6/24/2002
+26F690	26F69F	DATA	No	Blitz and SwdTech skills learned by level (8 bytes each)	9/9/2002
+26F6A0	26F701	DATA	No	HP modification constants by level (98 elements)	9/9/2002
+26F702	26F763	DATA	No	MP modification constants by level (98 elements)	9/9/2002
+26F764	26F766	DATA	No	Startup Lores (3 bytes)	10/10/2002
+26F767	26F8E0	TXT	No	"Magic Spell Names (54 items, 7 bytes each)"	9/9/2002
+26F8E1	26F9B8	TXT	No	"Esper Names (27 items, 8 bytes each)"	9/11/2002
+26F9B9	26F9EA	TXT	No	"Skean Attack Names (4 items, 10 bytes each)"	9/9/2002
+26F9EB	26FA30	TXT	No	"SwdTech Names (8 items, 10 bytes each, blank, not used)"	9/16/2002
+26FA31	26FA80	TXT	No	"Blitz Names (8 items, 10 bytes each)"	7/16/2002
+26FA81	26FB70	TXT	No	"Mog's Dance Attacks (24 items, 10 bytes each)"	7/16/2002
+26FB71	26FBAC	TXT	No	"Setzer's Slot Attacks (6 items, 10 bytes each)"	7/16/2002
+26FBAD	26FBFC	TXT	No	"Magitek Armor Attacks (8 items, 10 bytes each)"	7/16/2002
+26FBFD	26FCEC	TXT	No	"Lore Names (24 items, 10 bytes each)"	7/16/2002
+26FCED	26FFEE	TXT	No	"Enemy Attacks (77 items, 10 bytes each)"	7/16/2002
+26FFEF	270066	TXT	No	"Desperation Attacks (12 items, 10 bytes each)"	7/16/2002
+270067	27008E	TXT	No	"Miscellaneous Attacks (Lagomorph, Interceptor, etc.) (4 items, 10 bytes each)"	7/16/2002
+27008F	27019C	TXT	No	"Esper Attacks (27 items, 10 bytes each)"	7/16/2002
+27019D	2701FC	TXT	No	"Mog's Dance Names (8 items, 12 bytes each)"	7/16/2002
+2701FD	2701FF	---	No	UNUSED SPACE (3 bytes)	6/24/2002
+270200	27034F	DATA	No	"Battle Background graphic/data bank selection and palette (3 bytes Graphic Packet, 2 bytes Tile Assembly, 1 byte Palettes),  56 Total"	3/19/2003
+270350	27184F	PAL	No	"Battle Background Palettes (168 Palettes, 16 colors each)"	7/16/2002
+271850	271A47	PTR	No	"Pointers to Battle Backgrounds graphics (168 elements, 75 used)"	7/16/2002
+271A48	271B27	PTR	No	Pointers to Battle Background tile assembly (relative to 270200)	7/16/2002
+271B28	27ABE6	DATA	Yes	"Battle Background tile assembly (32x19 tiles (except Ghost Train), 2 bytes per tile)"	7/16/2002
+27ABE7	2964FF	GFX	Yes	Battle Backgrounds Graphic Packets (48 packs) + 64 wasted bytes	3/19/2003
+296500	2971FF	GFX	No	"The End logo, some other stuff"	6/24/2002
+297200	2CE3FF	GFX	No	Monster Graphics	6/24/2002
+2CE400	2CE5BF	---	No	UNUSED SPACE (448 bytes)	6/24/2002
+2CE5C0	2CE5FF	DATA	No	"Natural magic table: spell then level: 16 for Terra, then 16 for Celes"	9/9/2002
+2CE600	2CE9FF	DATA	No	"Weapon Graphics and Sounds (8 bytes) (Odd place for data to end, in middle of item list)"	6/24/2002
+2CEA00			No		6/24/2002
+2D0200	2D1DFF	GFX	No	"Menu Window Graphics (8 Screens, 896 bytes each, 28 chunks)"	6/24/2002
+2D1E00	2D1EFF	PAL	No	Menu Window Palettes (16 colors each)	6/24/2002
+2D1F00	2D5A5F	GFX	No	Character Portraits (19 40x40 Portraits)	6/24/2002
+2D5A60	2D5CBF	PAL	No	Menu Portrait Palettes (16 colors each)	6/24/2002
+2D5CC0	2D64C0	GFX	No	"Cursor, arrows, coliseum's VS, status logos, some are assembled as 16x16"	6/24/2002
+2D64C0	2D64C7	PAL	No	Battle Standard (White) Text Palette (4 colors)	6/24/2002
+2D64C8	2D64CF	PAL	No	Battle Disabled (Grey) Text Palette (4 colors)	6/24/2002
+2D64D0	2D64D7	PAL	No	Battle Active (Yellow) Text Palette (4 colors)	6/24/2002
+2D64D8	2D64DF	PAL	No	Battle Blue Text Palette (4 colors)	6/24/2002
+2D64E0	2D64E7	PAL	No	Empty Palette (4 colors)	6/24/2002
+2D64E8	2D64EF	PAL	No	Battle Guage (Grey) Text Palette (4 colors)	6/24/2002
+2D64F0	2D64F7	PAL	No	Battle Green Text Palette (4 colors)	6/24/2002
+2D64F8	2D64FF	PAL	No	Battle Red Text Palette (4 colors)	6/24/2002
+2D6500	2D65FF	PAL	No	"Battle/Menu Character Sprite Palettes (8 palettes, 16 colors each)"	6/24/2002
+2D6600	2D799F	TXT	No	"Item Descriptions (256 elements, variable length)"	8/28/2002
+2D79A0	2D7C6F	TXT	No	"Lore Descriptions (24 elements, variable length)"	7/16/2002
+2D7C70	2D7C9F	PTR	No	Pointers to Lore Descriptions (24 elements)	6/24/2002
+2D7CA0	2D7E9F	PTR	No	Pointers to Item Descriptions (256 elements) (+2D6600)	8/28/2002
+2D7EA0	2D841F	DATA	No	"Character Initial Statistics (64 elements, 22 bytes each)"	9/9/2002
+2D8420	2D84F3	DATA	No	Experience Needed for Level Up	9/9/2002
+2D84F4	2D8833	???	No	"Unknown 2 byte data, Something to do with Locations?"	8/27/2002
+2D8834	2D8DC9	???	No	"Unknown 5 byte data, Something to do with Locations?"	4/15/2003
+2D8DCA	2D905A	---	No	UNUSED SPACE (657 bytes)	6/24/2002
+2D905B			No		6/24/2002
+2D909B	2D90FF	---	No	UNUSED SPACE (101 bytes)	6/24/2002
+2D9100	2DC67E	MAP	No	"Location Properties (416 elements, 33 bytes each)"	7/16/2002
+2DC67F	2DC67F	---	No	UNUSED SPACE (1 byte)	6/24/2002
+2DC680	2DF67F	PAL	No	"Location Map Palettes (384 elements, 16 colors each)"	6/24/2002
+2DF680	2DFA81	DATA	No	Entrance Triggers - Type 2 (7 bytes each)	8/6/2003
+2DFA82			No		6/24/2002
+2DFEAA	2DFFFF	---	No	UNUSED SPACE (342 bytes)	6/24/2002
+2E0000	2E01CF	TXT	No	Long Esper Bonus Descriptions (variable length)	7/16/2002
+2E01D0	2E01FF	PTR	No	"Pointers to Long Esper Bonus Descriptions (24 addresses, 17 valid) (+2E0000)"	6/24/2002
+2E0200	2E0BC2	CODE	No	Unknown routines	9/24/2002
+2E0BC3			No		9/24/2002
+2E1A64	2E1B06	CODE	No	Unknown routines	9/24/2002
+2E1B07	2E1B2F	???	No	Unknown data	9/24/2002
+2E1B30	2E1B97	CODE	No	Unknown routines	9/24/2002
+2E1B98	2E1D99	CODE	No	WOB Tile properties are touched here	9/24/2002
+2E1D9A	2E1EB4	CODE	No	Unknown routines	9/24/2002
+2E1EB5	2E1EEE	CODE	No	WOB Tile properties are touched here	9/24/2002
+2E1EEF	2E1F0D	CODE	No	Unknown routines	9/24/2002
+2E1F0E	2E20AC	CODE	No	WOB Tile properties are touched here	9/24/2002
+2E20AD	2E23D6	CODE	No	Unknown routines	9/24/2002
+2E23D7	2E2407	CODE	No	WOB Tile properties are touched here	9/24/2002
+2E2408	2E244D	CODE	No	Unknown routines	9/24/2002
+2E244E			No		9/24/2002
+2E3568	2E4231	CODE	No	Unknown routines	9/24/2002
+2E4232			No		9/24/2002
+2E42BE	2E4765	CODE	No	Unknown routines	9/24/2002
+2E4766	2E4775	???	No	Unknown data	9/24/2002
+2E4776	2E4A41	CODE	No	Unknown routines	9/24/2002
+2E4A42	2E4A51	DATA	No	Sprites used for various positions of map character	6/24/2002
+2E4A52	2E4AD1	???	No	Unknown data	7/28/2003
+2E4AD2	2E4B51	???	No	Unknown data	7/28/2003
+2E4B52	2E4C03	???	No	Unknown data	7/28/2003
+2E4C04	2E4C8C	CODE	No	Unknown routines	9/24/2002
+2E4C8D	2E4D56	CODE	No	Specifically loads pointer to bad compressed data at 2FD097	9/24/2002
+2E4D57			No		9/24/2002
+2E5911	2E593D	CODE	No	Unknown routines	9/24/2002
+2E593E			No		9/24/2002
+2E7EFA	2E7F01	???	No	Unknown data	9/24/2002
+2E7F02			No		9/24/2002
+2E858A	2E8594	DATA	No	Songs to use for Mode 7 stuff	9/24/2002
+2E8595	2E96D3	CODE	No	Unknown routines	9/24/2002
+2E96D4			No		9/24/2002
+2E9AF1	2E9BD0	???	No	Unknown data	9/24/2002
+2E9BD1	2E9C04	???	No	Unknown data	9/24/2002
+2E9C05	2E9D13	CODE	No	Unknown routines	9/24/2002
+2E9D14	2E9F13	MAP	No	World of Balance Tile Properties	6/24/2002
+2E9F14	2EA113	MAP	No	World of Ruin Tile Properties	6/24/2002
+2EA114	2EB100	CODE	No	Unknown routines	9/25/2002
+2EB101	2EB3FF	---	No	UNUSED SPACE (767 bytes)	6/24/2002
+2EB400	2EB456	PTR	No	Pointers to mode 7 compressed data	6/24/2002
+2EB457	2EB45F	---	No	UNUSED SPACE (9 bytes)	6/24/2002
+2EB460	2EB47D	???	No	Unknown data	9/24/2002
+2EB47E	2EB48F	---	No	UNUSED SPACE (18 bytes)	6/24/2002
+2EB490	2EC494	GFX	Yes	Appears to be some sort of background..  Clouds or something	6/24/2002
+2EC495	2EC901	???	Yes	Unknown - Highly organized data	8/27/2002
+2EC902	2ED633	GFX	Yes	Setzer's Airship Graphics	6/24/2002
+2ED634	2F134E	MAP	Yes	World of Balance Map Data	6/24/2002
+2F134F	2F344F	GFX	Yes	World of Balance Tile Graphics	6/24/2002
+2F3450	2F4A45	???	Yes	"Unknown Data, decompresses to strange size (not a bitmap)"	6/24/2002
+2F4A46	2F4C45	???	Yes	"Unknown Data, decompresses to strange size (not a bitmap)"	6/24/2002
+2F4C46	2F6C55	GFX	Yes	World of Ruin Tile Graphics	6/24/2002
+2F6C56	2F9F16	MAP	Yes	World of Ruin Map Data	6/24/2002
+2F9F17	2FB830	MAP	Yes	Serpent Trench Map Data	6/24/2002
+2FB831	2FC823	GFX	Yes	Serpent Trench tiles	8/28/2002
+2FC824	2FD076	GFX	Yes	Dismounting Chocobo graphics	6/24/2002
+2FD077	2FD096	???	Yes	Location specified in pointer table (has 0000 for compressed length)	8/27/2002
+2FD097	2FD0B6	???	Yes	Location specified in pointer table (has 3800 for compressed length)	8/27/2002
+2FD0B7	2FD1B8	???	Yes	Unknown (probably data)	6/24/2002
+2FD1B9	2FDE4B	GFX	Yes	"Terra (morphed), a boat, smoke, Figaro Castle, Terra twinkle, Dust clouds, and splash"	6/24/2002
+2FDE4C	2FE69A	GFX	Yes	Riding Chocobo graphics	6/24/2002
+2FE69B	2FEAB2	MAP	Yes	World of Balance Miniature Map	6/24/2002
+2FEAB3	2FEF25	MAP	Yes	World of Ruin Miniature Map	6/24/2002
+2FEF26	2FFCC7	GFX	Yes	Daryl's Airship Graphics	6/24/2002
+2FFCC8	2FFDC7	???	Yes	Location specified in pointer table (has 2926 for compressed length)	8/27/2002
+2FFDC8	3000F0	---	No	UNUSED SPACE (809 bytes)	6/24/2002
+3000F1	30014A	???	No	Unknown data	8/27/2002
+30014B	3001A4	???	No	Unknown data	8/27/2002
+3001A5	3001FE	???	No	Unknown data	8/27/2002
+3001FF	3001FF	EOF	No	End of File	6/25/2002

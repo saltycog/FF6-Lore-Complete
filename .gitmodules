@@ -1,0 +1,4 @@
+[submodule "SnesEditing"]
+	path = SnesEditing
+	url = https://github.com/saltycog/SNES-ROM-Editing.git
+	branch = main

@@ -1,0 +1,1352 @@
+
+Entry point (from C0/B9C1)
+E5/F400:	18      	CLC
+E5/F401:	FB      	XCE            (Native mode)
+E5/F402:	E220    	SEP #$20       (8-bit accumulator)
+E5/F404:	C210    	REP #$10       (16-bit indexes)
+E5/F406:	A900    	LDA #$00
+E5/F408:	48      	PHA
+E5/F409:	AB      	PLB            (Set data bank register to 00)
+E5/F40A:	A20005  	LDX #$0500     (PEA $0500, PLD...)
+E5/F40D:	DA      	PHX
+E5/F40E:	2B      	PLD            (Set direct page register to 0500)
+E5/F40F:	A980    	LDA #$80
+E5/F411:	8D0021  	STA $2100      (Turn off the screen)
+E5/F414:	A900    	LDA #$00
+E5/F416:	8D0042  	STA $4200      (Disable NMI, IRQ, and auto joypad read) (STZ...)
+E5/F419:	78      	SEI            (Disable IRQ)
+E5/F41A:	A95C    	LDA #$5C
+E5/F41C:	8D0015  	STA $1500      (Precede NMI address with JML opcode)
+E5/F41F:	A9DF    	LDA #$DF
+E5/F421:	8D0115  	STA $1501      (Set NMI address, low byte)
+E5/F424:	A9FC    	LDA #$FC
+E5/F426:	8D0215  	STA $1502      (Set NMI address, high byte)
+E5/F429:	A9E5    	LDA #$E5
+E5/F42B:	8D0315  	STA $1503      (Set NMI bank; E5/FCDF)
+E5/F42E:	A95C    	LDA #$5C
+E5/F430:	8D0415  	STA $1504      (Precede IRQ address with JML opcode)
+E5/F433:	A915    	LDA #$15
+E5/F435:	8D0515  	STA $1505      (Set IRQ address, low byte)
+E5/F438:	A9FE    	LDA #$FE
+E5/F43A:	8D0615  	STA $1506      (Set IRQ address, high byte)
+E5/F43D:	A9E5    	LDA #$E5
+E5/F43F:	8D0715  	STA $1507      (Set IRQ bank; E5/FE15) (CLI is never used...)
+E5/F442:	A900    	LDA #$00
+E5/F444:	8D0121  	STA $2101      (Set 8x8 and 16x16 sprite sizes, store character data to $0000 in VRAM) (STZ...)
+E5/F447:	A901    	LDA #$01
+E5/F449:	8D0521  	STA $2105      (BG mode and character size settings)
+E5/F44C:	A900    	LDA #$00
+E5/F44E:	8D0621  	STA $2106      (Deactivate mosaic effect) (STZ...)
+E5/F451:	A940    	LDA #$40
+E5/F453:	8D0721  	STA $2107
+E5/F456:	A950    	LDA #$50
+E5/F458:	8D0821  	STA $2108
+E5/F45B:	A960    	LDA #$60
+E5/F45D:	8D0921  	STA $2109
+E5/F460:	8D0A21  	STA $210A
+E5/F463:	A900    	LDA #$00
+E5/F465:	8D0B21  	STA $210B      (STZ...)
+E5/F468:	8D0C21  	STA $210C      (STZ...)
+E5/F46B:	A9B6    	LDA #$B6
+E5/F46D:	8D0D21  	STA $210D      (BG1/Mode 7 BG horizontal scroll, low byte)
+E5/F470:	A900    	LDA #$00
+E5/F472:	8D0D21  	STA $210D      (BG1/Mode 7 BG horizontal scroll, high byte) (STZ...)
+E5/F475:	A9A8    	LDA #$A8
+E5/F477:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, low byte)
+E5/F47A:	A900    	LDA #$00
+E5/F47C:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, high byte) (STZ...)
+E5/F47F:	A9B2    	LDA #$B2
+E5/F481:	8D0F21  	STA $210F      (BG2 horizontal scroll, low byte)
+E5/F484:	A900    	LDA #$00
+E5/F486:	8D0F21  	STA $210F      (BG2 horizontal scroll, low byte) (STZ...)
+E5/F489:	A9AD    	LDA #$AD
+E5/F48B:	8D1021  	STA $2110      (BG2 vertical scroll, low byte)
+E5/F48E:	A900    	LDA #$00
+E5/F490:	8D1021  	STA $2110      (BG2 vertical scroll, high byte) (STZ...)
+E5/F493:	8D1121  	STA $2111      (BG3 horizontal scroll, low byte)
+E5/F496:	8D1121  	STA $2111      (BG3 horizontal scroll, low byte)
+E5/F499:	8D1221  	STA $2112      (BG3 vertical scroll, low byte)
+E5/F49C:	8D1221  	STA $2112      (BG3 vertical scroll, high byte)
+E5/F49F:	8D1321  	STA $2113      (BG4 horizontal scroll, low byte)
+E5/F4A2:	8D1321  	STA $2113      (BG4 horizontal scroll, high byte)
+E5/F4A5:	8D1421  	STA $2114      (BG4 vertical scroll, low byte)
+E5/F4A8:	8D1421  	STA $2114      (BG4 vertical scroll, high byte)
+E5/F4AB:	A980    	LDA #$80
+E5/F4AD:	8D1521  	STA $2115      (VRAM address increases by a word when $2119 or $213A is accessed)
+E5/F4B0:	A900    	LDA #$00
+E5/F4B2:	8D1A21  	STA $211A      (Mode 7 settings) (STZ...)
+E5/F4B5:	8D1B21  	STA $211B      (Mode 7 matrix A, low byte)
+E5/F4B8:	8D1B21  	STA $211B      (Mode 7 matrix A, high byte)
+E5/F4BB:	8D1C21  	STA $211C      (Mode 7 matrix B, low byte)
+E5/F4BE:	8D1C21  	STA $211C      (Mode 7 matrix B, high byte)
+E5/F4C1:	8D1D21  	STA $211D      (Mode 7 matrix C, low byte)
+E5/F4C4:	8D1D21  	STA $211D      (Mode 7 matrix C, high byte)
+E5/F4C7:	8D1E21  	STA $211E      (Mode 7 matrix D, low byte)
+E5/F4CA:	8D1E21  	STA $211E      (Mode 7 matrix D, high byte)
+E5/F4CD:	8D1F21  	STA $211F      (Mode 7 center X, low byte)
+E5/F4D0:	8D1F21  	STA $211F      (Mode 7 center X, high byte)
+E5/F4D3:	8D2021  	STA $2120      (Mode 7 center Y, low byte)
+E5/F4D6:	8D2021  	STA $2120      (Mode 7 center Y, high byte)
+E5/F4D9:	A933    	LDA #$33
+E5/F4DB:	8D2321  	STA $2123      (Window mask settings for BG1 and BG2)
+E5/F4DE:	A900    	LDA #$00
+E5/F4E0:	8D2421  	STA $2124      (Window mask settings for BG3 and BG4) (STZ...)
+E5/F4E3:	A908    	LDA #$08
+E5/F4E5:	8D2521  	STA $2125      (Window mask settings for OBJ and Color Window)
+E5/F4E8:	A94E    	LDA #$4E
+E5/F4EA:	8D2621  	STA $2126      (Window 1 left position)
+E5/F4ED:	A9B1    	LDA #$B1
+E5/F4EF:	8D2721  	STA $2127      (Window 1 right position)
+E5/F4F2:	A900    	LDA #$00
+E5/F4F4:	8D2821  	STA $2128      (Window 2 left position)
+E5/F4F7:	8D2921  	STA $2129      (Window 2 right position)
+E5/F4FA:	A900    	LDA #$00       (...)
+E5/F4FC:	8D2A21  	STA $212A      (Window mask logic for BGs)
+E5/F4FF:	A900    	LDA #$00
+E5/F501:	8D2B21  	STA $212B      (Window mask logic for OBJ and Color Window)
+E5/F504:	A913    	LDA #$13
+E5/F506:	8D2C21  	STA $212C      (Enable BG1, BG2, and OBJ for main screen)
+E5/F509:	A900    	LDA #$00
+E5/F50B:	8D2D21  	STA $212D      (Disable all layers for subscreen)
+E5/F50E:	A913    	LDA #$13
+E5/F510:	8D2E21  	STA $212E      (Enable window masking for BG1, BG2, and OBJ on main screen)
+E5/F513:	A900    	LDA #$00
+E5/F515:	8D2F21  	STA $212F      (Disable window masking on subscreen)
+E5/F518:	A902    	LDA #$02
+E5/F51A:	8D3021  	STA $2130      (Color addition select)
+E5/F51D:	A900    	LDA #$00
+E5/F51F:	8D3121  	STA $2131      (Disable color math)
+E5/F522:	A9E0    	LDA #$E0
+E5/F524:	8D3221  	STA $2132      (Fixed color data)
+E5/F527:	A900    	LDA #$00
+E5/F529:	8D3321  	STA $2133      (Screen mode/video select)
+E5/F52C:	A9FF    	LDA #$FF
+E5/F52E:	8D0142  	STA $4201      (Programmable I/O port)
+E5/F531:	A900    	LDA #$00
+E5/F533:	8D0242  	STA $4202      (Zero multiplicand A...)
+E5/F536:	8D0342  	STA $4203      (Zero multiplier B...)
+E5/F539:	8D0442  	STA $4204      (Zero dividend C, low byte...)
+E5/F53C:	8D0542  	STA $4205      (Zero dividend C, high byte...)
+E5/F53F:	8D0642  	STA $4206      (Zero divisor B...)
+E5/F542:	8D0742  	STA $4207      (Zero H-Count timer, low byte)
+E5/F545:	8D0842  	STA $4208      (Zero H-Count timer, high byte)
+E5/F548:	8D0942  	STA $4209      (Zero V-Count timer, low byte)
+E5/F54B:	8D0A42  	STA $420A      (Zero V-Count timer, high byte)
+E5/F54E:	8D0B42  	STA $420B      (Disable DMA)
+E5/F551:	8D0C42  	STA $420C      (Disable HDMA)
+E5/F554:	A900    	LDA #$00
+E5/F556:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F559:	8D1721  	STA $2117      (VRAM pointer, high byte; $0000)
+E5/F55C:	A901    	LDA #$01
+E5/F55E:	8D0043  	STA $4300      (Control for DMA channel 0)
+E5/F561:	A918    	LDA #$18
+E5/F563:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2118: VRAM)
+E5/F566:	A900    	LDA #$00
+E5/F568:	8D0243  	STA $4302      (Source address, low byte)
+E5/F56B:	A963    	LDA #$63
+E5/F56D:	8D0343  	STA $4303      (Source address, high byte)
+E5/F570:	A9E9    	LDA #$E9
+E5/F572:	8D0443  	STA $4304      (Source bank; E9/6300, wherein lie the graphics for "THE END")
+E5/F575:	A900    	LDA #$00
+E5/F577:	8D0543  	STA $4305
+E5/F57A:	A90D    	LDA #$0D
+E5/F57C:	8D0643  	STA $4306      (Number of bytes: #$0D00)
+E5/F57F:	A901    	LDA #$01
+E5/F581:	8D0B42  	STA $420B      (Enable DMA channel 0)
+E5/F584:	A900    	LDA #$00
+E5/F586:	8D0243  	STA $4302      (Source address, low byte)
+E5/F589:	A9FE    	LDA #$FE
+E5/F58B:	8D0343  	STA $4303      (Source address, high byte)
+E5/F58E:	A9C9    	LDA #$C9
+E5/F590:	8D0443  	STA $4304      (Source bank; C9/FE00)
+E5/F593:	A900    	LDA #$00
+E5/F595:	8D0543  	STA $4305
+E5/F598:	A901    	LDA #$01
+E5/F59A:	8D0643  	STA $4306      (Number of bytes: #$0100)
+E5/F59D:	A901    	LDA #$01
+E5/F59F:	8D0B42  	STA $420B      (Enable DMA channel 0)
+E5/F5A2:	A900    	LDA #$00
+E5/F5A4:	8D2121  	STA $2121      (Zero CGRAM address)
+E5/F5A7:	A900    	LDA #$00
+E5/F5A9:	8D0043  	STA $4300      (Control for DMA channel 0)
+E5/F5AC:	A922    	LDA #$22
+E5/F5AE:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2122: CGRAM)
+E5/F5B1:	A900    	LDA #$00
+E5/F5B3:	8D0243  	STA $4302      (Source address, low byte)
+E5/F5B6:	A9FF    	LDA #$FF
+E5/F5B8:	8D0343  	STA $4303      (Source address, high byte)
+E5/F5BB:	A9C9    	LDA #$C9
+E5/F5BD:	8D0443  	STA $4304      (Source bank; C9/FF00)
+E5/F5C0:	A900    	LDA #$00
+E5/F5C2:	8D0543  	STA $4305
+E5/F5C5:	A901    	LDA #$01
+E5/F5C7:	8D0643  	STA $4306      (Number of bytes: #$0100)
+E5/F5CA:	A901    	LDA #$01
+E5/F5CC:	8D0B42  	STA $420B      (Enable DMA channel 0)
+E5/F5CF:	A900    	LDA #$00
+E5/F5D1:	8D0043  	STA $4300      (Control for DMA channel 0)
+E5/F5D4:	A922    	LDA #$22
+E5/F5D6:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2122: CGRAM)
+E5/F5D9:	A900    	LDA #$00
+E5/F5DB:	8D0243  	STA $4302      (Source address, low byte)
+E5/F5DE:	A9FF    	LDA #$FF
+E5/F5E0:	8D0343  	STA $4303      (Source address, high byte)
+E5/F5E3:	A9C9    	LDA #$C9
+E5/F5E5:	8D0443  	STA $4304      (Source bank; C9/FF00)
+E5/F5E8:	A900    	LDA #$00
+E5/F5EA:	8D0543  	STA $4305
+E5/F5ED:	A901    	LDA #$01
+E5/F5EF:	8D0643  	STA $4306      (Number of bytes: #$0100)
+E5/F5F2:	A901    	LDA #$01
+E5/F5F4:	8D0B42  	STA $420B      (Enable DMA channel 0)
+E5/F5F7:	A20000  	LDX #$0000     (Zero X)
+E5/F5FA:	9B      	TXY            (Zero Y)
+E5/F5FB:	BF80FFC9	LDA $C9FF80,X
+E5/F5FF:	8524    	STA $24
+E5/F601:	291F    	AND #$1F
+E5/F603:	0A      	ASL A          (Multiply by 2)
+E5/F604:	0A      	ASL A          (Multiply by 4)
+E5/F605:	99C008  	STA $08C0,Y
+E5/F608:	BF81FFC9	LDA $C9FF81,X
+E5/F60C:	4A      	LSR A          (Divide by 2)
+E5/F60D:	6624    	ROR $24
+E5/F60F:	4A      	LSR A          (Divide by 2)
+E5/F610:	6624    	ROR $24
+E5/F612:	0A      	ASL A          (Multiply by 2)
+E5/F613:	0A      	ASL A          (Multiply by 4)
+E5/F614:	99C408  	STA $08C4,Y
+E5/F617:	A524    	LDA $24
+E5/F619:	29F8    	AND #$F8
+E5/F61B:	4A      	LSR A          (Divide by 2)
+E5/F61C:	99C208  	STA $08C2,Y
+E5/F61F:	A900    	LDA #$00
+E5/F621:	990008  	STA $0800,Y
+E5/F624:	990108  	STA $0801,Y
+E5/F627:	990208  	STA $0802,Y
+E5/F62A:	990308  	STA $0803,Y
+E5/F62D:	990408  	STA $0804,Y
+E5/F630:	990508  	STA $0805,Y
+E5/F633:	9D8009  	STA $0980,X
+E5/F636:	9D8109  	STA $0981,X
+E5/F639:	C8      	INY
+E5/F63A:	C8      	INY
+E5/F63B:	C8      	INY
+E5/F63C:	C8      	INY
+E5/F63D:	C8      	INY
+E5/F63E:	C8      	INY
+E5/F63F:	E8      	INX
+E5/F640:	E8      	INX
+E5/F641:	E02000  	CPX #$0020
+E5/F644:	D0B5    	BNE $F5FB      (If not, loop)
+E5/F646:	A20000  	LDX #$0000     (Zero X)
+E5/F649:	9B      	TXY            (Zero Y)
+E5/F64A:	BF60FFC9	LDA $C9FF60,X
+E5/F64E:	8524    	STA $24
+E5/F650:	291F    	AND #$1F
+E5/F652:	0A      	ASL A          (Multiply by 2)
+E5/F653:	992009  	STA $0920,Y
+E5/F656:	BF61FFC9	LDA $C9FF61,X
+E5/F65A:	4A      	LSR A          (Divide by 2)
+E5/F65B:	6624    	ROR $24
+E5/F65D:	4A      	LSR A          (Divide by 2)
+E5/F65E:	6624    	ROR $24
+E5/F660:	0A      	ASL A          (Multiply by 2)
+E5/F661:	992409  	STA $0924,Y
+E5/F664:	A524    	LDA $24
+E5/F666:	29F8    	AND #$F8
+E5/F668:	4A      	LSR A          (Divide by 2)
+E5/F669:	4A      	LSR A          (Divide by 4)
+E5/F66A:	992209  	STA $0922,Y
+E5/F66D:	A900    	LDA #$00
+E5/F66F:	996008  	STA $0860,Y
+E5/F672:	996108  	STA $0861,Y
+E5/F675:	996208  	STA $0862,Y
+E5/F678:	996308  	STA $0863,Y
+E5/F67B:	996408  	STA $0864,Y
+E5/F67E:	996508  	STA $0865,Y
+E5/F681:	9DA009  	STA $09A0,X
+E5/F684:	9DA109  	STA $09A1,X
+E5/F687:	C8      	INY
+E5/F688:	C8      	INY
+E5/F689:	C8      	INY
+E5/F68A:	C8      	INY
+E5/F68B:	C8      	INY
+E5/F68C:	C8      	INY
+E5/F68D:	E8      	INX
+E5/F68E:	E8      	INX
+E5/F68F:	E02000  	CPX #$0020
+E5/F692:	D0B6    	BNE $F64A      (If not, loop)
+E5/F694:	A20000  	LDX #$0000     (Zero X)
+E5/F697:	A900    	LDA #$00
+E5/F699:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F69C:	A940    	LDA #$40
+E5/F69E:	8D1721  	STA $2117      (VRAM pointer, high byte; $8000)
+E5/F6A1:	A906    	LDA #$06
+E5/F6A3:	8D1821  	STA $2118      (VRAM data write, low byte: 06)
+E5/F6A6:	A924    	LDA #$24
+E5/F6A8:	8D1921  	STA $2119      (VRAM data write, high byte: 24)
+E5/F6AB:	E8      	INX
+E5/F6AC:	E00D00  	CPX #$000D
+E5/F6AF:	D0F0    	BNE $F6A1      (If not, loop)
+E5/F6B1:	A20000  	LDX #$0000     (Zero X)
+E5/F6B4:	A920    	LDA #$20
+E5/F6B6:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F6B9:	A940    	LDA #$40       (ASL A...)
+E5/F6BB:	8D1721  	STA $2117      (VRAM pointer, high byte; $8040)
+E5/F6BE:	A906    	LDA #$06
+E5/F6C0:	8D1821  	STA $2118      (VRAM data write, low byte: 06)
+E5/F6C3:	A924    	LDA #$24
+E5/F6C5:	8D1921  	STA $2119      (VRAM data write, high byte: 24)
+E5/F6C8:	E8      	INX
+E5/F6C9:	E00D00  	CPX #$000D
+E5/F6CC:	D0F0    	BNE $F6BE      (If not, loop)
+E5/F6CE:	A20000  	LDX #$0000     (Zero X)
+E5/F6D1:	A940    	LDA #$40
+E5/F6D3:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F6D6:	A940    	LDA #$40       (...)
+E5/F6D8:	8D1721  	STA $2117      (VRAM pointer, high byte; $8080)
+E5/F6DB:	A906    	LDA #$06
+E5/F6DD:	8D1821  	STA $2118      (VRAM data write, low byte: 06)
+E5/F6E0:	A924    	LDA #$24
+E5/F6E2:	8D1921  	STA $2119      (VRAM data write, high byte: 24)
+E5/F6E5:	E8      	INX
+E5/F6E6:	E00D00  	CPX #$000D
+E5/F6E9:	D0F0    	BNE $F6DB      (If not, loop)
+E5/F6EB:	A960    	LDA #$60
+E5/F6ED:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F6F0:	A940    	LDA #$40
+E5/F6F2:	8D1721  	STA $2117      (VRAM pointer, high byte; $80C0)
+E5/F6F5:	A900    	LDA #$00
+E5/F6F7:	8D1821  	STA $2118      (VRAM data write, low byte: 00)
+E5/F6FA:	48      	PHA
+E5/F6FB:	A924    	LDA #$24
+E5/F6FD:	8D1921  	STA $2119      (VRAM data write, high byte: 24)
+E5/F700:	68      	PLA
+E5/F701:	1A      	INC A
+E5/F702:	C90D    	CMP #$0D
+E5/F704:	D0F1    	BNE $F6F7      (If not, loop)
+E5/F706:	A980    	LDA #$80
+E5/F708:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F70B:	A940    	LDA #$40
+E5/F70D:	8D1721  	STA $2117      (VRAM pointer, high byte; $8100)
+E5/F710:	A910    	LDA #$10
+E5/F712:	8D1821  	STA $2118      (VRAM data write, low byte: 10)
+E5/F715:	48      	PHA
+E5/F716:	A924    	LDA #$24
+E5/F718:	8D1921  	STA $2119      (VRAM data write, high byte: 24)
+E5/F71B:	68      	PLA
+E5/F71C:	1A      	INC A
+E5/F71D:	C91D    	CMP #$1D
+E5/F71F:	D0F1    	BNE $F712      (If not, loop)
+E5/F721:	A9A0    	LDA #$A0
+E5/F723:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F726:	A940    	LDA #$40
+E5/F728:	8D1721  	STA $2117      (VRAM pointer, high byte; $8140)
+E5/F72B:	A920    	LDA #$20
+E5/F72D:	8D1821  	STA $2118      (VRAM data write, low byte: 20)
+E5/F730:	48      	PHA
+E5/F731:	A924    	LDA #$24
+E5/F733:	8D1921  	STA $2119      (VRAM data write, high byte: 24)
+E5/F736:	68      	PLA
+E5/F737:	1A      	INC A
+E5/F738:	C92D    	CMP #$2D
+E5/F73A:	D0F1    	BNE $F72D      (If not, loop)
+E5/F73C:	A900    	LDA #$00
+E5/F73E:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F741:	A950    	LDA #$50
+E5/F743:	8D1721  	STA $2117      (VRAM pointer, high byte; $A000)
+E5/F746:	A930    	LDA #$30
+E5/F748:	8D1821  	STA $2118      (VRAM data write, low byte: 30)
+E5/F74B:	48      	PHA
+E5/F74C:	A92C    	LDA #$2C
+E5/F74E:	8D1921  	STA $2119      (VRAM data write, high byte: 2C)
+E5/F751:	68      	PLA
+E5/F752:	1A      	INC A
+E5/F753:	C93E    	CMP #$3E
+E5/F755:	D0F1    	BNE $F748      (If not, loop)
+E5/F757:	A920    	LDA #$20
+E5/F759:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F75C:	A950    	LDA #$50
+E5/F75E:	8D1721  	STA $2117      (VRAM pointer, high byte; $A040)
+E5/F761:	A940    	LDA #$40
+E5/F763:	8D1821  	STA $2118      (VRAM data write, low byte: 40)
+E5/F766:	48      	PHA
+E5/F767:	A92C    	LDA #$2C
+E5/F769:	8D1921  	STA $2119      (VRAM data write, high byte: 2C)
+E5/F76C:	68      	PLA
+E5/F76D:	1A      	INC A
+E5/F76E:	C94E    	CMP #$4E
+E5/F770:	D0F1    	BNE $F763      (If not, loop)
+E5/F772:	A940    	LDA #$40
+E5/F774:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F777:	A950    	LDA #$50
+E5/F779:	8D1721  	STA $2117      (VRAM pointer, high byte; $A080)
+E5/F77C:	A950    	LDA #$50
+E5/F77E:	8D1821  	STA $2118      (VRAM data write, low byte: 50)
+E5/F781:	48      	PHA
+E5/F782:	A92C    	LDA #$2C
+E5/F784:	8D1921  	STA $2119      (VRAM data write, high byte: 2C)
+E5/F787:	68      	PLA
+E5/F788:	1A      	INC A
+E5/F789:	C95E    	CMP #$5E
+E5/F78B:	D0F1    	BNE $F77E      (If not, loop)
+E5/F78D:	A960    	LDA #$60
+E5/F78F:	8D1621  	STA $2116      (VRAM pointer, low byte)
+E5/F792:	A950    	LDA #$50
+E5/F794:	8D1721  	STA $2117      (VRAM pointer, high byte; $A0C0)
+E5/F797:	A960    	LDA #$60
+E5/F799:	8D1821  	STA $2118      (VRAM data write, low byte: 60)
+E5/F79C:	48      	PHA
+E5/F79D:	A92C    	LDA #$2C
+E5/F79F:	8D1921  	STA $2119      (VRAM data write, high byte: 2C)
+E5/F7A2:	68      	PLA
+E5/F7A3:	1A      	INC A
+E5/F7A4:	C96E    	CMP #$6E
+E5/F7A6:	D0F1    	BNE $F799      (If not, loop)
+E5/F7A8:	A00002  	LDY #$0200
+E5/F7AB:	208EF9  	JSR $F98E
+E5/F7AE:	88      	DEY
+E5/F7AF:	88      	DEY
+E5/F7B0:	88      	DEY
+E5/F7B1:	88      	DEY
+E5/F7B2:	D0F7    	BNE $F7AB
+E5/F7B4:	A22000  	LDX #$0020
+E5/F7B7:	9EFF19  	STZ $19FF,X
+E5/F7BA:	CA      	DEX
+E5/F7BB:	D0FA    	BNE $F7B7
+E5/F7BD:	A957    	LDA #$57
+E5/F7BF:	8D001B  	STA $1B00
+E5/F7C2:	A918    	LDA #$18
+E5/F7C4:	8D011B  	STA $1B01
+E5/F7C7:	A910    	LDA #$10
+E5/F7C9:	8D021B  	STA $1B02
+E5/F7CC:	A918    	LDA #$18
+E5/F7CE:	8D031B  	STA $1B03
+E5/F7D1:	A94E    	LDA #$4E
+E5/F7D3:	8D041B  	STA $1B04
+E5/F7D6:	A9B1    	LDA #$B1
+E5/F7D8:	8D051B  	STA $1B05
+E5/F7DB:	A901    	LDA #$01
+E5/F7DD:	8D061B  	STA $1B06
+E5/F7E0:	A918    	LDA #$18
+E5/F7E2:	8D071B  	STA $1B07
+E5/F7E5:	A910    	LDA #$10
+E5/F7E7:	8D081B  	STA $1B08
+E5/F7EA:	A900    	LDA #$00
+E5/F7EC:	8D091B  	STA $1B09
+E5/F7EF:	A20200  	LDX #$0002
+E5/F7F2:	8634    	STX $34
+E5/F7F4:	A902    	LDA #$02
+E5/F7F6:	8514    	STA $14
+E5/F7F8:	A980    	LDA #$80
+E5/F7FA:	8D0042  	STA $4200      (Enable NMI; disable IRQ and auto joypad read)
+E5/F7FD:	A9A8    	LDA #$A8
+E5/F7FF:	8540    	STA $40
+E5/F801:	643A    	STZ $3A
+E5/F803:	643B    	STZ $3B
+E5/F805:	A901    	LDA #$01
+E5/F807:	853C    	STA $3C
+E5/F809:	6400    	STZ $00
+E5/F80B:	6401    	STZ $01
+E5/F80D:	6438    	STZ $38        (Erase all traces of an NMI occurrence)
+E5/F80F:	A538    	LDA $38
+E5/F811:	F0FC    	BEQ $F80F      (Loop until an NMI occurs)
+E5/F813:	A90F    	LDA #$0F
+E5/F815:	8D0021  	STA $2100      (Turn on the screen; set brightness to normal)
+E5/F818:	A538    	LDA $38
+E5/F81A:	F0FC    	BEQ $F818      (Loop until an NMI occurs)
+E5/F81C:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F81E:	2016FA  	JSR $FA16
+E5/F821:	AD4121  	LDA $2141      (APU I/O register 1)
+E5/F824:	F0F2    	BEQ $F818
+E5/F826:	A538    	LDA $38
+E5/F828:	F0FC    	BEQ $F826      (Loop until an NMI occurs)
+E5/F82A:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F82C:	C634    	DEC $34
+E5/F82E:	D0F6    	BNE $F826
+E5/F830:	A902    	LDA #$02
+E5/F832:	8534    	STA $34
+E5/F834:	A540    	LDA $40
+E5/F836:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, low byte)
+E5/F839:	A900    	LDA #$00
+E5/F83B:	8D0E21  	STA $210E      (BG1/Mode 7 BG vertical scroll, high byte) (STZ...)
+E5/F83E:	A540    	LDA $40
+E5/F840:	1A      	INC A
+E5/F841:	8540    	STA $40
+E5/F843:	C9C1    	CMP #$C1
+E5/F845:	D0DF    	BNE $F826      (If not, loop)
+E5/F847:	A538    	LDA $38
+E5/F849:	F0FC    	BEQ $F847      (Loop until an NMI occurs)
+E5/F84B:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F84D:	2016FA  	JSR $FA16
+E5/F850:	A902    	LDA #$02
+E5/F852:	CD4121  	CMP $2141      (APU I/O register 1)
+E5/F855:	D0F0    	BNE $F847
+E5/F857:	A980    	LDA #$80
+E5/F859:	8544    	STA $44
+E5/F85B:	A538    	LDA $38
+E5/F85D:	F0FC    	BEQ $F85B      (Loop until an NMI occurs)
+E5/F85F:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F861:	A20000  	LDX #$0000     (Zero X)
+E5/F864:	9B      	TXY            (Zero Y)
+E5/F865:	B92009  	LDA $0920,Y
+E5/F868:	18      	CLC            (Clear Carry for addition)
+E5/F869:	796008  	ADC $0860,Y
+E5/F86C:	996008  	STA $0860,Y
+E5/F86F:	A900    	LDA #$00
+E5/F871:	796108  	ADC $0861,Y
+E5/F874:	996108  	STA $0861,Y
+E5/F877:	8528    	STA $28
+E5/F879:	B92409  	LDA $0924,Y
+E5/F87C:	18      	CLC            (Clear Carry for addition)
+E5/F87D:	796408  	ADC $0864,Y
+E5/F880:	996408  	STA $0864,Y
+E5/F883:	A900    	LDA #$00
+E5/F885:	796508  	ADC $0865,Y
+E5/F888:	996508  	STA $0865,Y
+E5/F88B:	9DA109  	STA $09A1,X
+E5/F88E:	B92209  	LDA $0922,Y
+E5/F891:	18      	CLC            (Clear Carry for addition)
+E5/F892:	796208  	ADC $0862,Y
+E5/F895:	996208  	STA $0862,Y
+E5/F898:	A900    	LDA #$00
+E5/F89A:	796308  	ADC $0863,Y
+E5/F89D:	996308  	STA $0863,Y
+E5/F8A0:	0A      	ASL A          (Multiply by 2)
+E5/F8A1:	0A      	ASL A          (Multiply by 4)
+E5/F8A2:	0A      	ASL A          (Multiply by 8)
+E5/F8A3:	0A      	ASL A          (Multiply by 16)
+E5/F8A4:	3EA109  	ROL $09A1,X
+E5/F8A7:	0A      	ASL A          (Multiply by 2)
+E5/F8A8:	3EA109  	ROL $09A1,X
+E5/F8AB:	0528    	ORA $28
+E5/F8AD:	9DA009  	STA $09A0,X
+E5/F8B0:	C8      	INY
+E5/F8B1:	C8      	INY
+E5/F8B2:	C8      	INY
+E5/F8B3:	C8      	INY
+E5/F8B4:	C8      	INY
+E5/F8B5:	C8      	INY
+E5/F8B6:	E8      	INX
+E5/F8B7:	E8      	INX
+E5/F8B8:	E02000  	CPX #$0020
+E5/F8BB:	D0A8    	BNE $F865      (If not, loop)
+E5/F8BD:	2016FA  	JSR $FA16
+E5/F8C0:	C644    	DEC $44
+E5/F8C2:	D097    	BNE $F85B
+E5/F8C4:	A538    	LDA $38
+E5/F8C6:	F0FC    	BEQ $F8C4      (Loop until an NMI occurs)
+E5/F8C8:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F8CA:	2016FA  	JSR $FA16
+E5/F8CD:	AD4321  	LDA $2143      (APU I/O register 3)
+E5/F8D0:	D0F2    	BNE $F8C4
+E5/F8D2:	A910    	LDA #$10
+E5/F8D4:	8D0013  	STA $1300
+E5/F8D7:	A901    	LDA #$01
+E5/F8D9:	8D0113  	STA $1301      (Set song to "The Prelude")
+E5/F8DC:	A900    	LDA #$00
+E5/F8DE:	8D0213  	STA $1302      (Set volume to zero)
+E5/F8E1:	220400C5	JSL $C50004    (Play song)
+E5/F8E5:	A9FF    	LDA #$FF
+E5/F8E7:	8D0513  	STA $1305
+E5/F8EA:	A2B004  	LDX #$04B0
+E5/F8ED:	8634    	STX $34
+E5/F8EF:	A940    	LDA #$40
+E5/F8F1:	8544    	STA $44
+E5/F8F3:	A538    	LDA $38
+E5/F8F5:	F0FC    	BEQ $F8F3      (Loop until an NMI occurs)
+E5/F8F7:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F8F9:	2016FA  	JSR $FA16
+E5/F8FC:	A634    	LDX $34
+E5/F8FE:	CA      	DEX
+E5/F8FF:	8634    	STX $34
+E5/F901:	D0F0    	BNE $F8F3
+E5/F903:	A910    	LDA #$10
+E5/F905:	8D0013  	STA $1300
+E5/F908:	A901    	LDA #$01
+E5/F90A:	8D0113  	STA $1301      (Set song to "The Prelude")
+E5/F90D:	A9FF    	LDA #$FF
+E5/F90F:	8D0213  	STA $1302      (Set volume to maximum)
+E5/F912:	220400C5	JSL $C50004    (Play song)
+E5/F916:	A940    	LDA #$40
+E5/F918:	8544    	STA $44
+E5/F91A:	A538    	LDA $38
+E5/F91C:	F0FC    	BEQ $F91A      (Loop until an NMI occurs)
+E5/F91E:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F920:	A20000  	LDX #$0000     (Zero X)
+E5/F923:	9B      	TXY            (Zero Y)
+E5/F924:	B9C008  	LDA $08C0,Y
+E5/F927:	18      	CLC            (Clear Carry for addition)
+E5/F928:	790008  	ADC $0800,Y
+E5/F92B:	990008  	STA $0800,Y
+E5/F92E:	A900    	LDA #$00
+E5/F930:	790108  	ADC $0801,Y
+E5/F933:	990108  	STA $0801,Y
+E5/F936:	8528    	STA $28
+E5/F938:	B9C408  	LDA $08C4,Y
+E5/F93B:	18      	CLC            (Clear Carry for addition)
+E5/F93C:	790408  	ADC $0804,Y
+E5/F93F:	990408  	STA $0804,Y
+E5/F942:	A900    	LDA #$00
+E5/F944:	790508  	ADC $0805,Y
+E5/F947:	990508  	STA $0805,Y
+E5/F94A:	9D8109  	STA $0981,X
+E5/F94D:	B9C208  	LDA $08C2,Y
+E5/F950:	18      	CLC            (Clear Carry for addition)
+E5/F951:	790208  	ADC $0802,Y
+E5/F954:	990208  	STA $0802,Y
+E5/F957:	A900    	LDA #$00
+E5/F959:	790308  	ADC $0803,Y
+E5/F95C:	990308  	STA $0803,Y
+E5/F95F:	0A      	ASL A
+E5/F960:	0A      	ASL A
+E5/F961:	0A      	ASL A
+E5/F962:	0A      	ASL A
+E5/F963:	3E8109  	ROL $0981,X
+E5/F966:	0A      	ASL A          (Multiply by 2)
+E5/F967:	3E8109  	ROL $0981,X
+E5/F96A:	0528    	ORA $28
+E5/F96C:	9D8009  	STA $0980,X
+E5/F96F:	C8      	INY
+E5/F970:	C8      	INY
+E5/F971:	C8      	INY
+E5/F972:	C8      	INY
+E5/F973:	C8      	INY
+E5/F974:	C8      	INY
+E5/F975:	E8      	INX
+E5/F976:	E8      	INX
+E5/F977:	E02000  	CPX #$0020
+E5/F97A:	D0A8    	BNE $F924      (If not, loop)
+E5/F97C:	2016FA  	JSR $FA16
+E5/F97F:	C644    	DEC $44
+E5/F981:	D097    	BNE $F91A
+E5/F983:	A538    	LDA $38
+E5/F985:	F0FC    	BEQ $F983      (Loop until an NMI occurs)
+E5/F987:	6438    	STZ $38        (Erase all traces of the NMI occurrence)
+E5/F989:	2016FA  	JSR $FA16
+E5/F98C:	80F5    	BRA $F983      (Loop infinitely)
+
+E5/F98E:	A600    	LDX $00
+E5/F990:	E600    	INC $00
+E5/F992:	BF00FDC0	LDA $C0FD00,X  (Load a random number)
+E5/F996:	8502    	STA $02        (Save it for later use)
+E5/F998:	2907    	AND #$07       (0 to 7)
+E5/F99A:	8524    	STA $24
+E5/F99C:	99FC0C  	STA $0CFC,Y
+E5/F99F:	A502    	LDA $02        (Load the random number from before)
+E5/F9A1:	293F    	AND #$3F
+E5/F9A3:	18      	CLC            (Clear Carry for addition)
+E5/F9A4:	6960    	ADC #$60
+E5/F9A6:	99FC17  	STA $17FC,Y
+E5/F9A9:	A602    	LDX $02        (Load X with the random number from before)
+E5/F9AB:	BF00FDC0	LDA $C0FD00,X  (Load a random number)
+E5/F9AF:	8502    	STA $02        (Replace the old value with the new one)
+E5/F9B1:	2907    	AND #$07       (0 to 7)
+E5/F9B3:	D001    	BNE $F9B6      (Branch if not zero)
+E5/F9B5:	1A      	INC A          (Add one)
+E5/F9B6:	99FD0C  	STA $0CFD,Y
+E5/F9B9:	0524    	ORA $24
+E5/F9BB:	8525    	STA $25
+E5/F9BD:	A502    	LDA $02        (Load the random number from before)
+E5/F9BF:	291F    	AND #$1F
+E5/F9C1:	18      	CLC            (Clear Carry for addition)
+E5/F9C2:	6960    	ADC #$60
+E5/F9C4:	99FD17  	STA $17FD,Y
+E5/F9C7:	A602    	LDX $02        (Load the random number from before; it'll serve to load a new one)
+E5/F9C9:	BF00FDC0	LDA $C0FD00,X  (Load a random number)
+E5/F9CD:	293F    	AND #$3F       (0 to 63)
+E5/F9CF:	99FE0A  	STA $0AFE,Y
+E5/F9D2:	290F    	AND #$0F       (0 to 15)
+E5/F9D4:	D001    	BNE $F9D7      (Branch if not zero)
+E5/F9D6:	1A      	INC A          (Add one)
+E5/F9D7:	99FE0C  	STA $0CFE,Y
+E5/F9DA:	A525    	LDA $25
+E5/F9DC:	C904    	CMP #$04
+E5/F9DE:	9026    	BCC $FA06
+E5/F9E0:	B9FE0C  	LDA $0CFE,Y
+E5/F9E3:	C907    	CMP #$07
+E5/F9E5:	B01F    	BCS $FA06
+E5/F9E7:	0A      	ASL A          (Multiply by 2)
+E5/F9E8:	99FE0C  	STA $0CFE,Y    (Save changes)
+E5/F9EB:	B9FE0A  	LDA $0AFE,Y
+E5/F9EE:	4A      	LSR A          (Divide by 2)
+E5/F9EF:	99FE0A  	STA $0AFE,Y    (Save changes)
+E5/F9F2:	8012    	BRA $FA06
+E5/F9F4:	B9FE0C  	LDA $0CFE,Y    (This segment appears unused...)
+E5/F9F7:	C908    	CMP #$08
+E5/F9F9:	900B    	BCC $FA06
+E5/F9FB:	4A      	LSR A          (Divide by 2)
+E5/F9FC:	99FE0C  	STA $0CFE,Y    (Save changes)
+E5/F9FF:	B9FE0A  	LDA $0AFE,Y
+E5/FA02:	0A      	ASL A          (Multiply by 2)
+E5/FA03:	99FE0A  	STA $0AFE,Y    (Save changes)
+E5/FA06:	A91F    	LDA #$1F
+E5/FA08:	99FE17  	STA $17FE,Y
+E5/FA0B:	A938    	LDA #$38
+E5/FA0D:	99FF17  	STA $17FF,Y
+E5/FA10:	A900    	LDA #$00
+E5/FA12:	99FF0C  	STA $0CFF,Y
+E5/FA15:	60      	RTS
+
+E5/FA16:	A00002  	LDY #$0200
+E5/FA19:	B9FC0C  	LDA $0CFC,Y
+E5/FA1C:	1003    	BPL $FA21
+E5/FA1E:	208EF9  	JSR $F98E
+E5/FA21:	88      	DEY
+E5/FA22:	88      	DEY
+E5/FA23:	88      	DEY
+E5/FA24:	88      	DEY
+E5/FA25:	D0F2    	BNE $FA19
+E5/FA27:	60      	RTS
+
+Wave effect
+E5/FA28:	A950    	LDA #$50
+E5/FA2A:	8D001C  	STA $1C00
+E5/FA2D:	9C011C  	STZ $1C01
+E5/FA30:	9C021C  	STZ $1C02
+E5/FA33:	A9C0    	LDA #$C0
+E5/FA35:	8D031C  	STA $1C03
+E5/FA38:	6405    	STZ $05
+E5/FA3A:	8A      	TXA            (Transfer X to A)
+E5/FA3B:	0A      	ASL A          (Multiply by 2)
+E5/FA3C:	8504    	STA $04
+E5/FA3E:	A604    	LDX $04
+E5/FA40:	A00000  	LDY #$0000     (Zero Y)
+E5/FA43:	BF1EFEE5	LDA $E5FE1E,X  (Load a value from the table)
+E5/FA47:	99041C  	STA $1C04,Y
+E5/FA4A:	E8      	INX            (Point to the next ROM byte)
+E5/FA4B:	C8      	INY            (Point to the next RAM byte)
+E5/FA4C:	C04000  	CPY #$0040
+E5/FA4F:	D0F2    	BNE $FA43      (If not, loop)
+E5/FA51:	A900    	LDA #$00
+E5/FA53:	99041C  	STA $1C04,Y
+E5/FA56:	60      	RTS
+
+E5/FA57:	A08000  	LDY #$0080
+E5/FA5A:	A53E    	LDA $3E
+E5/FA5C:	2903    	AND #$03
+E5/FA5E:	0A      	ASL A          (Multiply by 2)
+E5/FA5F:	8504    	STA $04
+E5/FA61:	6405    	STZ $05
+E5/FA63:	A604    	LDX $04
+E5/FA65:	FC16FE  	JSR ($FE16,X)
+E5/FA68:	E63E    	INC $3E
+E5/FA6A:	60      	RTS
+
+From E5/FA65, X = 0
+E5/FA6B:	B9FC17  	LDA $17FC,Y
+E5/FA6E:	300D    	BMI $FA7D
+E5/FA70:	38      	SEC            (Set Carry for subtraction)
+E5/FA71:	F9FC0C  	SBC $0CFC,Y
+E5/FA74:	B014    	BCS $FA8A      (Branch if no underflow)
+E5/FA76:	A9FF    	LDA #$FF
+E5/FA78:	99FC0C  	STA $0CFC,Y
+E5/FA7B:	8067    	BRA $FAE4
+E5/FA7D:	18      	CLC            (Clear Carry for addition)
+E5/FA7E:	79FC0C  	ADC $0CFC,Y
+E5/FA81:	9007    	BCC $FA8A      (Branch if no overflow)
+E5/FA83:	A9FF    	LDA #$FF
+E5/FA85:	99FC0C  	STA $0CFC,Y
+E5/FA88:	805A    	BRA $FAE4
+E5/FA8A:	99FC17  	STA $17FC,Y
+E5/FA8D:	B9FD17  	LDA $17FD,Y
+E5/FA90:	C970    	CMP #$70
+E5/FA92:	B00D    	BCS $FAA1
+E5/FA94:	38      	SEC            (Set Carry for subtraction)
+E5/FA95:	F9FD0C  	SBC $0CFD,Y
+E5/FA98:	B016    	BCS $FAB0      (Branch if no underflow)
+E5/FA9A:	A9FF    	LDA #$FF
+E5/FA9C:	99FC0C  	STA $0CFC,Y
+E5/FA9F:	8043    	BRA $FAE4
+E5/FAA1:	18      	CLC            (Clear Carry for addition)
+E5/FAA2:	79FD0C  	ADC $0CFD,Y
+E5/FAA5:	C9E0    	CMP #$E0
+E5/FAA7:	9007    	BCC $FAB0
+E5/FAA9:	A9FF    	LDA #$FF
+E5/FAAB:	99FC0C  	STA $0CFC,Y
+E5/FAAE:	8034    	BRA $FAE4
+E5/FAB0:	99FD17  	STA $17FD,Y
+E5/FAB3:	B9FE0A  	LDA $0AFE,Y
+E5/FAB6:	18      	CLC            (Clear Carry for addition)
+E5/FAB7:	79FE0C  	ADC $0CFE,Y
+E5/FABA:	9002    	BCC $FABE      (Branch if no overflow)
+E5/FABC:	A9FF    	LDA #$FF
+E5/FABE:	99FE0A  	STA $0AFE,Y
+E5/FAC1:	C940    	CMP #$40
+E5/FAC3:	901F    	BCC $FAE4
+E5/FAC5:	C9C0    	CMP #$C0
+E5/FAC7:	B004    	BCS $FACD
+E5/FAC9:	A90F    	LDA #$0F
+E5/FACB:	8014    	BRA $FAE1
+E5/FACD:	C9F0    	CMP #$F0
+E5/FACF:	B009    	BCS $FADA
+E5/FAD1:	A901    	LDA #$01
+E5/FAD3:	206BFC  	JSR $FC6B
+E5/FAD6:	A90E    	LDA #$0E
+E5/FAD8:	8007    	BRA $FAE1
+E5/FADA:	A902    	LDA #$02
+E5/FADC:	206BFC  	JSR $FC6B
+E5/FADF:	A90D    	LDA #$0D
+E5/FAE1:	99FE17  	STA $17FE,Y
+E5/FAE4:	88      	DEY
+E5/FAE5:	88      	DEY
+E5/FAE6:	88      	DEY
+E5/FAE7:	88      	DEY
+E5/FAE8:	D081    	BNE $FA6B
+E5/FAEA:	60      	RTS
+
+From E5/FA65, X = 2
+E5/FAEB:	B97C18  	LDA $187C,Y
+E5/FAEE:	300D    	BMI $FAFD
+E5/FAF0:	38      	SEC            (Set Carry for subtraction)
+E5/FAF1:	F97C0D  	SBC $0D7C,Y
+E5/FAF4:	B014    	BCS $FB0A
+E5/FAF6:	A9FF    	LDA #$FF
+E5/FAF8:	997C0D  	STA $0D7C,Y
+E5/FAFB:	8067    	BRA $FB64
+E5/FAFD:	18      	CLC            (Clear Carry for addition)
+E5/FAFE:	797C0D  	ADC $0D7C,Y
+E5/FB01:	9007    	BCC $FB0A
+E5/FB03:	A9FF    	LDA #$FF
+E5/FB05:	997C0D  	STA $0D7C,Y
+E5/FB08:	805A    	BRA $FB64
+E5/FB0A:	997C18  	STA $187C,Y
+E5/FB0D:	B97D18  	LDA $187D,Y
+E5/FB10:	C970    	CMP #$70
+E5/FB12:	B00D    	BCS $FB21
+E5/FB14:	38      	SEC            (Set Carry for subtraction)
+E5/FB15:	F97D0D  	SBC $0D7D,Y
+E5/FB18:	B016    	BCS $FB30
+E5/FB1A:	A9FF    	LDA #$FF
+E5/FB1C:	997C0D  	STA $0D7C,Y
+E5/FB1F:	8043    	BRA $FB64
+E5/FB21:	18      	CLC            (Clear Carry for addition)
+E5/FB22:	797D0D  	ADC $0D7D,Y
+E5/FB25:	C9E0    	CMP #$E0
+E5/FB27:	9007    	BCC $FB30
+E5/FB29:	A9FF    	LDA #$FF
+E5/FB2B:	997C0D  	STA $0D7C,Y
+E5/FB2E:	8034    	BRA $FB64
+E5/FB30:	997D18  	STA $187D,Y
+E5/FB33:	B97E0B  	LDA $0B7E,Y
+E5/FB36:	18      	CLC            (Clear Carry for addition)
+E5/FB37:	797E0D  	ADC $0D7E,Y
+E5/FB3A:	9002    	BCC $FB3E
+E5/FB3C:	A9FF    	LDA #$FF
+E5/FB3E:	997E0B  	STA $0B7E,Y
+E5/FB41:	C940    	CMP #$40
+E5/FB43:	901F    	BCC $FB64
+E5/FB45:	C9C0    	CMP #$C0
+E5/FB47:	B004    	BCS $FB4D
+E5/FB49:	A90F    	LDA #$0F
+E5/FB4B:	8014    	BRA $FB61
+E5/FB4D:	C9F0    	CMP #$F0
+E5/FB4F:	B009    	BCS $FB5A
+E5/FB51:	A901    	LDA #$01
+E5/FB53:	2088FC  	JSR $FC88
+E5/FB56:	A90E    	LDA #$0E
+E5/FB58:	8007    	BRA $FB61
+E5/FB5A:	A902    	LDA #$02
+E5/FB5C:	2088FC  	JSR $FC88
+E5/FB5F:	A90D    	LDA #$0D
+E5/FB61:	997E18  	STA $187E,Y
+E5/FB64:	88      	DEY
+E5/FB65:	88      	DEY
+E5/FB66:	88      	DEY
+E5/FB67:	88      	DEY
+E5/FB68:	D081    	BNE $FAEB
+E5/FB6A:	60      	RTS
+
+From E5/FA65, X = 4
+E5/FB6B:	B9FC18  	LDA $18FC,Y
+E5/FB6E:	300D    	BMI $FB7D
+E5/FB70:	38      	SEC            (Set Carry for subtraction)
+E5/FB71:	F9FC0D  	SBC $0DFC,Y
+E5/FB74:	B014    	BCS $FB8A
+E5/FB76:	A9FF    	LDA #$FF
+E5/FB78:	99FC0D  	STA $0DFC,Y
+E5/FB7B:	8067    	BRA $FBE4
+E5/FB7D:	18      	CLC            (Clear Carry for addition)
+E5/FB7E:	79FC0D  	ADC $0DFC,Y
+E5/FB81:	9007    	BCC $FB8A
+E5/FB83:	A9FF    	LDA #$FF
+E5/FB85:	99FC0D  	STA $0DFC,Y
+E5/FB88:	805A    	BRA $FBE4
+E5/FB8A:	99FC18  	STA $18FC,Y
+E5/FB8D:	B9FD18  	LDA $18FD,Y
+E5/FB90:	C970    	CMP #$70
+E5/FB92:	B00D    	BCS $FBA1
+E5/FB94:	38      	SEC            (Set Carry for subtraction)
+E5/FB95:	F9FD0D  	SBC $0DFD,Y
+E5/FB98:	B016    	BCS $FBB0
+E5/FB9A:	A9FF    	LDA #$FF
+E5/FB9C:	99FC0D  	STA $0DFC,Y
+E5/FB9F:	8043    	BRA $FBE4
+E5/FBA1:	18      	CLC            (Clear Carry for addition)
+E5/FBA2:	79FD0D  	ADC $0DFD,Y
+E5/FBA5:	C9E0    	CMP #$E0
+E5/FBA7:	9007    	BCC $FBB0
+E5/FBA9:	A9FF    	LDA #$FF
+E5/FBAB:	99FC0D  	STA $0DFC,Y
+E5/FBAE:	8034    	BRA $FBE4
+E5/FBB0:	99FD18  	STA $18FD,Y
+E5/FBB3:	B9FE0B  	LDA $0BFE,Y
+E5/FBB6:	18      	CLC            (Clear Carry for addition)
+E5/FBB7:	79FE0D  	ADC $0DFE,Y
+E5/FBBA:	9002    	BCC $FBBE
+E5/FBBC:	A9FF    	LDA #$FF
+E5/FBBE:	99FE0B  	STA $0BFE,Y
+E5/FBC1:	C940    	CMP #$40
+E5/FBC3:	901F    	BCC $FBE4
+E5/FBC5:	C9C0    	CMP #$C0
+E5/FBC7:	B004    	BCS $FBCD
+E5/FBC9:	A90F    	LDA #$0F
+E5/FBCB:	8014    	BRA $FBE1
+E5/FBCD:	C9F0    	CMP #$F0
+E5/FBCF:	B009    	BCS $FBDA
+E5/FBD1:	A901    	LDA #$01
+E5/FBD3:	20A5FC  	JSR $FCA5
+E5/FBD6:	A90E    	LDA #$0E
+E5/FBD8:	8007    	BRA $FBE1
+E5/FBDA:	A902    	LDA #$02
+E5/FBDC:	20A5FC  	JSR $FCA5
+E5/FBDF:	A90D    	LDA #$0D
+E5/FBE1:	99FE18  	STA $18FE,Y
+E5/FBE4:	88      	DEY
+E5/FBE5:	88      	DEY
+E5/FBE6:	88      	DEY
+E5/FBE7:	88      	DEY
+E5/FBE8:	D081    	BNE $FB6B
+E5/FBEA:	60      	RTS
+
+From E5/FA65, X = 6
+E5/FBEB:	B97C19  	LDA $197C,Y
+E5/FBEE:	300D    	BMI $FBFD
+E5/FBF0:	38      	SEC            (Set Carry for subtraction)
+E5/FBF1:	F97C0E  	SBC $0E7C,Y
+E5/FBF4:	B014    	BCS $FC0A
+E5/FBF6:	A9FF    	LDA #$FF
+E5/FBF8:	997C0E  	STA $0E7C,Y
+E5/FBFB:	8067    	BRA $FC64
+E5/FBFD:	18      	CLC            (Clear Carry for addition)
+E5/FBFE:	797C0E  	ADC $0E7C,Y
+E5/FC01:	9007    	BCC $FC0A
+E5/FC03:	A9FF    	LDA #$FF
+E5/FC05:	997C0E  	STA $0E7C,Y
+E5/FC08:	805A    	BRA $FC64
+E5/FC0A:	997C19  	STA $197C,Y
+E5/FC0D:	B97D19  	LDA $197D,Y
+E5/FC10:	C970    	CMP #$70
+E5/FC12:	B00D    	BCS $FC21
+E5/FC14:	38      	SEC            (Set Carry for subtraction)
+E5/FC15:	F97D0E  	SBC $0E7D,Y
+E5/FC18:	B016    	BCS $FC30
+E5/FC1A:	A9FF    	LDA #$FF
+E5/FC1C:	997C0E  	STA $0E7C,Y
+E5/FC1F:	8043    	BRA $FC64
+E5/FC21:	18      	CLC            (Clear Carry for addition)
+E5/FC22:	797D0E  	ADC $0E7D,Y
+E5/FC25:	C9E0    	CMP #$E0
+E5/FC27:	9007    	BCC $FC30
+E5/FC29:	A9FF    	LDA #$FF
+E5/FC2B:	997C0E  	STA $0E7C,Y
+E5/FC2E:	8034    	BRA $FC64
+E5/FC30:	997D19  	STA $197D,Y
+E5/FC33:	B97E0C  	LDA $0C7E,Y
+E5/FC36:	18      	CLC            (Clear Carry for addition)
+E5/FC37:	797E0E  	ADC $0E7E,Y
+E5/FC3A:	9002    	BCC $FC3E
+E5/FC3C:	A9FF    	LDA #$FF
+E5/FC3E:	997E0C  	STA $0C7E,Y
+E5/FC41:	C940    	CMP #$40
+E5/FC43:	901F    	BCC $FC64
+E5/FC45:	C9C0    	CMP #$C0
+E5/FC47:	B004    	BCS $FC4D
+E5/FC49:	A90F    	LDA #$0F
+E5/FC4B:	8014    	BRA $FC61
+E5/FC4D:	C9F0    	CMP #$F0
+E5/FC4F:	B009    	BCS $FC5A
+E5/FC51:	A901    	LDA #$01
+E5/FC53:	20C2FC  	JSR $FCC2
+E5/FC56:	A90E    	LDA #$0E
+E5/FC58:	8007    	BRA $FC61
+E5/FC5A:	A902    	LDA #$02
+E5/FC5C:	20C2FC  	JSR $FCC2
+E5/FC5F:	A90D    	LDA #$0D
+E5/FC61:	997E19  	STA $197E,Y
+E5/FC64:	88      	DEY
+E5/FC65:	88      	DEY
+E5/FC66:	88      	DEY
+E5/FC67:	88      	DEY
+E5/FC68:	D081    	BNE $FBEB
+E5/FC6A:	60      	RTS
+
+E5/FC6B:	D9FF0C  	CMP $0CFF,Y
+E5/FC6E:	F017    	BEQ $FC87
+E5/FC70:	99FF0C  	STA $0CFF,Y
+E5/FC73:	B9FC0C  	LDA $0CFC,Y
+E5/FC76:	4A      	LSR A          (Divide by 2)
+E5/FC77:	79FC0C  	ADC $0CFC,Y    (Add original value, plus one if Carry is set)
+E5/FC7A:	99FC0C  	STA $0CFC,Y    (Save changes)
+E5/FC7D:	B9FD0C  	LDA $0CFD,Y
+E5/FC80:	4A      	LSR A          (Divide by 2)
+E5/FC81:	79FD0C  	ADC $0CFD,Y    (Add original value, plus one if Carry is set)
+E5/FC84:	99FD0C  	STA $0CFD,Y    (Save changes)
+E5/FC87:	60      	RTS
+
+E5/FC88:	D97F0D  	CMP $0D7F,Y
+E5/FC8B:	F017    	BEQ $FCA4
+E5/FC8D:	997F0D  	STA $0D7F,Y
+E5/FC90:	B97C0D  	LDA $0D7C,Y
+E5/FC93:	4A      	LSR A          (Divide by 2)
+E5/FC94:	797C0D  	ADC $0D7C,Y    (Add original value, plus one if Carry is set)
+E5/FC97:	997C0D  	STA $0D7C,Y    (Save changes)
+E5/FC9A:	B97D0D  	LDA $0D7D,Y
+E5/FC9D:	4A      	LSR A          (Divide by 2)
+E5/FC9E:	797D0D  	ADC $0D7D,Y    (Add original value, plus one if Carry is set)
+E5/FCA1:	997D0D  	STA $0D7D,Y    (Save changes)
+E5/FCA4:	60      	RTS
+
+E5/FCA5:	D9FF0D  	CMP $0DFF,Y
+E5/FCA8:	F017    	BEQ $FCC1
+E5/FCAA:	99FF0D  	STA $0DFF,Y
+E5/FCAD:	B9FC0D  	LDA $0DFC,Y
+E5/FCB0:	4A      	LSR A          (Divide by 2)
+E5/FCB1:	79FC0D  	ADC $0DFC,Y    (Add original value, plus one if Carry is set)
+E5/FCB4:	99FC0D  	STA $0DFC,Y    (Save changes)
+E5/FCB7:	B9FD0D  	LDA $0DFD,Y
+E5/FCBA:	4A      	LSR A          (Divide by 2)
+E5/FCBB:	79FD0D  	ADC $0DFD,Y    (Add original value, plus one if Carry is set)
+E5/FCBE:	99FD0D  	STA $0DFD,Y    (Save changes)
+E5/FCC1:	60      	RTS
+
+E5/FCC2:	D97F0E  	CMP $0E7F,Y
+E5/FCC5:	F017    	BEQ $FCDE
+E5/FCC7:	997F0E  	STA $0E7F,Y
+E5/FCCA:	B97C0E  	LDA $0E7C,Y
+E5/FCCD:	4A      	LSR A          (Divide by 2)
+E5/FCCE:	797C0E  	ADC $0E7C,Y    (Add original value, plus one if Carry is set)
+E5/FCD1:	997C0E  	STA $0E7C,Y    (Save changes)
+E5/FCD4:	B97D0E  	LDA $0E7D,Y
+E5/FCD7:	4A      	LSR A          (Divide by 2)
+E5/FCD8:	797D0E  	ADC $0E7D,Y    (Add original value, plus one if Carry is set)
+E5/FCDB:	997D0E  	STA $0E7D,Y    (Save changes)
+E5/FCDE:	60      	RTS
+
+NMI function
+E5/FCDF:	8B      	PHB
+E5/FCE0:	0B      	PHD
+E5/FCE1:	08      	PHP
+E5/FCE2:	C220    	REP #$20       (16-bit accumulator) (REP #$30...)
+E5/FCE4:	C210    	REP #$10       (16-bit indexes)
+E5/FCE6:	48      	PHA
+E5/FCE7:	DA      	PHX
+E5/FCE8:	5A      	PHY
+E5/FCE9:	E220    	SEP #$20       (8-bit accumulator)
+E5/FCEB:	A900    	LDA #$00
+E5/FCED:	48      	PHA
+E5/FCEE:	AB      	PLB            (Set data bank register to 00)
+E5/FCEF:	A20005  	LDX #$0500     (PEA $0500, PLD...)
+E5/FCF2:	DA      	PHX
+E5/FCF3:	2B      	PLD            (Set direct page register to 0500)
+E5/FCF4:	A910    	LDA #$10       (...)
+E5/FCF6:	A900    	LDA #$00
+E5/FCF8:	8D0C42  	STA $420C      (Disable HDMA)
+E5/FCFB:	A900    	LDA #$00       (...)
+E5/FCFD:	8D0221  	STA $2102      (Zero the OAM address, low byte)
+E5/FD00:	8D0321  	STA $2103      (Zero the OAM address MSB and OAM priority rotation)
+E5/FD03:	A900    	LDA #$00
+E5/FD05:	8D0043  	STA $4300      (Control for DMA channel 0)
+E5/FD08:	A904    	LDA #$04
+E5/FD0A:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2104: OAM)
+E5/FD0D:	A900    	LDA #$00
+E5/FD0F:	8D0243  	STA $4302      (Source address, low byte)
+E5/FD12:	A918    	LDA #$18
+E5/FD14:	8D0343  	STA $4303      (Source address, high byte)
+E5/FD17:	A900    	LDA #$00
+E5/FD19:	8D0443  	STA $4304      (Source bank; 00/1800)
+E5/FD1C:	A920    	LDA #$20
+E5/FD1E:	8D0543  	STA $4305
+E5/FD21:	A902    	LDA #$02
+E5/FD23:	8D0643  	STA $4306      (Number of bytes: #$0220)
+E5/FD26:	A900    	LDA #$00
+E5/FD28:	8D0743  	STA $4307      (Set indirect bank for HDMA channel 0 to 00)
+E5/FD2B:	A901    	LDA #$01       (INC A...)
+E5/FD2D:	8D0B42  	STA $420B      (Enable DMA channel 0)
+E5/FD30:	A9C0    	LDA #$C0
+E5/FD32:	8D2121  	STA $2121      (Set CGRAM word address to $C0)
+E5/FD35:	A900    	LDA #$00
+E5/FD37:	8D0043  	STA $4300      (Control for DMA channel 0)
+E5/FD3A:	A922    	LDA #$22
+E5/FD3C:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2122: CGRAM)
+E5/FD3F:	A980    	LDA #$80
+E5/FD41:	8D0243  	STA $4302      (Source address, low byte)
+E5/FD44:	A909    	LDA #$09
+E5/FD46:	8D0343  	STA $4303      (Source address, high byte)
+E5/FD49:	A900    	LDA #$00
+E5/FD4B:	8D0443  	STA $4304      (Source bank; 00/0980)
+E5/FD4E:	A920    	LDA #$20
+E5/FD50:	8D0543  	STA $4305
+E5/FD53:	A900    	LDA #$00
+E5/FD55:	8D0643  	STA $4306      (Number of bytes: #$0020)
+E5/FD58:	A900    	LDA #$00
+E5/FD5A:	8D0743  	STA $4307      (Set indirect bank for HDMA channel 0 to 00)
+E5/FD5D:	A901    	LDA #$01       (INC A...)
+E5/FD5F:	8D0B42  	STA $420B      (Enable DMA channel 0; transfers the palette for the stars)
+E5/FD62:	A930    	LDA #$30
+E5/FD64:	8D2121  	STA $2121      (Set CGRAM word address to $30)
+E5/FD67:	A900    	LDA #$00
+E5/FD69:	8D0043  	STA $4300      (Control for DMA channel 0)
+E5/FD6C:	A922    	LDA #$22
+E5/FD6E:	8D0143  	STA $4301      (Set destination for DMA channel 0 to $2122: CGRAM)
+E5/FD71:	A9A0    	LDA #$A0
+E5/FD73:	8D0243  	STA $4302      (Source address, low byte)
+E5/FD76:	A909    	LDA #$09
+E5/FD78:	8D0343  	STA $4303      (Source address, high byte)
+E5/FD7B:	A900    	LDA #$00
+E5/FD7D:	8D0443  	STA $4304      (Source bank; 00/09A0)
+E5/FD80:	A920    	LDA #$20
+E5/FD82:	8D0543  	STA $4305
+E5/FD85:	A900    	LDA #$00
+E5/FD87:	8D0643  	STA $4306      (Number of bytes: #$0020)
+E5/FD8A:	A900    	LDA #$00       (...)
+E5/FD8C:	8D0743  	STA $4307      (Set indirect bank for HDMA channel 0 to 00)
+E5/FD8F:	A901    	LDA #$01       (INC A...)
+E5/FD91:	8D0B42  	STA $420B      (Enable DMA channel 0; transfers the palette for the blue background)
+E5/FD94:	2057FA  	JSR $FA57
+E5/FD97:	E638    	INC $38
+E5/FD99:	C63C    	DEC $3C
+E5/FD9B:	D014    	BNE $FDB1
+E5/FD9D:	A906    	LDA #$06
+E5/FD9F:	853C    	STA $3C
+E5/FDA1:	A63A    	LDX $3A
+E5/FDA3:	2028FA  	JSR $FA28      (Wave effect)
+E5/FDA6:	A53A    	LDA $3A
+E5/FDA8:	1A      	INC A
+E5/FDA9:	C90C    	CMP #$0C
+E5/FDAB:	9002    	BCC $FDAF
+E5/FDAD:	A900    	LDA #$00
+E5/FDAF:	853A    	STA $3A
+E5/FDB1:	A901    	LDA #$01
+E5/FDB3:	8D7043  	STA $4370      (Control for DMA channel 7)
+E5/FDB6:	A926    	LDA #$26
+E5/FDB8:	8D7143  	STA $4371      (Set destination for DMA channel 7 to $2126: window 1 left position)
+E5/FDBB:	A900    	LDA #$00
+E5/FDBD:	8D7243  	STA $4372      (Source address for channel 7, low byte)
+E5/FDC0:	A91B    	LDA #$1B
+E5/FDC2:	8D7343  	STA $4373      (Source address for channel 7, high byte)
+E5/FDC5:	A900    	LDA #$00
+E5/FDC7:	8D7443  	STA $4374      (Source bank for channel 5; 00/1B00)
+E5/FDCA:	8D7743  	STA $4377      (Set indirect bank for HDMA channel 7 to 00)
+E5/FDCD:	A901    	LDA #$01
+E5/FDCF:	8D6043  	STA $4360      (Control for DMA channel 6)
+E5/FDD2:	A928    	LDA #$28
+E5/FDD4:	8D6143  	STA $4361      (Set destination for DMA channel 6 to $2128: window 2 left position)
+E5/FDD7:	A900    	LDA #$00
+E5/FDD9:	8D6243  	STA $4362      (Source address for channel 6, low byte)
+E5/FDDC:	A91B    	LDA #$1B
+E5/FDDE:	8D6343  	STA $4363      (Source address for channel 6, high byte)
+E5/FDE1:	A900    	LDA #$00
+E5/FDE3:	8D6443  	STA $4364      (Source bank for channel 6; 00/1B00)
+E5/FDE6:	8D6743  	STA $4367      (Set indirect bank for HDMA channel 6 to 00)
+E5/FDE9:	A902    	LDA #$02
+E5/FDEB:	8D5043  	STA $4350      (Control for DMA channel 5)
+E5/FDEE:	A910    	LDA #$10
+E5/FDF0:	8D5143  	STA $4351      (Set destination for DMA channel 5 to $2110: BG2 vertical scroll)
+E5/FDF3:	A900    	LDA #$00
+E5/FDF5:	8D5243  	STA $4352      (Source address for channel 5, low byte)
+E5/FDF8:	A91C    	LDA #$1C
+E5/FDFA:	8D5343  	STA $4353      (Source address for channel 5, high byte)
+E5/FDFD:	A900    	LDA #$00
+E5/FDFF:	8D5443  	STA $4354      (Source bank for channel 5; 00/1C00)
+E5/FE02:	8D5743  	STA $4357      (Set indirect bank for HDMA channel 5 to 00)
+E5/FE05:	A9E0    	LDA #$E0
+E5/FE07:	8D0C42  	STA $420C      (Enable HDMA channels 5, 6, and 7)
+E5/FE0A:	C220    	REP #$20       (16-bit accumulator) (REP #$30...)
+E5/FE0C:	C210    	REP #$10       (16-bit indexes)
+E5/FE0E:	7A      	PLY
+E5/FE0F:	FA      	PLX
+E5/FE10:	68      	PLA
+E5/FE11:	28      	PLP
+E5/FE12:	2B      	PLD
+E5/FE13:	AB      	PLB
+E5/FE14:	40      	RTI
+
+IRQ function (unused)
+E5/FE15:	40      	RTI
+
+Jump table
+E5/FE16:	6BFA
+E5/FE18:	EBFA
+E5/FE1A:	6BFB
+E5/FE1C:	EBFB
+
+Data: configuration for the wave effect
+E5/FE1E:	AC
+E5/FE1F:	00
+E5/FE20:	AD
+E5/FE21:	00
+E5/FE22:	AE
+E5/FE23:	00
+E5/FE24:	AE
+E5/FE25:	00
+E5/FE26:	AE
+E5/FE27:	00
+E5/FE28:	AD
+E5/FE29:	00
+E5/FE2A:	AC
+E5/FE2B:	00
+E5/FE2C:	AB
+E5/FE2D:	00
+E5/FE2E:	AA
+E5/FE2F:	00
+E5/FE30:	AA
+E5/FE31:	00
+E5/FE32:	AA
+E5/FE33:	00
+E5/FE34:	AB
+E5/FE35:	00
+E5/FE36:	AC
+E5/FE37:	00
+E5/FE38:	AD
+E5/FE39:	00
+E5/FE3A:	AE
+E5/FE3B:	00
+E5/FE3C:	AE
+E5/FE3D:	00
+E5/FE3E:	AE
+E5/FE3F:	00
+E5/FE40:	AD
+E5/FE41:	00
+E5/FE42:	AC
+E5/FE43:	00
+E5/FE44:	AB
+E5/FE45:	00
+E5/FE46:	AA
+E5/FE47:	00
+E5/FE48:	AA
+E5/FE49:	00
+E5/FE4A:	AA
+E5/FE4B:	00
+E5/FE4C:	AB
+E5/FE4D:	00
+E5/FE4E:	AC
+E5/FE4F:	00
+E5/FE50:	AD
+E5/FE51:	00
+E5/FE52:	AE
+E5/FE53:	00
+E5/FE54:	AE
+E5/FE55:	00
+E5/FE56:	AE
+E5/FE57:	00
+E5/FE58:	AD
+E5/FE59:	00
+E5/FE5A:	AC
+E5/FE5B:	00
+E5/FE5C:	AB
+E5/FE5D:	00
+E5/FE5E:	AA
+E5/FE5F:	00
+E5/FE60:	AA
+E5/FE61:	00
+E5/FE62:	AA
+E5/FE63:	00
+E5/FE64:	AB
+E5/FE65:	00
+E5/FE66:	AC
+E5/FE67:	00
+E5/FE68:	AD
+E5/FE69:	00
+E5/FE6A:	AE
+E5/FE6B:	00
+E5/FE6C:	AE
+E5/FE6D:	00
+E5/FE6E:	AE
+E5/FE6F:	00
+E5/FE70:	AD
+E5/FE71:	00
+E5/FE72:	AC
+E5/FE73:	00
+E5/FE74:	AB
+E5/FE75:	00
+E5/FE76:	AA
+E5/FE77:	00
+E5/FE78:	AA
+E5/FE79:	00
+E5/FE7A:	AA
+E5/FE7B:	00
+E5/FE7C:	AB
+E5/FE7D:	00
+E5/FE7E:	AC
+E5/FE7F:	00
+E5/FE80:	AD
+E5/FE81:	00
+E5/FE82:	AE
+E5/FE83:	00
+E5/FE84:	AE
+E5/FE85:	00
+E5/FE86:	AE
+E5/FE87:	00
+E5/FE88:	AD
+E5/FE89:	00
+E5/FE8A:	AC
+E5/FE8B:	00
+E5/FE8C:	AB
+E5/FE8D:	00
+E5/FE8E:	AA
+E5/FE8F:	00
+E5/FE90:	AA
+E5/FE91:	00
+E5/FE92:	AA
+E5/FE93:	00
+E5/FE94:	AB
+E5/FE95:	00
+E5/FE96:	AC
+E5/FE97:	00
+E5/FE98:	AD
+E5/FE99:	00
+E5/FE9A:	AE
+E5/FE9B:	00
+E5/FE9C:	AE
+E5/FE9D:	00
+E5/FE9E:	AE
+E5/FE9F:	00
+E5/FEA0:	AD
+E5/FEA1:	00
+E5/FEA2:	AC
+E5/FEA3:	00
+E5/FEA4:	AB
+E5/FEA5:	00
+E5/FEA6:	AA
+E5/FEA7:	00
+E5/FEA8:	AA
+E5/FEA9:	00
+E5/FEAA:	AA
+E5/FEAB:	00
+E5/FEAC:	AB
+E5/FEAD:	00
+E5/FEAE:	AC
+E5/FEAF:	00
+E5/FEB0:	AD
+E5/FEB1:	00
+E5/FEB2:	AE
+E5/FEB3:	00
+E5/FEB4:	AE
+E5/FEB5:	00
+E5/FEB6:	AE
+E5/FEB7:	00
+E5/FEB8:	AD
+E5/FEB9:	00
+E5/FEBA:	AC
+E5/FEBB:	00
+E5/FEBC:	AB
+E5/FEBD:	00
+E5/FEBE:	AA
+E5/FEBF:	00
+E5/FEC0:	AA
+E5/FEC1:	00
+E5/FEC2:	AA
+E5/FEC3:	00
+E5/FEC4:	AB
+E5/FEC5:	00

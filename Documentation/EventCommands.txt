@@ -1,0 +1,1529 @@
+Ctrl-F is your friend.  Use this quick table to look up what command you want to use (say, 3C), and then Ctrl-F search for ;;3C (with the semicolons) to skip to that command
+
+;;00-;;34 (variable parameters) -> Begin action queue for a character
+
+;;35 (1 parameter) -> Pause event until a character's action queue has finished executing
+;;36 (1 parameter) -> Prevent a character from passing through sprites
+;;37 (2 parameters) -> Assign a different sprite to a character
+;;38 (no parameters) -> Prevent the camera from following a character
+;;39 (no parameters) -> Allow the camera to follow a character
+;;3A (no parameters) -> Allow player to move while the event is executing
+;;3B (no parameters) -> I believe this clears several flags for the leader of your party.
+;;3C (4 parameters) -> Temporarily reorganize party for event (does not add or remove characters)
+;;3D (1 parameter) -> Creates an object (a character).
+;;3E (1 parameter) -> Deletes an object (a character).
+;;3F (2 parameters) -> Add or remove a character from a party.
+;;40 (2 parameters) -> Assign properties (base HP, commands, stats, etc.) to a character
+;;41 (1 parameter) -> Show a sprite on the field.
+;;42 (1 parameter) -> Hide a sprite on the field.
+;;43 (2 parameters) -> Assign a palette to a character
+;;44 (2 parameters) -> Place character on vehicle
+;;45 (no parameters) -> "Refreshes objects", apparently.
+;;46 (1 parameter) -> Switch current party
+;;47 (no parameters) -> Make character in slot 0 the lead character
+
+;;48 (2 parameters) -> Display a text box, but continue event without waiting for player to dismiss the text box
+;;49 (no parameters) -> Wait until previous text box is dismissed before continuing event. Useful after text has been shown with command 48
+;;4B (2 parameters) -> Display a text box, wait until text box is dismissed to continue event
+
+;;4C (2 parameters) -> Center screen on party and invoke a battle with a particular background.
+;;4D (2 parameters) -> Invoke a battle with a particular background.
+;;4E (no parameters) -> Labeled as "Invoke battle, random encounter as determined by zone" by the original document.  Testing it, I'm not sure.
+
+;;4F (no parameters) -> Returns you to the position where you last saved the game. Alternately, it returns you to the title screen if you have not saved the game.
+
+;;50 (1 parameter) -> Tints the background with a chosen colour (but not the sprites)
+;;51 (3 parameters) -> Tints parts of the background within a certain colour range with a chosen colour
+;;52 (1 parameter) -> Tints all sprites with a chosen colour
+;;53 (3 parameters) -> Tints parts of sprites within a certain colour range with a chosen colour
+;;54 (no parameters) -> If the screen is currently flashing, or the colour component has been increased, return it to normal
+;;55 (1 paramter) -> Flash the screen with a particular colour
+;;56 (1 paramter) -> Increase the colour component for a particular colour (works like flashing, but the colour change stays on screen)
+;;57 (1 parameter) -> Decrease the colour component for a particular colour. The inverse of command 56
+
+;;58 (1 parameter) -> Shake the screen
+;;59 (1 parameter) -> Unfade the screen at a specific speed
+;;5A (1 parameter) -> Fade the screen at a specific speed
+;;5C (no parameters) -> Pause event execution until fade in or fade out is complete
+;;5D (2 parameters) -> Scroll layer 1.  Sprites will move with layer 1
+;;5E (2 parameters) -> Scroll layer 2
+;;5F (2 parameters) -> Scroll layer 3
+;;60 (2 parameters) -> Give objects on a certain palette a different palette
+;;61 (3 parameters) -> Colorize a colour range to a specific colour
+;;62 (1 parameter) -> Mosaic the screen
+;;63 (1 parameter) -> Create a spotlight around the character (used in Ebot's Rock) with a specific radius
+
+;;6A (5 parameters) -> Fade out, and load a new map
+;;6B (5 parameters) -> Load a new map (assumes that you have already faded out the screen)
+;;6C (5 parameters) -> Set the world map and position the party will be returned to when they exit to the world map
+
+;;70 (2 parameters) -> Same as 5D?  If you have any further insight please let me know
+;;71 (2 parameters) -> Same as 5E?  If you have any further insight please let me know
+;;72 (2 parameters) -> Same as 5F?  If you have any further insight please let me know
+
+;;73 (variable parameters) -> Replace a portion of the background.  The background will refresh immediately after the command is executed
+;;74 (variable parameters) -> Replace a portion of the background.  The background will not refresh immediately after the command is executed.
+;;75 (no parameters) -> Reloads the background.  Useful if it has been modified with command 74
+
+;;77 (1 parameter) -> Perform level averaging on a character
+;;78 (1 parameter) -> Allow a character to pass through sprites
+
+;;79 (2 parameters) -> Place a party on a map
+;;7A (4 parameters) -> Cause a character to activate a different event when spoken to
+;;7B (no parameters) -> Lets the screen snap back to the current party in a multiparty battle.
+;;7C (1 parameter) -> Cause a character to activate an event when touched
+;;7E (2 parameters) -> Move party to a position and fade in the screen
+
+;;7F (2 parameters) -> Assign a name to a character
+;;80 (1 parameter) -> Add an item to your inventory
+;;82 (no parameters) -> Set party 1 as the backup party.
+;;84 (2 parameters) -> Give Gil to the party
+;;85 (2 parameters) -> Take Gil from the party
+;;86 (1 parameter) -> Gives Esper to the party
+;;87 (1 parameter) -> Take Esper from party
+;;88 (3 parameters) -> Removes status ailments from a character
+;;89 (3 parameters) -> Inflict status ailments on a character
+;;8A (3 parameters) -> Toggle status ailments on a character (if they are on, turn them off, or vice-versa)
+;;8B (2 parameters) -> Add or subtract an amount from a character's HP
+;;8C (2 parameters) -> Boost a character's MP to maximum
+;;8D (1 parameter) -> Remove all equipment from a character and place it in your inventory
+;;8E (no parameters) -> Invoke a battle based on the chest opened.
+;;8F (no parameters) -> Unlocks all of Cyan's SwdTech skills
+;;90 (no parameters) -> Unlock Bum Rush
+
+;;91 (no parameters) -> Pause the event for 15 units.
+;;92 (no parameters) -> Pause the event for 30 units.
+;;93 (no parameters) -> Pause the event for 45 units.
+;;94 (no parameters) -> Pause the event for 60 units.
+;;95 (no parameters) -> Pause the event for 120 units.
+
+;;96 (no parameters) -> Unfades the screen.
+;;97 (no parameters) -> Fades the screen.
+
+;;98 (1 parameter) -> Call the name change screen for a character.
+;;99 (3 parameters) -> Call the screen to select a party
+;;9A (no parameters) -> Invoke the screen where you select an item to bet at the Coliseum.
+;;9B (1 parameter) -> Invoke a shop screen
+;;9C (1 parameter) -> Give a character optimum equipment
+;;9D (no parameters) -> Invoke the screen before the final battle where you choose your party order
+
+;;A0 (5 parameters) -> Invoke a timer (like in the Opera House or Floating Continent escape).
+;;A1 (1 parameter) -> Use this to reset a timer, clearing it from the display and preventing it from triggering
+
+;;A6 (no parameters) -> Eliminate the rotating pyramid (the effect surrounding Kefka before the final battle)
+;;A7 (1 parameter) -> Create a rotating pyramid around a character (the effect surrounding Kefka before the final battle)
+
+;;A8 (no parameters) -> Show the cutscene where the Floating Continent flies into the sky
+;;A9 (no parameters) -> Show the title screen
+;;AA (no parameters) -> Show the scene with Magitek Armour walking through the snowfields
+;;AB (no parameters) -> Show the game loading screen
+;;AC (no parameters) -> Fade in the screen after loading a new game
+;;AD (no parameters) -> Show world getting torn apart
+;;AE (no parameters) -> Shows the mine cart escape from the Magitek facility (battles and all)
+;;AF (no parameters) -> Start a Coliseum battle
+
+;;B0 (variable parameters) -> Repeat a sequence of event commands (up until the next B1 or BC command) multiple times
+;;B1 (no parameters) -> Denotes the end of a block of repeating commands (started with B0)
+
+;;B2 (3 parameters) -> Jump to an address in the event code (otherwise known as calling an event as a subroutine).
+;;B3 (4 parameters) -> Jump to an address in the event code multiple times.
+
+;;B4 (1 parameter) -> Pause execution of the event for a small amount of time
+;;B5 (1 parameter) -> Pause execution of the event for an amount of time x15
+
+;;B6 (variable parameters) -> This is meant to be placed after a dialog box that gives the player multiple choices.  This will jump to different events
+;;B7 (4 parameters) -> Branch to an address if a battle related event bit is clear
+;;B8 (1 parameter) -> Set a battle related event bit
+;;B9 (1 parameter) -> Clear a battle related event bit
+
+;;BA (1 parameter) -> Play one of the mode 7 ending cutscenes
+;;BB (1 parameter) -> Wait for a predetermined part of the ending theme (possibly the end of it) and then show the "THE END" cutscene
+;;BC (2 parameters) -> Stop repeating a block of commands (that was being repeated with command B0) when an event bit is set
+;;BD (3 parameters) -> Pseudo randomly jump to an address 50% of the time
+;;BE (variable parameters) -> Branch based on the current "CaseWord" bits.
+;;BF (no parameters) -> Show airship flying sideways over land (from the ending)
+
+;;C0-;;CF -> Branch to an address based on event bits
+
+;;D0-;;DD -> Set/clear event bits
+
+;;DE (no parameters) -> Set CaseWord bits depending on who is in the party
+;;E0 (no parameters) -> Set CaseWord bits depending on who has been encountered so far (whomever is in the shop screens)
+;;E1 (no parameters) -> Set CaseWord bits depending on who is available on the airship
+;;E2 (no parameters) -> Set CaseWord bits depending on who is in the lead of the current party
+;;E3 (no parameters) -> Set CaseWord bits depending on who is in any of the three parties
+;;E4 (no parameters) -> Set CaseWord bits depending on which party is currently active
+
+;;E8 (3 parameters) -> Set the value of an event word
+;;E9 (3 parameters) -> Increment the value in an event word
+;;EA (3 parameters) -> Decrement the value in an event word
+;;EB (3 parameters) -> Compare the value in a word to another value, and store the results in the CaseWord
+
+;;EF (2 parameters) -> Start playing a song at a specific volume
+;;F0 (1 parameter) -> Start playing a song
+;;F1 (2 parameters) -> Fade in a song
+;;F2 (1 parameter) -> Fade out a song
+;;F3 (1 parameter) -> Fade in the song that was previously playing before the song that is currently playing
+;;F4 (1 parameter) -> Play a sound effect
+;;F5 (3 paramaters) -> Play a sound effect that is unbalanced between the left and right speaker
+;;F6 (3 parameters) -> Various music related commands including affecting pitch/tempo/volume/etc. for currently playing sound effects/music,
+;;F7 (no parameters) -> Transitions one song to another
+;;F9 (1 parameter) -> Wait until a predetermined point in the song (probably specified in the song data itself) to continue with the event.
+;;FA (no parameters) -> Wait until the current song fades out or ends before continuing
+;;FB (no parameters) -> According to the event dump, this applies some sort of special effect to the sound effect. I don't hear it though
+
+;;FD (no parameters) -> Does nothing (also called "No Operation", or NOP).
+;;FE (no parameters) -> Return from the subroutine if you are in a subroutine.  End the event and return control to the player if you are notable
+;;FF (no parameters) -> End a script started with a command from $00 to $34
+
+
+======OUTSIDE OF ACTION QUEUES======
+;;00 (variable paramaters) -> Begin action queue for Terra
+EX1:		00 04 xx yy zz FF
+			-00 is Terra's ID
+			-04:
+				-0 indicates that the game does not wait for Terra's actions to complete before continuing
+				-4 indicates that there are 4 bytes remaining in the action queue (including the FF). Make sure this number matches with the length
+				of the action queue or things will get buggy.  You can have up to $7F (127 in decimal) actions in the queue.
+			-xx, yy and zz are actions performed by Terra.
+			-Always end action queues with FF.
+			
+EX2:		00 84 xx yy zz FF
+			-84:
+				-8 indicates that the game waits for Terra's actions to complete before continuing
+				
+EX3:		00 14 xx yy zz FF
+			-Begin action queue for Terra, $14 bytes long (20 in decimal), don't wait until complete
+			
+EX4:		00 94 xx yy zz FF
+			-Begin action queue for Terra, $14 bytes long (20 in decimal), wait until complete
+			
+;;01 (variable parameters) -> begin action queue for Locke
+;;02 (variable parameters) -> begin action queue for Cyan
+;;03 (variable parameters) -> begin action queue for Shadow
+;;04 (variable parameters) -> begin action queue for Edgar
+;;05 (variable parameters) -> begin action queue for Sabin
+;;06 (variable parameters) -> begin action queue for Celes
+;;07 (variable parameters) -> begin action queue for Strago
+;;08 (variable parameters) -> begin action queue for Relm
+;;09 (variable parameters) -> begin action queue for Setzer
+;;0A (variable parameters) -> begin action queue for Mog
+;;0B (variable parameters) -> begin action queue for Gau
+;;0C (variable parameters) -> begin action queue for Gogo
+;;0D (variable parameters) -> begin action queue for Umaro
+;;0E (variable parameters) -> begin action queue for Temporary Character 1
+;;0F (variable parameters) -> begin action queue for Temporary Character 2
+;;10 (variable parameters) -> begin action queue for character $10 (NPC 0 in FF6LE)
+;;11 (variable parameters) -> begin action queue for character $11 (NPC 1 in FF6LE)
+;;12 (variable parameters) -> begin action queue for character $12 (NPC 2 in FF6LE)
+;;13 (variable parameters) -> begin action queue for character $13 (NPC 3 in FF6LE)
+;;14 (variable parameters) -> begin action queue for character $14 (NPC 4 in FF6LE)
+;;15 (variable parameters) -> begin action queue for character $15 (NPC 5 in FF6LE)
+;;16 (variable parameters) -> begin action queue for character $16 (NPC 6 in FF6LE)
+;;17 (variable parameters) -> begin action queue for character $17 (NPC 7 in FF6LE)
+;;18 (variable parameters) -> begin action queue for character $18 (NPC 8 in FF6LE)
+;;19 (variable parameters) -> begin action queue for character $19 (NPC 9 in FF6LE)
+;;1A (variable parameters) -> begin action queue for character $1A (NPC 10 in FF6LE)
+;;1B (variable parameters) -> begin action queue for character $1B (NPC 11 in FF6LE)
+;;1C (variable parameters) -> begin action queue for character $1C (NPC 12 in FF6LE)
+;;1D (variable parameters) -> begin action queue for character $1D (NPC 13 in FF6LE)
+;;1E (variable parameters) -> begin action queue for character $1E (NPC 14 in FF6LE)
+;;1F (variable parameters) -> begin action queue for character $1F (NPC 15 in FF6LE)
+;;20 (variable parameters) -> begin action queue for character $20 (NPC 16 in FF6LE)
+;;21 (variable parameters) -> begin action queue for character $21 (NPC 17 in FF6LE)
+;;22 (variable parameters) -> begin action queue for character $22 (NPC 18 in FF6LE)
+;;23 (variable parameters) -> begin action queue for character $23 (NPC 19 in FF6LE)
+;;24 (variable parameters) -> begin action queue for character $24 (NPC 20 in FF6LE)
+;;25 (variable parameters) -> begin action queue for character $25 (NPC 21 in FF6LE)
+;;26 (variable parameters) -> begin action queue for character $26 (NPC 22 in FF6LE)
+;;27 (variable parameters) -> begin action queue for character $27 (NPC 23 in FF6LE)
+;;28 (variable parameters) -> begin action queue for character $28 (NPC 24 in FF6LE)
+;;29 (variable parameters) -> begin action queue for character $29 (NPC 25 in FF6LE)
+;;2A (variable parameters) -> begin action queue for character $2A (NPC 26 in FF6LE)
+;;2B (variable parameters) -> begin action queue for character $2B (NPC 27 in FF6LE)
+;;2C (variable parameters) -> begin action queue for character $2C (NPC 28 in FF6LE)
+;;2D (variable parameters) -> begin action queue for character $2D (NPC 29 in FF6LE)
+;;2E (variable parameters) -> begin action queue for character $2E (NPC 30 in FF6LE)
+;;2F (variable parameters) -> begin action queue for character $2F (NPC 31 in FF6LE)
+;;30 (variable parameters) -> begin action queue for Camera
+;;31 (variable parameters) -> begin action queue for first member in party
+;;32 (variable parameters) -> begin action queue for second member in party
+;;33 (variable parameters) -> begin action queue for third member in party
+;;34 (variable parameters) -> begin action queue for fourth member in party
+
+;;35 (1 parameter) -> Pause event until a character's action queue has finished executing
+EX:			35 xx
+			-Pause event until character xx's action queue has finished executing
+			-Useful if you began an action queue for a character without waiting for completion
+			
+;;36 (1 parameter) -> Prevent a character from passing through sprites (reverse this with command 78)
+EX:			36 xx
+			-Prevents character xx from passing through sprites (during events)
+			
+;;37 (2 parameters) -> Assign a different sprite to a character
+EX:			37 xx yy
+			-xx is the character ID for the character whose sprite you want to change
+			-yy is the sprite that you want to change to.  This number is equivilent to an NPC's "sprite #" in FF6LE
+			
+;;38 (no parameters) -> Prevent the camera from following a character
+
+;;39 (no parameters) -> Allow the camera to follow a character
+
+;;3A (no parameters) -> Allow player to move while the event is executing
+
+;;3B (no parameters) -> I believe this clears several flags for the leader of your party.  The leader of your party will no longer:
+	-scroll with background 2 instead of background 1
+	-activate an event on collision with the party (not very useful given that this character is the leader of your party anyways)
+	-not face targets when spoken to
+	-be impossible to pass through by event NPCs
+	-have a movement pattern
+NOTE: Untested
+
+;;3C (4 parameters) -> Temporarily reorganize party for event (does not add or remove characters)
+NOTE1: For the examples, assume a party of Locke, Terra and Cyan when the command is triggered
+NOTE2: For the parameters, don't place FF before an actual character ID.  Character IDs come first
+NOTE3: This command helps to take care of the situation where the party "spreads out" (ie, each character becomes visible and
+steps to a side of the leader), and this might be the only situation you will use this.
+NOTE4: Call subroutine CA/C6AC before using this command
+EX1:		3C 00 01 02 FF
+			-00 is the first parameter, so Terra becomes the first party member during this event. Terra also gains camera focus
+			-01 (Locke) and 02 (Cyan) become the second party member and the third party member respectively for this event
+			-FF means that you don't care who ends up in the last slot (in this case nobody will be in the last slot)
+			
+EX2:		3C 01 FF FF FF
+			-Locke becomes the first party member and gains camera focus
+			-Since every other slot is FF, you don't care about the order of the remaining characters.  Terra, Cyan and the empty slot will
+			take up the remaining three slots in some order
+			
+;;3D (1 parameter) -> Creates an object (a character). Note that they start invisible on the field (fix this with command 41),
+but if they are created you can change their position/properties, etc. Reverse this with command 3E
+EX:			3D xx
+			-Create character xx
+			
+;;3E (1 parameter) -> Deletes an object (a character).  Reverse this with command 3D
+EX:			3E 01
+			-Delete character xx
+			
+;;3F (2 parameters) -> Add or remove a character from a party.  There are three parties available
+NOTE1: The character should be created (with command 3D) before you try to add/remove them from a party
+NOTE2: Several times in the event script a character is added to parties higher than 4 (6 or 7).  As far as I can tell, adding a character to party 6 or 7 is
+identical to adding them to party 2 or 3, but there may be some additional effects
+EX1:		3F xx 01
+			-xx: xx is the character ID for the character you are adding/removing
+			-01: The party ID.  So the character is being added to party 1 (party 1 is likely the party in use unless it's a multiparty area)
+		
+EX2:		3F xx 00
+			-00: If 00 is specified as the party ID, you are removing the character from all parties
+			
+;;40 (2 parameters) -> Assign properties (base HP, commands, stats, etc.) to a character
+NOTE: Don't change the properties of a character in the party
+EX:			40 xx yy
+			-xx: The character ID for the character you are changing the properties of
+			-yy: The ID of the set of properties that you are assigning. Corresponds to the ID of the "Actors Startup" tab of the Actors Editor in FF3usME
+			
+;;41 (1 parameter) -> Show a sprite on the field. Reverse this with command 42
+EX:			41 xx
+			-Makes character xx visible on the field
+			
+;;42 (1 parameter) -> Hide a sprite on the field. Reverse this with command 41
+EX:			42 xx
+			-Makes character xx invisible on the field
+			
+;;43 (2 parameters) -> Assign a palette to a character
+EX:			43 xx yy
+			-xx: The character ID for the character whose palette you are changing
+			-yy: The palette you are assigning.  Equivilent to the "palette" number in the NPC tab of the LE.
+			
+;;44 (2 parameters) -> Place character on vehicle
+NOTE: the second paramter is the sum of two numbers:
+	-Number 1:
+		-$00 -> Character is not visible on vehicle
+		-$80 -> Character is visible on vehicle
+	-Number 2:
+		-$00 -> No vehicle (don't add $80 from Number 1 to this, it results in a glitchy mess)
+		-$20 -> Chocobo
+		-$40 -> Magitek Armor
+		-$60 -> Reft
+		
+EX:			44 xx C0
+			-xx: The character ID for the character who you are placing on a vehicle
+			-C0: Character is visible on Magitek Armor
+			
+;;45 (no parameters) -> "Refreshes objects", apparently. These commands are scattered throughout the original script, but I don't see any difference if I
+take them out. There's probably a technical reason for these, but it never really takes obvious form from what I can tell.
+
+;;46 (1 parameter) -> Switch current party
+NOTE: Make sure the party contains party members (use command 3F) and has been placed on a map (use command 79)
+EX:			46 xx
+			-xx: Switch to party xx
+			
+;;47 (no parameters) -> Make character in slot 0 the lead character
+
+;;48 (2 parameters) -> Display a text box, but continue event without waiting for player to dismiss the text box
+NOTE: Add a number to the last byte to position the text box in the position that you want
+	-$00: Text is inside text box, at top of the screen
+	-$40: No text box, at top of the screen
+	-$80: Text is inside text box, at bottom of the screen
+	-$C0: No text box, at bottom of the screen
+EX1:		48 23 01
+			-Display text box 0123 ($0123 = 291 in decimal, so this text is at index 290 in FF3usME's dialog editor),
+			at the top of the screen, inside a text box
+			
+EX2:		48 23 C1
+			-Display text box 0123, at the bottom of the screen, no text box
+			
+;;49 (no parameters) -> Wait until previous text box is dismissed before continuing event. Useful after text has been shown with command 48
+
+;;4B (2 parameters) -> Display a text box, wait until text box is dismissed to continue event
+(parameters are the same as for command 48)
+
+;;4C (2 parameters) -> Center screen on party and invoke a battle with a particular background.
+NOTE1: This is generally used when the battle is invoked upon the player touching a sprite (used when you touch some dragons, soldiers at the Battle
+of Narshe, etc. Use command 4D for most events where you want to call battles
+NOTE2: For this and other commands that call battle formations, call subroutine $CA/5EA9 after this command if you want the player to game over if they lose
+the battle (use command B2 to call subroutine).
+NOTE3: If bit $1DC9($40) [$1DD1, bit 0] is clear, then the party survived; if it is set, they have died.  Use command $B7 to check this
+NOTE4: If bit $1DC9($44) [$1DD1, bit 4] is clear, then the party fought; if it is set, they ran away
+NOTE5: If bit $1DC9($45) [$1DD1, bit 5] is clear, then the timer has not expired; if it is set, the timer has expired
+NOTE6: The screen needs to be faded in after the battle.  Use command 59 or 96
+NOTE7: Add a number to the last byte to determine whether the battle swish is used:
+	-$00: Battle swish noise is heard, mosaic effect is seen
+	-$40: Battle swish noise is not heard, mosaic effect is seen
+	-$80: Battle swish is heard, mosaic effect is seen (worthless, the battle swish is cut off with this setting)
+	-$C0: Battle swish is not heard, mosaic effect is not seen
+
+EX1:		4C 00 05
+			-00: Use battle formation $00 (Lobo formation).  This corresponds to pack 256 in FF3usME > Fomration Editor > Packs
+			-05: Use background 05 for the battle (Land, WoR).  This corresponds to Battle BG 5 in FF6LE > Layers > Battle Properties. Battle swish
+			is heard and seen
+			
+EX2:		4C 19 3F
+			-19: Use battle formation $19 (25 in decimal) (3/4 chance of Vermin, 2x Sewer Rat, 1/4 chance of 2x Vermin, 3x Sewer Rat).  This corresponds to
+			pack (256 + 25) = 281 in FF3usME
+			-3F: Use current background for this area.  Battle swish is heard and seen
+			
+EX3:		4C 00 FF
+			-FF: Use current background for this area, Battle swish is not heard or seen
+			
+;;4D (2 parameters) -> Invoke a battle with a particular background.
+(parameters are the same as for command 4C. NOTE2-NOTE7 also apply)
+
+;;4E (no parameters) -> Labeled as "Invoke battle, random encounter as determined by zone" by the original document.  Testing it, this doesn't seem to be the case.
+It seems to be calling an encounter against the last enemy set that was fought (with the same background), and then teleporting the player back to the position 
+where they met that encounter (or other places if the battle occured on a different map).  It is used in one place in the event script, but I'm not sure if it
+is actually called anywhere.  Possibly a debugging command, or dummied out? NOTE2-NOTE5 for the commands 4C and 4D seem to apply, but I'm not sure why you'd
+use this command anyways (if you know please let me know too!)
+
+;;4F (no parameters) -> Returns you to the position where you last saved the game. Alternately, it returns you to the title screen if you have not saved the game.
+You probably have no reason to use this, since it is meant to occur when you die
+
+;;50 (1 parameter) -> Tints the background with a chosen colour (but not the sprites)
+NOTE1: You will likely want to execute this several times in a loop (using command B0).  Using this command once is fairly unnoticeable
+NOTE2: Quick list of useful colours:
+	-$27: Save point flash colour
+	-$33: Red
+	-$3F: White
+	-$87: Flashback colour
+	-$93: Turquoise
+	-$9B: Nightime colour
+	-$9F: Black
+NOTE3: In order to untint the screen with a particular colour, use the command 50 again, and add $40 to the colour's original value
+
+EX1:		50 9B
+			-9B: Tint the background with colour 9B (nightime colour)
+			
+EX2:		50 DB
+			-DB: Untint the background with colour 9B (nightime colour)
+			
+;;51 (3 parameters) -> Tints parts of the background within a certain colour range with a chosen colour
+(NOTE1-NOTE3 for command 50 apply to command 51 as well)
+
+EX1:		51 9B 50 5F
+			-50: This means that 50 is the start of the range of colours that will be modified
+			-5F: This means that 5F is the end of the range of colours that will be modified.  In this case, [50 - 5F] is the range that will be changed.
+			You can identify which tiles will be affected in FF6LE.  Look at the tile editor on the right.  Select a tile to view it, and you can view a
+			specific corner of the tile by clicking on parts of the tile in the box below the word "UPDATE".  Each quarter tile has a specific palette number.
+			Palette 6 corresponds to the colours in the [50 - 5F] range.  Presmably, each colour in the [50 - 5F] range corresponds to an individual colour in
+			palette 6.  So in this case, any quarter tile that is on palette 6 will be tinted with 9B (the nightime colour)
+			
+EX2:		51 9B 01 0F
+			-[01 - 0F]: This range seems to indicate that layer 3 will be affected.  Haven't tested it much though
+			
+EX3:		51 9B 00 00
+			-[00 - 00]: This only affects the borders at the edge of the screen that would normally be unnoticeable.  You probably shouldn't include colour 00
+			in your range to avoid the border being modified
+			
+EX4:		51 9B 70 7F
+			-[70 - 7F]: This range of colours seems to be reserved for text boxes, I think (maybe more than just text boxes).  This will colour text boxes 
+			with the nighttime tint
+			
+;;52 (1 parameter) -> Tints all sprites with a chosen colour
+(NOTE1-NOTE3 for command 50 apply to command 52 as well)
+
+EX:			52 9B
+			-9B: Tint the sprites with colour 9B (nightime colour)
+			
+;;53 (3 parameters) -> Tints parts of sprites within a certain colour range with a chosen colour
+(NOTE1-NOTE3 for command 50 apply to command 53 as well)
+
+EX1:		53 9B 10 1F
+			-10: This means that 10 is the start of the range of colours that will be modified
+			-1F: This means that 1F is the end of the range of colours that will be modified.  In this case, [10 - 1F] is the range that will be changed.
+			Colours in the range [10 - 1F] correspond to the colours on palette 1.  These are the colours that will be tinted.
+			
+;;54 (no parameters) -> If the screen is currently flashing, or the colour component has been increased, return it to normal
+
+;;55 (1 paramter) -> Flash the screen with a particular colour
+NOTE: For the second parameter, add together values to combine the various colours
+	-$20: Red
+	-$40: Green
+	-$80: Blue
+
+EX1:		55 20
+			-20: Flashes the screen red
+			
+EX2:		55 60
+			-60: Flashes the screen yellow (red + green)
+			
+EX3:		55 E0
+			-E0: Flashes the screen white (red + blue + green)
+			
+;;56 (1 paramter) -> Increase the colour component for a particular colour (works like flashing, but the colour change stays on screen)
+NOTE: The note from command 55 still applies.  However, add a number from $00-$07 as well to determine the intensity of the colour
+
+EX:			56 64
+			-64: Increases the colour component for yellow (red + green) at intensity 4.
+			
+;;57 (1 parameter) -> Decrease the colour component for a particular colour. The inverse of command 56
+(the note from command 56 still applies)
+
+EX:			57 64
+			-64: Decreases the colour component for yellow (red + green) at intensity 4.
+			
+;;58 (1 parameter) -> Shake the screen
+NOTE1: There is only one parameter, but it controls several properties.  Add together various values to combine features:
+	-$01: Shake screen with intensity 1
+	-$02: Shake screen with intensity 2
+	-$03: Shake screen with intensity 3 ($01-$03 are mutually exclusive)
+	
+	-$04: Make shaking permanent until stopped
+	
+	-$10: Affects layer 1
+	-$20: Affects layer 2
+	-$40: Affects layer 3
+	-$80: Affects sprite layer
+	
+NOTE2: The Event dump indicates that the parameter may have more effects than this, but more information is unknown
+	
+EX1:		58 F7
+			-F7: Shaking affects all four layers, permanent until stopped, intensity 3
+			
+EX2:		58 00
+			-00: Stop shaking
+			
+;;59 (1 parameter) -> Unfade the screen at a specific speed
+NOTE: I recommend using exponentials of two for the speed (01, 02, 04, 08, 10).  Some other values will glitch out.
+
+EX:			59 04
+			-04: The speed at which to unfade the screen is 04 (higher values make the screen unfade faster)
+			
+;;5A (1 parameter) -> Fade the screen at a specific speed (reversed by command 59 or 96)
+NOTE: I recommend using exponentials of two for the speed (01, 02, 04, 08, 10).  Some other values will glitch out.
+
+EX:			59 04
+			-04: The speed at which to fade the screen is 04 (higher values make the screen unfade faster)
+
+;;5C (no parameters) -> Pause event execution until fade in or fade out is complete
+
+;;5D (2 parameters) -> Scroll layer 1.  Sprites will move with layer 1
+
+EX1:		5D xx yy
+			-xx: The speed at which the layer will move horizontally.  Speeds between $01 and $7F move the layer left, with $7F being the fastest speed and 
+			$01 being the slowest. Speeds between $80 and $FF will move the layer right, with $80 being the fastest and $FF being the slowest
+			-yy: The speed at which the layer will move vertically.  Speeds between $01 and $7F move the layer up, with $7F being the fastest speed and 
+			$01 being the slowest. Speeds between $80 and $FF will move the layer down, with $80 being the fastest and $FF being the slowest
+			
+EX2:		5D 00 00
+			-00: Stop the layer from moving
+			
+;;5E (2 parameters) -> Scroll layer 2
+(parameters are the same as with command 5D)
+
+;;5F (2 parameters) -> Scroll layer 3
+(parameters are the same as with command 5D)
+
+;;60 (2 parameters) -> Give objects on a certain palette a different palette
+
+EX1:		60 00 yy
+			-00: Affects background objects on layer 3, as well as the border on the edge of the screen
+			-yy: Changes all affected objects to use palette yy.  This palette corresponds to the palette in FF3usME > Graphics Editor > "Select the palette to
+			be worked with" > Overworld/Towns Index.  Some notable backgrounds that may be relevent are $08 (Esper Terra) and $1D (WoB sky background colour).
+			I'm not sure how palettes are chosen if you specify a value higher than $1F, but I assume that this is unintended behaviour since I can't find any
+			instances of this in the event dump.  It is likely pulling garbage data.
+			
+EX2:		60 05 yy
+			-05: Affects all background objects using palette 6.  You can check which palette a tile is using in FF6LE.  Double click a tile to select it, and
+			select a quarter of a tile to view in FF6LE (below the "UPDATE" button).  Any quarter tiles on palette 6 will be affected.  EX2 is relevent if the
+			first parameter is between $01 and $06 (inclusive)
+			
+EX3:		60 07 yy
+			-07: Affects the text boxes, perhaps more.
+			
+EX4:		60 08 yy
+			-08: Affects sprites using palette 0.
+			
+EX5:		60 0D yy
+			-0D: Affects sprites using palette ($0D - $08 = $05).  EX4 and EX5 are relevent if the first parameter is between $08 and $0F (inclusive). Do not
+			use values higher than $0F for the first parameter as it will cause bugs.
+			
+;;61 (3 parameters) -> Colorize a colour range to a specific colour
+NOTE: This command is only used by the original game to colour scenery to the yellowy flashback colour and the grayscale flashback colour
+
+EX1:		61 03 07 FF
+			-03: The yellowy flashback colour
+			-07: The start of the colour range affected
+			-FF: The end of the colour range affected.  For more info on what this colour range corresponds to, look at command 51
+			
+EX2:		61 07 07 FF
+			-07: The grayscale flashback colour
+			
+;;62 (1 parameter) -> Mosaic the screen
+NOTE: Don't use $FF as a parameter for this. Well, maybe do it for fun. :P
+
+EX1:		62 xx
+			-Mosaic the screen at speed xx.  Lower numbers mean that the mosaic effect lasts longer
+			
+EX2:		62 00
+			-Cancel the mosaic effect
+			
+;;63 (1 parameter) -> Create a spotlight around the character (used in Ebot's Rock) with a specific radius
+NOTE: Don't expect this command to just *work* anywhere.  The game has a layer 3 effect specific to Ebot's Rock.  What this command actually does is cause
+layer 3 to become darker except for a circle around your character, where layer 3 will be normal.  If you have no layer 3 on your map this will do nothing
+
+EX:			63 xx
+			-Create a spotlight with a radius of size xx around the party.
+
+;;6A (5 parameters) -> Fade out, and load a new map
+NOTE1: To generate the values to load the correct map, first find the ID for the map that you want to load in FF6LE. It is listed to the left of the map name
+in the drop-down box. For example: [03B] is the ID for Figaro Castle, Inside, so start with $003B if you want to load that map.  Next, add a value to determine which
+direction you want to be facing:
+	-$0000: Up
+	-$1000: Right
+	-$2000: Down
+	-$3000: Left
+	
+So if we want to be facing downwards in our example, we note that $003B + $2000 = $203B.  Next, we add a value to determine what music is playing on the map
+that we are loading:
+	-$000: The default music for the map that is loaded will be played when the map loads
+	-$400: The current music will continue playing
+	
+So in our example, if we want the current music to continue playing, we add $203B + $400 = $243B.  Finally, we need to flip these two bytes to make $3B24. $3B
+and $24 will be our first two parameters
+NOTE2: Add together the following values to combine these properties (this is the last parameter):
+	-$40: Don't fade the screen in immediately after loading map (useful when not loading the world map)
+	-$80: Run the entrance event to the map you are loading (useful when not loading the world map)
+	-$01: The party is in the airship when the map loads (useful when loading the world map)
+	-$02: The party is on a chocobo when the map loads (useful when loading the world map)
+	
+EX:			6A 3B 24 1A 2B C0
+			-3B 24: As mentioned in NOTE1, loads Figaro Castle, facing down, with current music playing
+			-1A: $1A (26 in decimal) is the horizontal coordinate the party will be placed at
+			-2B: $2B (43 in decimal) is the vertical coordinate the party will be placed at
+			-C0: Don't fade the screen in after loading the map, run the entrance event for this area
+	
+;;6B (5 parameters) -> Load a new map (assumes that you have already faded out the screen)
+(same parameters as 6A)
+
+;;6C (5 parameters) -> Set the world map and position the party will be returned to when they exit to the world map
+NOTE1: The first two parameters control which map is set as the parent:
+	-00 00: WoB Map
+	-01 00: WoR Map
+	-02 00: Serpent Trench Map
+	
+NOTE2: The last parameter controls which way the party will be facing when the map loads:
+	-00: Down
+	-01: Left
+	-02: Up
+	-03: Right
+
+EX:			6C 01 00 1A 2B 02
+			-01 00: The WoR map is the new parent map
+			-1A: $1A (26 in decimal) is the horizontal coordinate the party will be placed at
+			-2B: $2B (43 in decimal) is the vertical coordinate the party will be placed at
+			-02: The party is facing upwards when the map loads
+			
+;;70 (2 parameters) -> Same as 5D?  If you have any further insight please let me know
+
+;;71 (2 parameters) -> Same as 5E?  If you have any further insight please let me know
+
+;;72 (2 parameters) -> Same as 5F?  If you have any further insight please let me know
+
+;;73 (variable parameters) -> Replace a portion of the background.  The background will refresh immediately after the command is executed
+NOTE:  Add a value to the second parameter to determine which layer is modified:
+	-$00: Layer 1
+	-$40: Layer 2
+	-$80: Layer 3
+
+EX1:		73 20 37 03 02 34 15 36 2E 49 2E
+			-20 37: ($20, $37), or (32, 54) in decimal, are the coordinates of the top-left of the chunk of the background that you are replacing.  Use FF6LE
+			to determine where the coordinates lie.  This will replace layer 1
+			-03: The horizontal length of the chunk that you are replacing
+			-02: The vertical length of the chunk that you are replacing
+			-34 15 36 2E 49 2E: These are the tiles that you are using to replace the old tiles.  Since we are replacing a 3x2 chunk, the tiles will be
+			arranged as follows:
+				$34 $15 $36
+				$2E $49 $2E
+			To determine the number of a tile in FF6LE, double click on the tile to select it and check the number to the left of "Tile #" at the bottom of the
+			screen.  Note that this number is in decimal
+			
+EX2:		73 20 B7 03 02 34 15 36 2E 49 2E
+			-20 B7: B7 = ($80 + $37), so the top-left corner being replaced is at ($20, $37), or (32, 54) in decimal, and this will replace layer 3
+			
+;;74 (variable parameters) -> Replace a portion of the background.  The background will not refresh immediately after the command is executed.
+Use command 75 to refresh the background and apply the changes.  Useful if you want to modify multiple parts of the screen and have them change visually at exactly the same time.
+(parameters are the same as for command 73)
+
+;;75 (no parameters) -> Reloads the background.  Useful if it has been modified with command 74
+
+;;77 (1 parameter) -> Perform level averaging on a character
+EX:			77 xx
+			-Performs level averaging on character xx
+			
+;;78 (1 parameter) -> Allow a character to pass through sprites (reverse this with command 36)
+EX:			78 xx
+			-Allows character xx to pass through sprites (during events)
+			
+;;79 (2 parameters) -> Place a party on a map
+NOTE: Several times in the event script the party reffered to is higher than 4 (6 or 7).  As far as I can tell, party 6 or 7 is
+identical to party 2 or 3, but there may be some additional effects
+
+EX:			79 02 14 00
+			-02: Party $02 is being placed on a map.  Parties 01-03 are valid
+			-14 00:  The map the party is being placed on is 0014 (Narshe Outside, WoB, note that the bytes are reversed).  You can view the maps in FF6LE in the dropdown box at the top-left.
+			
+;;7A (4 parameters) -> Cause a character to activate a different event when spoken to
+
+EX1:		7A 02 47 8A 02
+			-02: Character $02 (Locke) will now execute the following event when talked to
+			-47 8A 02: The event exectued will be at address $CC/8A47 (address is calculated the same way as for command B2)
+			
+EX2:		7A 2A 7D 05 00
+			-2A: Character $2A (NPC 26 in LE) will now execute the following event when talked to
+			-7D 05 00: The event executed will be at address $CA/057D
+			
+;;7B (no parameters) -> Lets the screen snap back to the current party in a multiparty battle.  This is useful to place after the events called by NPC's that trigger events on contact (like the soldiers in the battle of Narshe).  Otherwise, if they touch a party that you aren't currently controlling, you won't regain
+control of the correct party afterwards and the game will bug out.
+
+;;7C (1 parameter) -> Cause a character to activate an event when touched
+EX:			7C xx
+			-xx: When character xx is touched, they will activate their event
+			
+;;7E (2 parameters) -> Move party to a position and fade in the screen
+EX:			7E 30 35
+			-30 35: The coordinates that the party will be moved to are ($30, $35), or (48, 53) in decimal.  Use FF6LE to determine where the coordinates lie
+			
+;;7F (2 parameters) -> Assign a name to a character
+EX:			7F xx yy
+			-xx: The character whose name is being changed
+			-yy: The name that is being assigned.  You can see the names in FF3usME > Actors Editor > Actor Startup
+			
+;;80 (1 parameter) -> Add an item to your inventory
+EX:			80 xx
+			-xx: The ID of the item you want to add to your inventory.  You can see the item IDs in FF3usME > Item Editor at the top-left
+			
+;;82 (no parameters) -> Set party 1 as the backup party.  This is the party that will initially be reloaded by command 7B.  Execute this command before you
+initiate any multiparty battles
+
+;;84 (2 parameters) -> Give Gil to the party
+NOTE: To choose the amount of Gil you want to give the party, select an amount (up to 65535 gil) and convert it into hex.  For example, if you want to give
+40 000 Gil to the party, you would convert it to $9C40.  Then you flip the bytes.  In our example, this comes to 40 9C, which will be used as the parameters
+
+EX:			84 40 9C
+			-40 9C: Selects 40 000 as the amount of Gil to give
+			
+;;85 (2 parameters) -> Take Gil from the party
+NOTE: If $1E80($1BE) [$1EB7, bit 6] is set, the party did not have enough Gil.  If the party did not have enough Gil to pay in full, no Gil will be taken
+(parameters are the same as for command 84)
+
+;;86 (1 parameter) -> Gives Esper to the party
+EX1:		86 36
+			-36: Give Esper 0 (Ramuh) to the party.  For some reason, $36 is used as the base for the Esper IDs, so Esper 0 corresponds to the parameter 36
+			
+EX2:		86 41
+			-41: Give Esper 11 ($41 - $36 = $0B = 11 in decimal) (Odin) to the party.  You can view which IDs correspond to which Esper in FF3usME > Spell
+			Editor > Esper Extras
+			
+;;87 (1 parameter) -> Take Esper from party
+(parameters are the same as for command 86)
+
+;;88 (3 parameters) -> Removes status ailments from a character
+NOTE: The third and fourth parameters determine which status effects are removed.  Subtract the following values from $FFFF to remove the corresponding
+statuses:
+	-$0040: Dog Block
+	-$0080: Float
+	-$0100: Dark
+	-$0200: Zombie
+	-$0400: Poison
+	-$0800: Magitek
+	-$1000: Vanish
+	-$2000: Imp
+	-$4000: Petrify
+	-$8000: Death
+
+EX1:		88 xx 9D 7F
+			-xx: The character who you are removing the statuses from
+			-9D 7F: Remove Petrify, Imp, Zombie and Float from the character, since $FFFF - $6280 = $9D7F
+			
+EX2:		88 xx 00 00
+			-00 00: Remove all statuses
+
+;;89 (3 parameters) -> Inflict status ailments on a character
+NOTE: The third and fourth parameters determine which status effects are applied.  Use the same list of values as for command 88, but instead of subtracting
+from $FFFF, just add the values together
+
+EX1:		88 xx 62 80
+			-xx: The character who you are removing the statuses from
+			-62 80: Inflict Petrify, Imp, Zombie and Float on the character
+			
+EX2:		88 xx FF FF
+			-FF FF: Inflict all statuses
+			
+;;8A (3 parameters) -> Toggle status ailments on a character (if they are on, turn them off, or vice-versa)
+(parameters are the same as for command 89)
+
+;;8B (2 parameters) -> Add or subtract an amount from a character's HP
+EX1:		8B xx 04
+			-xx: The character whose HP you are changing
+			-04: If the value of the third parameter is between 0 and 7 (inclusive), you will add 2^(parameter) to the character's HP.  In this case, we
+			are adding 2^4 = 16 to this character's HP
+			
+EX2:		8B xx 7F
+			-7F: If the value of the third parameter is 7F, the character's HP will be set to maximum
+			
+EX3:		8B xx 84
+			-84: If the value of the third parameter is between $80 and $87 (inclusive), you will subtract 2^(parameter - $80) from the character's HP.  In this
+			case, we are subtracting 2^4 = 16 from this character's HP
+			
+;;8C (2 parameters) -> Boost a character's MP to maximum
+EX:			8C xx 7F
+			-xx: The character whose MP you are changing
+			-7F: Boost this character's MP to maximum.  As far as I can tell, this is the only useful value for this parameter
+			
+;;8D (1 parameter) -> Remove all equipment from a character and place it in your inventory
+EX:			8D xx
+			-xx: The character you want to remove equipment from
+			
+;;8E (no parameters) -> Invoke a battle based on the chest opened.  This is only used in the event code in a single event that is opened when you open a
+monster-in-a-box.  I don't think there's much else you'll be able to use it for
+
+;;8F (no parameters) -> Unlocks all of Cyan's SwdTech skills
+
+;;90 (no parameters) -> Unlock Bum Rush
+
+;;91 (no parameters) -> Pause the event for 15 units.  I'm not exactly sure how these "units" convert into seconds, but it likely won't matter as you'll
+probably just want to feel out the timing for yourself while creating events anyways
+
+;;92 (no parameters) -> Pause the event for 30 units.
+
+;;93 (no parameters) -> Pause the event for 45 units.
+
+;;94 (no parameters) -> Pause the event for 60 units.
+
+;;95 (no parameters) -> Pause the event for 120 units.
+
+;;96 (no parameters) -> Unfades the screen.  Similar to command 59, but you can't control the speed at which the screen fades in
+
+;;97 (no parameters) -> Fades the screen.  Similar to command 5A, but you can't control the speed at which the screen fades in. Reverse with command 59 or 96
+
+;;98 (1 parameter) -> Call the name change screen for a character.  The screen will have to be faded in afterwards
+EX:			98 xx
+			-xx: The character whom you are changing the name of
+			
+;;99 (3 parameters) -> Call the screen to select a party
+NOTE1: The results of this depend on several factors.  Any character (with an ID from $00 to $0F) that is created with the command 3D will be shown on this 
+screen.  Any character not in a party will be shown at the top of the screen in the main party lineup.  Any character already in a party will be shown in the
+party that they are currently in
+NOTE2: To make the characters that are currently available to use appear on the party select screen, use command B2 to call the subroutine #CACBAF.  This
+assumes that the event bits from 2F0 to 2FD have been set appropriately (ie, for each character that has been collected, their corresponding bit has been set).
+So if Terra is available, 2F0 will have been set, and if Celes is available, 2F6 will have been set. View the event bits document for more details
+NOTE3: The third and fourth parameter determine whether you will be able to affect the position of a party member on the select screen.  This is used before
+the Opera House sequence to prevent you from removing Locke or Celes from the party.  Note that this does not automatically place a character in a party;
+if a character is not in a party and you prevent them from being moved, the player will not be able to place them in a party. You'll have to add together 
+values and flip the bytes to determine which characters cannot be moved:
+	-$0001: Terra
+	-$0002: Locke
+	-$0004: Cyan
+	-$0008: Shadow
+	-$0010: Edgar
+	-$0020: Sabin
+	-$0040: Celes
+	-$0080: Strago
+	-$0100: Relm
+	-$0200: Setzer
+	-$0400: Mog
+	-$0800: Gau
+	-$1000: Gogo
+	-$2000: Umaro
+	-$4000: Temporary character 1
+	-$8000: Temporary character 2
+
+EX:			99 02 04 82
+			-02: The first parameter is the number of parties.  Use a parameter between 01 and 03
+			-04 82: Adding together $8000, $0200 and $0004 gives us 82 04, and then we flip the bytes to get 04 82.  This means that Temporary character 2,
+			Setzer and Cyan will be impossible to move
+			
+;;9A (no parameters) -> Invoke the screen where you select an item to bet at the Coliseum. View the event at $CB78D9 to see how this is used in vanilla
+
+;;9B (1 parameter) -> Invoke a shop screen
+EX:			9B 1D
+			-1D: The ID of the shop being loaded (29 in decimal).  The shops can be viewed in FF3usME > Item Editor > Shops
+			
+;;9C (1 parameter) -> Give a character optimum equipment
+EX:			9C xx
+			-xx: The ID of the character you want to optimize equipment on
+			
+;;9D (no parameters) -> Invoke the screen before the final battle where you choose your party order
+
+;;A0 (5 parameters) -> Invoke a timer (like in the Opera House or Floating Continent escape).  An event will be called when it expires
+NOTE: Add values to the last parameter to change the timer's properties:
+	-$10: Timer will be shown in the menu
+	-$20: Menu or battle will automatically be exited when timer expires
+	-$40: Timer will be shown on the map.  Note that only timer 0 can be made visible on map/battle/menu screens.  Also, the timer will not look right unless
+	you set Bit 1.7 (in FF6LE > LAYERS > UNKNOWN BITS) for the map you are currently on.  However, setting this bit will mess up chocobo sprites
+	-$80: Timer will pause in the menu or in battle
+	
+	Add another value to determine which timer is used (there are four separate timers which can be run at the same time).
+	-$00: Timer 0
+	-$04: Timer 1
+	-$08: Timer 2
+	-$0C: Timer 3
+
+EX1:		A0 10 0E 47 8A 02
+			-10 0E: The first two parameters determine how much time is on the timer.  Note that the bytes are flipped.  So 10 0E represents $0E10, a value that
+			corresponds to roughly one minute.  A larger number means that more time is on the timer
+			-47 8A 02: The address of the event to be called when the timer expires.  The address of the event is determined the same way as for command B2.
+			So this corresponds to address $CC8A47.  In this case, none of the properties above have been set, and we are using timer 0
+			
+EX2:		A0 50 46 47 8A C6
+			-50 46: ($0E10 * 5[minutes]) = $4650, and the bytes are flipped to make 50 46. This gives us a value of ~5 minutes on the timer
+			-47 8A C6: This is the same address as in EX1, but we have added $40, $80 and $04 to the last parameter.  Therefore, we are using timer 1,
+			the timer should be displayed on the map, and the timer will be paused when in battle (in reality, the timer will not be displayed on the map,
+			since timer 1 does not display on the map)
+			
+;;A1 (1 parameter) -> Use this to reset a timer, clearing it from the display and preventing it from triggering
+EX:			A1 01
+			-01: The timer to be reset is timer 1.  00, 01, 02 and 03 are valid values
+
+;;A6 (no parameters) -> Eliminate the rotating pyramid (the effect surrounding Kefka before the final battle)
+
+;;A7 (1 parameter) -> Create a rotating pyramid around a character (the effect surrounding Kefka before the final battle)
+NOTE: Once the rotating pyramid is created, you'll need to use command 56 to tint it a colour and make it visible
+
+EX:			A7 xx
+			-xx: The ID of the character that you want to create a pyramid around
+			
+;;A8 (no parameters) -> Show the cutscene where the Floating Continent flies into the sky
+NOTE: Load a map with command 6B after doing this
+
+;;A9 (no parameters) -> Show the title screen
+NOTE: Load a map with command 6B or 6A after doing this
+
+;;AA (no parameters) -> Show the scene with Magitek Armour walking through the snowfields
+NOTE: Load a map with command 6B or 6A after doing this
+
+;;AB (no parameters) -> Show the game loading screen
+NOTE1: Will be buggy if there are no savefiles.
+NOTE2: Check the event at $CA5E33 for the original usage of this command
+
+;;AC (no parameters) -> Fade in the screen after loading a new game
+
+;;AD (no parameters) -> Show world getting torn apart
+NOTE: Load a map with command 6B after doing this
+
+;;AE (no parameters) -> Shows the mine cart escape from the Magitek facility (battles and all)
+NOTE: Load a map with command 6B after doing this
+
+;;AF (no parameters) -> Start a Coliseum battle
+NOTE: Will have unexpected results if you did not invoke the battle after calling the Coliseum menu with command 9A, or if the player cancelled out of the
+menu without selecting a bet.  View the event at $CB78D9 to see how this is used in vanilla
+
+;;B0 (variable parameters) -> Repeat a sequence of event commands (up until the next B1 or BC command) multiple times
+EX1: 		B0 08 ... B1
+			-08: Specifies the number of times that you want to repeat these commands (in this case eight)
+			-...: Any valid sequence of event commands
+			-B1: Denotes the end of the repeating block of commands
+			
+EX2:		B0 FF ... BC B4 01
+			-FF: Repeat the commands in this block forever until the following condition is met
+			-BC: Stop repeating these commands once event bit $1B4 is clear (see command BC for more details)
+			
+;;B1 (no parameters) -> Denotes the end of a block of repeating commands (started with B0)
+(see B0 for details)
+
+;;B2 (3 parameters) -> Jump to an address in the event code (otherwise known as calling an event as a subroutine).
+NOTE: Once a return (FE command) is reached in the code that was jumped to, the current event will continue executing
+
+EX:			B2 47 8A 02
+			-47 8A 02: This represents the address $CC8A47, which is the address that will be jumped to.  In order to calculate the parameters representing
+			the address, first take the address and subtract $CA0000 (note that it is impossible to jump to anything below $CA0000).  Since we're jumping to
+			$CC8A47, this gives us $028A47.  Now you need to flip the three bytes in the address, giving us 47 8A 02.
+			
+;;B3 (4 parameters) -> Jump to an address in the event code multiple times.  Same as command B2, except that it executes the code multiple times
+EX:			B3 xx 47 8A 02
+			-xx: Jump to this code xx times
+			-47 8A 02:  The address jumped to is $CC8A47.  This is calculated the same way as for command B2
+			
+;;B4 (1 parameter) -> Pause execution of the event for a small amount of time
+EX:			B4 xx
+			-xx: The number of "units" that the game will pause for is xx.  These are the same units used for commands 91-95.
+			
+;;B5 (1 parameter) -> Pause execution of the event for an amount of time x15
+EX:			B5 xx
+			-xx: The number of "units" that the game will pause for is (xx*15).  These are the same units used for commands 91-95.
+			
+;;B6 (variable parameters) -> This is meant to be placed after a dialog box that gives the player multiple choices.  This will jump to different events
+depending on what dialog choice was selected
+NOTE: For the example, assume a text box that has four options was displayed before this event command was executed.  For example, the text box $09E9 (2536
+in FF3usME)
+
+EX:			B6 47 8A 02 DE 09 02 00 0A 02 B3 5E 00
+			-47 8A 02: The address that will be jumped to if the first option is chosen is $CC8A47.  These addresses are determined the same way as for
+			command B2
+			-DE 09 02: The address that will be jumped to if the second option is chosen is $CC09DE
+			-00 0A 02: The address that will be jumped to if the third option is chosen is $CC0A00
+			-B3 5E 00: The address that will be jumped to if the fourth option is chosen is $CA5EB3
+			
+;;B7 (4 parameters) -> Branch to an address if a battle related event bit is clear
+NOTE1: You can find a list of the "Battle Event Bits" in Novalia Spirit's Event Bits document. Google around to find it. This will allow you to see what the
+bits are currently being used for
+NOTE2: This will describe how to calculate which event bit is being affected (the first parameter controls this). There are eight bits that can be set or clear
+within every byte.  The lowest bit that can be checked is $1DC9, bit 0, and the highest listed in the Event Bits document is $1DDC, bit 7.  To determine which
+parameter to use to set a particular bit in that range, first take the byte number and subtract $1DC9, then multiply by 8.  Finally, add the bit number.
+
+EX:			B7 45 47 8A 02
+			-45: Assume that we wanted to check if the timer expired during a fight.  The bit corresponding to this is 1DD1:5 (the byte is $1DD1, and the bit
+			is 5) according to the event bits document.  So first we subtract $1DD1 - $1DC9, which is 8.  Next we multiply by 8, to get $40.  Finally we add 5 to
+			get $45, which is why that is our first parameter.
+			-47 8A 02: The address that will be jumped to if the first option is chosen is $CC8A47.  These addresses are determined the same way as for
+			command B2
+			
+;;B8 (1 parameter) -> Set a battle related event bit
+EX:			B8 45
+			-45: This parameter sets battle event bit 1DD1:5.  Look at the first parameter of command B7 to understand how this works
+			
+;;B9 (1 parameter) -> Clear a battle related event bit
+(parameter is the same as for command B8)
+
+;;BA (1 parameter) -> Play one of the mode 7 ending cutscenes
+NOTE: Possible parameter values:
+	-$02: Moving forward in clouds
+	-$04: Spiraling down through clouds
+	-$05: Airship moving sideways through clouds (Producer Hironobu Sakaguchi)
+	-$09: Camera moving around clouds, airship far below, multiple credits
+	-$0C: Birds flying over water, boats in water, multiple credits
+	-$10: Birds flying over water with airship, mutliple credits
+	-$14: Birds flying over water and land with airship, multiple credits
+	-$18: Aerial view of land, multiple credits
+	-$1C: Detailed shot of airship flying over land, multiple credits
+	-$20: Airship flying on diagonal
+	-$28: Shadow's part of the ending cutscene
+	-$2D: Book flipping pages
+	-$32: Cyan's part of the ending cutscene
+	-$3C: Mog's part of the ending cutscene
+	-$40: Edgar/Sabin's part of the ending cutscene
+	-$46: Gogo's part of the ending cutscene
+	-$4A: "And You" part of the ending cutscene
+	-$50: Gau's part of the ending cutscene
+	-$5A: Terra's part of the ending cutscene
+	-$64: Locke/Celes' part of the ending cutscene
+	-$6E: Relm's part of the ending cutscene
+	-$78: Strago's part of the ending cutscene
+	-$82: Setzer's part of the ending cutscene
+	-$87: Umaro's part of the ending cutscene
+	
+;;BB (1 parameter) -> Wait for a predetermined part of the ending theme (possibly the end of it) and then show the "THE END" cutscene
+
+;;BC (2 parameters) -> Stop repeating a block of commands (that was being repeated with command B0) when an event bit is set
+EX:			B0 FF ... BC B4 01
+			-B0 FF ...: Repeat a block of commands before BC until the following condition is met (see command B0 for more details)
+			-BC: Denotes the end of the block of commands that is being repeated. That block of commands will be repeated until an event bit is set
+			-B4 01: When event bit $01B4 is set (note that the bytes are flipped), the block of repeating commands will end. See command C0 for more information
+			about event bits, but remember that this command always checks if the bit is set
+			
+;;BD (3 parameters) -> Pseudo randomly jump to an address 50% of the time
+EX:			BD 47 8A 02
+			-47 8A 02: 50% of the time, we will jump to $CC8A47 (see command B2 for more details on how the address is calculated)
+			
+;;BE (variable parameters) -> Branch based on the current "CaseWord" bits. After the address is returned from this event will continue from where it left off
+NOTE1: These are sixteen specific bits that you can load certain information into easily by calling specific subroutines (with command B2)
+or by using another event command. This is the data that you can load into the CaseWord:
+
+	-Call subroutine $CAC5C1 to set the CaseWord bits to represent the number of characters in the party. When using command BE, check if 1 is in the 
+		CaseWord to check if there are two party members, check if 2 is in the CaseWord to check if there are three, etc.
+	-Call subroutine $CACA64 to set the CaseWord bits to represent the direction the party is facing. When using command BE, the bits to check correspond
+		as follows: 0: Up, 1: Right, 2: Down, 3: Left
+	-Use command DE to set the CaseWord bits to represent which characters are in your current party. When using command BE, check if 1 is in the 
+		CaseWord to check if Locke is in the party, check if 2 is in the CaseWord to check if Cyan is, etc.
+	-Use command E0 to set the CaseWord bits to represent which characters have been encountered so far (whomever is in the shop screens). When using command BE, check if 1 is in the 
+		CaseWord to check if Locke has been encountered, check if 2 is in the CaseWord to check if Cyan has been, etc.
+	-Use command E1 to set the CaseWord bits to represent the characters who have been collected (are available on the airship). When using command BE, check 
+		if 1 is in the CaseWord to check if Locke is collected, check if 2 is in the CaseWord to check if Cyan is, etc.
+	-Use command E2 to set the CaseWord bits to represent which character is in the lead of the current party. When using command BE, check if 1 is in the 
+		CaseWord to check if Locke is in the lead, check if 2 is in the CaseWord to check if Cyan is, etc.
+	-Use command E3 to set the CaseWord bits to represent which characters are in any of the three parties. When using command BE, check if 1 is in the 
+		CaseWord to check if Locke is in a party, check if 2 is in the CaseWord to check if Cyan is, etc.
+	-Use command E4 to set the CaseWord bits to represent which of the three parties is currently active. When using command BE, check if 1 is in the 
+		CaseWord to check if you are using party 1, check if 2 is in the CaseWord to check if you are using party 2, etc.
+	-Use command EB to compare two words and set the CaseWord bits to store the result of the comparison. Check out command EB for details
+
+NOTE2: If we want to translate a statement such as "If 2 is in the CaseWord, jump to address $CC8A47", first take the address and translate it to 47 8A 02
+as you normally would for command B2.  Then add $20 to the last byte to get 47 8A 22.  If you were checking if 5 was in the CaseWord, you would add $50
+to get 47 8A 52.
+NOTE3: The previous commands in actuality set the event bits from $1A0 to $1AF, which are the bits that represent the CaseWord.  In some cases you may want to check these bits
+directly instead of using the command BE.
+	
+EX1:		BE 01 47 8A 22 ; Assume that subroutine $CAC5C1 was called before this (for example, with B2 C1 C5 00)
+			-01: This is the number of bits we want to check.  For now we're only checking one
+			-47 8A 22: If 2 is in the CaseWord (in this case, it means two party members are in the party), jump to address $CA8A47
+			
+EX2:		BE 03 47 8A 32 C3 FA 20 65 4A 11 ; Assume that subroutine $CACA64 was called before this (for example, with B2 64 CA 00)
+			-03: We want to check three bits
+			-47 8A 32: If 3 is in the CaseWord (in this case, it means the party is facing left), jump to address $CC8A47
+			-C3 FA 20: If 2 is in the CaseWord (in this case, it means the party is facing down), jump to address $CAFAC3
+			-65 4A 11: If 1 is in the CaseWord (in this case, it means the party is facing right), jump to address $CAFAC3
+			
+EX3:		BE 03 47 8A 32 C3 FA 20 65 4A 11 ; Assume that the event command DE was used just before this
+			-03: We want to check three bits
+			-47 8A 32: If 3 is in the CaseWord (in this case, it means that Shadow is in the current party), jump to address $CC8A47
+			-C3 FA 20: If 2 is in the CaseWord (in this case, it means that Cyan is in the current party), jump to address $CAFAC3.  Note that if Shadow is in
+			the party, this will not be executed because the previous jump would have been made
+			-65 4A 11: If 1 is in the CaseWord (in this case, it means that Locke is in the current party), jump to address $CAFAC3.  Note that if Shadow/Cyan is in the party, this will not be executed because one of the previous jumps would have been made
+			
+;;BF (no parameters) -> Show airship flying sideways over land (from the ending)
+
+;;C0 (5 parameters) -> Branch to an address based on an event bit.  Will not return to this point once the branch is made
+NOTE1: You can find a list of the event bits in Novalia Spirit's Event Bit document.
+NOTE2: In the Event Dump, the event bits being checked by the C0 command (or similar commands) are described in a similar fashion to "$1E80($1A5) [$1EB4, bit 5]"  For the purposes of this 
+document, only consider the value in the parentheses (in this case $1A5)
+
+EX1:			C0 CC 00 47 8A 02
+				-CC 00: If you want to check event bit $0CC, flip the bytes for $00CC to get CC 00, as in this example.  If you do nothing else, the code will branch to the following address if
+				bit $0CC is clear
+				-47 8A 02: The address we will jump to if the bit is clear is $CC8A47 (check command B2 for details)
+				
+EX2:			C0 CC 80 47 8A 02
+				-CC 80: By adding $80 to the second parameter, we can branch if the bit is set instead of clear.  So we will jump to $CC8A47 if $0CC is set
+				
+;;C1 (7 paramaters) -> Branch to an address if any of two event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C1 CC 00 CD 80 47 8A 02
+				-CC 00: Branch if bit $0CC is clear OR;
+				-CD 80: bit $0CD is set
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;C2 (9 paramaters) -> Branch to an address if any of three event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C2 CC 00 CD 80 CE 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear OR;
+				-CD 80: bit $0CD is set OR;
+				-CE 00: bit $0CE is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;C3 (11 paramaters) -> Branch to an address if any of four event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C3 CC 00 CD 80 CE 00 CF 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear OR;
+				-CD 80: bit $0CD is set OR;
+				-CE 00: bit $0CE is clear OR;
+				-CF 00: bit $0CF is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;C4 (13 paramaters) -> Branch to an address if any of five event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C4 CC 00 CD 80 CE 00 CF 00 D0 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear OR;
+				-CD 80: bit $0CD is set OR;
+				-CE 00: bit $0CE is clear OR;
+				-CF 00: bit $0CF is clear OR;
+				-D0 00: bit $0D0 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;C5 (15 paramaters) -> Branch to an address if any of six event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C5 CC 00 CD 80 CE 00 CF 00 D0 00 D1 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear OR;
+				-CD 80: bit $0CD is set OR;
+				-CE 00: bit $0CE is clear OR;
+				-CF 00: bit $0CF is clear OR;
+				-D0 00: bit $0D0 is clear OR;
+				-D1 00: bit $0D1 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;C6 (17 paramaters) -> Branch to an address if any of seven event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C6 CC 00 CD 80 CE 00 CF 00 D0 00 D1 00 D2 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear OR;
+				-CD 80: bit $0CD is set OR;
+				-CE 00: bit $0CE is clear OR;
+				-CF 00: bit $0CF is clear OR;
+				-D0 00: bit $0D0 is clear OR;
+				-D1 00: bit $0D1 is clear OR;
+				-D2 00: bit $0D2 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;C7 (19 paramaters) -> Branch to an address if any of seven event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C7 CC 00 CD 80 CE 00 CF 00 D0 00 D1 00 D2 00 D3 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear OR;
+				-CD 80: bit $0CD is set OR;
+				-CE 00: bit $0CE is clear OR;
+				-CF 00: bit $0CF is clear OR;
+				-D0 00: bit $0D0 is clear OR;
+				-D1 00: bit $0D1 is clear OR;
+				-D2 00: bit $0D2 is clear OR;
+				-D3 00: bit $0D3 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;C8 (5 paramaters) -> Probably the same as command C0
+
+;;C9 (7 paramaters) -> Branch to an address if all of two event bits are what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			C9 CC 00 CD 80 47 8A 02
+				-CC 00: Branch if bit $0CC is clear AND;
+				-CD 80: bit $0CD is set
+				-47 8A 02: The address to branch to is $CC8A47
+		
+;;CA (9 paramaters) -> Branch to an address if any of three event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			CA CC 00 CD 80 CE 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear AND;
+				-CD 80: bit $0CD is set AND;
+				-CE 00: bit $0CE is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;CB (11 paramaters) -> Branch to an address if any of four event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			CB CC 00 CD 80 CE 00 CF 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear AND;
+				-CD 80: bit $0CD is set AND;
+				-CE 00: bit $0CE is clear AND;
+				-CF 00: bit $0CF is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;CC (13 paramaters) -> Branch to an address if any of five event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			CC CC 00 CD 80 CE 00 CF 00 D0 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear AND;
+				-CD 80: bit $0CD is set AND;
+				-CE 00: bit $0CE is clear AND;
+				-CF 00: bit $0CF is clear AND;
+				-D0 00: bit $0D0 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;CD (15 paramaters) -> Branch to an address if any of six event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			CD CC 00 CD 80 CE 00 CF 00 D0 00 D1 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear AND;
+				-CD 80: bit $0CD is set AND;
+				-CE 00: bit $0CE is clear AND;
+				-CF 00: bit $0CF is clear AND;
+				-D0 00: bit $0D0 is clear AND;
+				-D1 00: bit $0D1 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;CE (17 paramaters) -> Branch to an address if any of seven event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			CE CC 00 CD 80 CE 00 CF 00 D0 00 D1 00 D2 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear AND;
+				-CD 80: bit $0CD is set AND;
+				-CE 00: bit $0CE is clear AND;
+				-CF 00: bit $0CF is clear AND;
+				-D0 00: bit $0D0 is clear AND;
+				-D1 00: bit $0D1 is clear AND;
+				-D2 00: bit $0D2 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;CF (19 paramaters) -> Branch to an address if any of seven event bits is what you are checking for
+NOTE: Look to commands C0 and B2 if you have not yet read them
+EX:			CF CC 00 CD 80 CE 00 CF 00 D0 00 D1 00 D2 00 D3 00 47 8A 02
+				-CC 00: Branch if bit $0CC is clear AND;
+				-CD 80: bit $0CD is set AND;
+				-CE 00: bit $0CE is clear AND;
+				-CF 00: bit $0CF is clear AND;
+				-D0 00: bit $0D0 is clear AND;
+				-D1 00: bit $0D1 is clear AND;
+				-D2 00: bit $0D2 is clear AND;
+				-D3 00: bit $0D3 is clear
+				-47 8A 02: The address to branch to is $CC8A47
+				
+;;D0 (1 parameter) -> Set event bit $0xx
+NOTE1: You can find a list of event bits in Novalia Spirit's document
+NOTE2: In the Event Dump, the event bits being set by D0 (or similar commands) are described in a similar fashion to "$1E80($0A5) [$1EB4, bit 5]"  For the purposes of this 
+document, only consider the value in the parentheses (in this case $0A5)
+
+EX:			D0 CC
+NOTE: Look at command D0 if have not done so
+				-CC: Set event bit $0CC
+				
+;;D1 (1 parameter) -> Clear event bit $0xx
+NOTE: Look at command D0 if have not done so
+EX:			D1 CC
+				-CC: Clear event bit $0CC
+				
+;;D2 (1 parameter) -> Set event bit $1xx
+NOTE: Look at command D0 if have not done so
+EX:			D2 CC
+				-CC: Set event bit $1CC
+				
+;;D3 (1 parameter) -> Clear event bit $1xx
+NOTE: Look at command D0 if have not done so
+EX:			D3 CC
+				-CC: Clear event bit $1CC
+				
+;;D4 (1 parameter) -> Set event bit $2xx
+NOTE: Look at command D0 if have not done so
+EX:			D4 CC
+				-CC: Set event bit $2CC
+				
+;;D5 (1 parameter) -> Clear event bit $2xx
+NOTE: Look at command D0 if have not done so
+EX:			D5 CC
+				-CC: Clear event bit $2CC
+				
+;;D6 (1 parameter) -> Set event bit $3xx
+NOTE1: Look at command D0 if have not done so
+NOTE2: I'm not sure what event bits higher than $300 are used for, since they aren't listed in Novalia Spirit's document
+EX:			D6 CC
+				-CC: Set event bit $3CC
+				
+;;D7 (1 parameter) -> Clear event bit $3xx
+NOTE: Look at command D0 if have not done so
+EX:			D7 CC
+				-CC: Clear event bit $3CC
+				
+;;D8 (1 parameter) -> Set event bit $4xx
+NOTE: Look at command D0 if have not done so
+EX:			D8 CC
+				-CC: Set event bit $4CC
+				
+;;D9 (1 parameter) -> Clear event bit $4xx
+NOTE: Look at command D0 if have not done so
+EX:			D9 CC
+				-CC: Clear event bit $4CC
+				
+;;DA (1 parameter) -> Set event bit $5xx
+NOTE: Look at command D0 if have not done so
+EX:			DA CC
+				-CC: Set event bit $5CC
+				
+;;DB (1 parameter) -> Clear event bit $5xx
+NOTE: Look at command D0 if have not done so
+EX:			DB CC
+				-CC: Clear event bit $5CC
+				
+;;DC (1 parameter) -> Set event bit $6xx
+NOTE: Look at command D0 if have not done so
+EX:			DC CC
+				-CC: Set event bit $6CC
+				
+;;DD (1 parameter) -> Clear event bit $6xx
+NOTE: Look at command D0 if have not done so
+EX:			DD CC
+				-CC: Clear event bit $6CC
+				
+;;DE (no parameters) -> Set CaseWord bits depending on who is in the party
+NOTE: Look at command BE for more information
+
+;;E0 (no parameters) -> Set CaseWord bits depending on who has been encountered so far (whomever is in the shop screens)
+NOTE: Look at command BE for more information
+
+;;E1 (no parameters) -> Set CaseWord bits depending on who is available on the airship
+NOTE: Look at command BE for more information
+
+;;E2 (no parameters) -> Set CaseWord bits depending on who is in the lead of the current party
+NOTE: Look at command BE for more information
+
+;;E3 (no parameters) -> Set CaseWord bits depending on who is in any of the three parties
+NOTE: Look at command BE for more information
+
+;;E4 (no parameters) -> Set CaseWord bits depending on which party is currently active
+NOTE: Look at command BE for more information
+
+;;E8 (3 parameters) -> Set the value of an event word
+NOTE: There are eight "event words" (possibly more, but I only see eight used in the event dump so I assume that's it) that can be used to store values between $0000 and $FFFF.  For
+example, in vanilla the game uses word $06 to store a counter for how many dragons you have defeated.  You can set, increment and decrement these values, as well as compare them to
+other values
+
+EX:			E8 03 34 12
+				-03: This means that you are setting event word $03 to contain the following value
+				-34 12: This means that the value being stored in the event word is $1234.  Note that the bytes are flipped
+				
+;;E9 (3 parameters) -> Increment the value in an event word
+(read the note for command E8 if you haven't)
+EX:			E9 03 34 12
+				-03: This means that you are incrementing event word $03 by the following value
+				-34 12: The value you are incrementing the event word by is $1234.  So if the value previously in the event word was $0666, the new value is ($0666 + $1234) = 189A
+				Note that the bytes are flipped
+				
+;;EA (3 parameters) -> Decrement the value in an event word
+(read the note for command E8 if you haven't)
+EX:			EA 03 34 12
+				-03: This means that you are decrementing event word $03 by the following value
+				-34 12: The value you are decrementing the event word by is $1234.  So if the value previously in the event word was $1666, the new value is ($1666 - $1234) = $0432
+				Note that the bytes are flipped
+				
+;;EB (3 parameters) -> Compare the value in a word to another value, and store the results in the CaseWord
+(read the note for command E8 if you haven't, and make sure you understand command BE first)
+NOTE: If you are comparing the value in event word xx to a value yyyy, there are three outcomes.  Either xx == yyyy, xx > yyyy, or xx < yyyy.  To check if xx == yyyy, use command BE
+and check if 0 is in the CaseWord.  To check if xx > yyyy, use BE and check if 1 is in the CaseWord.  To check if xx < yyyy, use command BE and check if 2 is in the CaseWord
+
+EX:			EB 03 34 12
+				-03: This means that you are comparing event word $03 to the following value
+				-34 12: The value that you are comparing the event word to is $1234.  Note that the bytes are flipped.  So if the value in the event word is exactly $1234, 0 in the
+				CaseWord will be set.  If the value is anything greater than $1234, 1 in the CaseWord will be set.  If the value in the event word is less than $1234, 2 will be set in the CaseWord
+				
+;;EF (2 parameters) -> Start playing a song at a specific volume
+NOTE1: Higher numbers for the second parameter mean that the song will start playing at a higher volume.  $00 would mean no volume, and $FF would mean full volume
+NOTE2: There is a list of songs available in a separate document
+
+EX:			EF 33 1F
+				-33: This means that song 33 (Battle to the Death, Atma Weapon's theme) will be playing
+				-1F: This is the volume that the song would be playing at.  $1F is fairly low volume
+				
+;;F0 (1 parameter) -> Start playing a song
+NOTE: There is a list of songs available in a separate document
+
+EX:			F0 33
+				-33: This means that song $33 (Battle to the Death, Atma Weapon's theme) will be playing
+				
+;;F1 (2 parameters) -> Fade in a song
+NOTE1: Higher numbers for the second parameter mean that the song will fade in more slowly
+NOTE2: There is a list of songs available in a separate document
+
+EX:			F1 33 1F
+				-33: This means that song 33 (Battle to the Death, Atma Weapon's theme) will be playing
+				-1F: The song will fade in at speed $1F (rather quickly)
+				
+;;F2 (1 parameter) -> Fade out a song
+NOTE: Higher numbers for the parameter mean that the song will fade out more slowly
+
+EX:			F2 1F
+				-1F: Fades out the current song at speed $1F (rather quickly)
+				
+;;F3 (1 parameter) -> Fade in the song that was previously playing before the song that is currently playing (it will start playing at the point it was interrupted)
+NOTE1: Higher numbers for the second parameter mean that the song will fade in more slowly
+
+EX:			F3 1F
+				-1F: The song that was previously playing will fade in at speed $1F
+				
+;;F4 (1 parameter) -> Play a sound effect
+NOTE: There is a list of sound effects available in a separate document
+
+EX:			F4 10
+				-10: The sound effect that will play is sound effect $10 (Bum Rush)
+				
+;;F5 (3 paramaters) -> Play a sound effect that is unbalanced between the left and right speaker
+NOTE1: Lower numbers for the second parameter indicate that the sound will be very unbalanced (either the left or right speaker will be playing much louder than the other).  Higher
+numbers indicate that the sound will be very balanced (the two speakers will play at similar volumes regardless of the value of the third parameter)
+NOTE2: Lower numbers indicate that the sound will be louder in the left headphone.  Higher number indicate it will be louder in the right
+NOTE3: There is a list of sound effects available in a separate document
+
+EX1:		F5 10 1F DF
+				-10: The sound effect that will play is sound effect $10 (Bum Rush)
+				-1F: Since $1F is fairly low, the sound will be fairly unbalanced
+				-DF: Since $DF is fairly high, the sound will be unbalanced in favour of the right speaker
+				
+EX2:		F5 10 DF 1F
+				-DF: Since $DF is fairly high, the sound will only be slightly unbalanced
+				-1F: Since $1F is fairly low, the sounde will be unbalanced in favour of the left speaker
+				
+;;F6 (3 parameters) -> Various music related commands including affecting pitch/tempo/volume/etc. for currently playing sound effects/music,
+NOTE: Use the first parameter to indicate what you want to affect.  Possibilities are as follows:
+	-$10: Plays song at a volume (possibly other effects)
+	-$11: Plays song at a volume (unknown other effects)
+	-$80: Affects volume of song and sound effects
+	-$81: Affects volume of song
+	-$82: Affects volume of sound effect
+	-$83: Affects speaker balance of sound effect
+	-$84: Affects tempo of song
+	-$85: Affects pitch of song
+	-$F1: Stop currently playing song
+	-$F2: Stop currently playing sound effect
+	
+EX1:		F6 10 33 1F
+				-10: Indicates that you want to start playing a song at a specific volume (the subcommand is $10)
+				-33: This means that song 33 (Battle to the Death, Atma Weapon's theme) will be playing
+				-1F: For this subcommand and $11, this means that the volume will be $1F.  Lower numbers indicate a lower volume, so $00 is the lowest volume and $FF is max volume.
+				$1F is not a very high volume.
+				
+EX2:		F6 80 1F DF
+				-80: Indicates that you want to change the volume of the song and sound effects (the subcommand is $80)
+				-1F: For this subcommand and subcommands $81-$85, this parameter indicates the transition time.  Higher values mean that the transition takes longer, and lower values mean
+				that the effect occurs more quickly.  Since $1F is not very high, this transition will occur fairly quickly
+				-DF: For this subcommand and subcommands $81-$82, this parameter indicated the volume.  Higher values mean a higher volume.  Since $DF is fairly high, the song will
+				play at nearly max volume
+				
+EX3:		F6 83 1F DF
+				-83: Indicates that you want to change the speaker balance of the currently playing sound effect (the subcommand is $83)
+				-DF: This parameter indicates the speaker balance.  Higher values mean that the sound effect will play mostly in the right speaker, and lower values mean that the sound effect
+				will play mostly in the left.  Since $DF is fairly high, the sound effect will play almost entirely in the right speaker
+				
+EX4:		F6 84 1F DF
+				-84: Indicates that you want to change the tempo of the currently playing song (the subcommand is $84)
+				-DF: This parameter is similar for subcommand $84 and $85.  The value that will give the lowest tempo/pitch is $80.  Increasing from $80 to $FF will increase the tempo/pitch.
+				$00 is slightly higher tempo/pitch than $FF.  The tempo/pitch will continue to increase as you increase the value from $00 to $7F.  $7F is the highest tempo/pitch.  In our case,
+				$DF is not much higher than $80, so the song will be playing at a fairly slow tempo
+				
+EX5:		F6 F1 00 00
+				-F1: Indicates that you want to stop the currently playing song (the subcommand is $F1)
+				-00 00: These parameters are useless and don't matter, for this subcommand and $F2
+				
+;;F7 (no parameters) -> Transitions one song to another at a time probably specified in the song data itself.  This is how the train noises transition smoothly into the Phantom Train song
+at the beginning of the Phantom Train, and it will also cause Dancing Mad to transition between its segments appropriately like it does when you beat a tier in the final battle
+
+;;F9 (1 parameter) -> Wait until a predetermined point in the song (probably specified in the song data itself) to continue with the event.  I'm not going to try and guess what the parameter
+means, as I don't have any musical hacking knowledge
+
+;;FA (no parameters) -> Wait until the current song fades out or ends before continuing
+
+;;FB (no parameters) -> According to the event dump, this applies some sort of special effect to the sound effect. I don't hear it though
+
+;;FD (no parameters) -> Does nothing (also called "No Operation", or NOP).
+
+;;FE (no parameters) -> Return from the subroutine if you are in a subroutine.  End the event and return control to the player if you are notable
+
+;;FF (no parameters) -> End a script started with a command from $00 to $34
+	
+				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,689 @@
+﻿$5B: Script Current location pointed to in the Script data.
+$72: RandomIndex Index into the random number table.
+$A2: Targets Cast on
+$A3: Targets Cast on
+$A4: Targets Hit (bit 0 to 3 = characters)
+$A5: Targets Hit (bit 0 to 5 = monsters)
+$B1: If bit 2 = 1, can't run, bit 7 = 1, disable preemptive attacks
+$B2: If bit 1 = 1, no critical & ignore true knight
+$B3: If bit 1 = 0, always critical, bit 4 = 1, no damage increment if ignore defense,
+         bit 5 = 1, ignore row, bit 6 = 0, gauntlet, bit 7 = 0, ignore vanish
+$B5: Command
+$B6: Spell / Battle Animation
+$B7: Something to do with determining battle animations
+$B8: Targets (2 bytes)
+$BA: if bit 1 = 0, no critical, bit 3 = 1, target only dead allies, bit 6 = 1, randomize target,
+         bit 7 = 1, abort on allies
+$BB: Targetting byte
+$BC: Damage incrementer (50% extra damage damage times value of $BC)
+$BE: Index into random number table
+$EB: ScriptParam1 Script parameter 1 for event Scripts.
+$EC: ScriptParam2 Script parameter 2 for event Scripts.
+$ED: ScriptParam3 Script parameter 3 for event Scripts.
+$EE: ScriptParam4 Script parameter 4 for event Scripts.
+$EF: ScriptParam5 Script parameter 5 for event Scripts.
+$F4: Status to clear (4 bytes) (not always used for this)
+$F8: Status (4 bytes) (not always used for this)
+$FC: Status to set (4 bytes) (not always used for this)
+$FE: Bit 6 = Dog Block, Bit 5 = Golem, Bit 3 = Blizzard Orb
+
+
+
+$0565: GameWindowset Window set, as used outside of battle in towns and dungeons. Direct copy of $1D4E.
+$05C4: EventLoopCount Event loop counter.
+
+$11A0 : Targeting Byte (Bit 0 = Cursor Moveable, 1 = One Side Only,
+                            2 = Autoselect both parties, 3 = Autoselect one party
+                            4 = Auto Confirm, 5 = Manual Party Select,
+                            6 = Cursor Start on Enemy, 7 = Randomize selection)
+$11A1 : Element (Bit 0 = Fire, 1 = Ice, 2 = Bolt, 3 = Poison, 4 = Wind, 5 = Pearl,
+                     6 = Earth, 7 = Water)
+$11A2 : Special Byte 1 ( Bit 0 = Physical Damage, 1 = Miss if Death Prot.,
+                             2 = Target only dead allies, 3 = Cures undead,
+                             4 = Randomize target, 5 = Ignore defense,
+                             6 = No Split Damage, 7 = Abort on Allies)
+$11A3 : Damage Type (Bit 0 = Use outside battle, 1 = Not reflectable, 2 = Learn if cast
+                         3 = Enable Runic, 4 = ???, 5 = Retarget if target dead,
+                         6 = Caster dies, 7 = Concerns MP)
+$11A4 : Special Byte 2 (Bit 0 = Heal, 1 = Redirection, 2 = Lift status, 3 = Toggle status,
+                            4 = Stamina can block, 5 = Can't be dodged, 6 = Hits mult. of hit rate,
+                            7 = Damage based on HP)
+$11A5 : MP cost of spell
+$11A6 : Battle Power or Spell Power
+$11A7 : Special Byte 3 (Bit 0 = Miss if no status set or clear, 1 = Text if hits)
+$11A8 : Hit Rate
+$11A9 : Special effect of attack
+$11AA : Status set by attack 1 (Bit 0 = Blind, 1 = Zombie, 2 = Poison, 3 = M-Tek,
+                                    4 = Invisible, 5 = Imp, 6 = Stone, 7 = Death)
+$11AB : Status set by attack 2 (Bit 0 = Count, 1 = Weak, 2 = Image, 3 = Mute,
+                                    4 = Berserk, 5 = Confuse, 6 = Seizure, 7 = Sleep)
+$11AC : Status set by attack 3 (Bit 0 = Dance, 1 = Regen, 2 = Slow, 3 = Haste,
+                                    4 = Stop, 5 = Shell, 6 = Safe, 7 = Wall)
+$11AD : Status set by attack 4 (Bit 0 = Rage, 1 = Freeze, 2 = Life 3, 3 = Morph,
+                                    4 = Spell, 5 = Hide, 6 = Dog Block, 7 = Float)
+$11AE : Vigor * 2 or Magic Power
+$11AF : Level
+$11B0 : Maximum Damage
+$11B4 : Spell randomly cast by weapon
+$11E0: BatFormation Battle formation ID.
+$11E1: BatFormation! Battle formation ID.
+$11E2: BatBackground Battle background.
+$1300: MusSoundSet Instrument set for the current song.
+$1301: MusSongID The ID of the music to play.
+$1302: MusVolume The music's volume. Pretty obvious what this does...
+$1600-$1FFF : Data that is stored to Save-RAM
+$1600-$184F : Character data (592 bytes, 37 bytes each character)
+$1600: Outside battle character Sprite set
+$1601: Outside battle character Level adjustment factor (among other things)
+$1602: Outside battle character Name (6 bytes)
+$1608: Outside battle character unmodified Level
+$1609: Outside battle character unmodified Current HP (2 bytes)
+$160B: Outside battle character unmodified Max HP (2 bytes)
+$160D: Outside battle character unmodified Current MP (2 bytes)
+$160F: Outside battle character unmodified Max MP (2 bytes)
+$1611: Outside battle character XP (3 bytes)
+$1614: Outside battle character Statuses (2 bytes)
+$1616: Outside battle character Commands (4 bytes)
+$161A: Outside battle character Vigor
+$161B: Outside battle character Speed
+$161C: Outside battle character Stamina
+$161D: Outside battle character Magic Power
+$161E: Outside battle character Esper equipped
+$161F: Outside battle character Right hand
+$1620: Outside battle character Left hand
+$1621: Outside battle character Helmet
+$1622: Outside battle character Armor
+$1623: Outside battle character Relic 1
+$1624: Outside battle character Relic 2
+(note that the above structure repeats for each character)
+$1850-$185F: Setup of current parties (16 bytes)
+$1860-$1862: Gold (3 bytes)
+$1863-$1865: Game Time (3 bytes)
+$1866-$1868: Steps (3 Bytes)
+$1869-$1968: Items possessed (256 bytes)
+$1969-$1A68: Item quantities (256 bytes)
+$1A69-$1A6C: Espers possessed (4 bytes)
+$1A6D: Active party
+$1A6E-$1CF5: Percentage learned of spells by characters (54 spells X 12 characters = 648 bytes) (#$FF = known)
+$1CF6: Time Morph will last
+$1CF7: Known sword techs??
+$1CF8-$1D27: Sword tech names (48 bytes) (Seems to be a holdover from FF6j, I dunno)
+$1D28: BlitzList Sabin's blitzes. Each bit is a blitz; 1 is acquired, 0 isn't.
+$1D29-$1D2B: Known lores (3 bytes, 1 bit per lore)
+$1D2C-$1D4B: Known rages (32 bytes, 1 bit per rage)
+$1D4C: Known dances (1 bit for each dance)
+$1D4D: (Bit 7 = 1: Short command set, 6-4: Battle speed, 3 = 1: Wait battle mode, 2-0: Message speed)
+$1D4E: (Bit 7 = 1: Reequip empty, 6 = 1: Cursor memory, 5 = 1: Sound mono, 4 = 1: Gauge off, 3-0: Wallpaper)
+$1D4F-$1D53 : Not sure...
+$1D54: Config (Magic order, among other things)
+$1D55-$1D56: Font color
+$1D57-$1DC6: Colors for each wallpaper component (7 components X 8 wallpapers X 2 bytes each = 112 bytes)
+$1DC7: Number of saves (likely to be two bytes)
+$1DC9-$1DDC: List of 20 permanently-stored battle variables
+$1DD0: Bit 0 = Fanatics’ Tower
+$1DD1: Bit 2 = Morph Available
+$1DD3-$1DD4: Doom Gaze’s HP
+$1DD5: Battles fought with the cursed shield
+$1DDD-$1E1C: Monster formations beaten (to fight on veldt) (64 bytes)
+$1E1D-1E3F: (35 bytes which appear to be unused, at least in my save files)
+$1E40-$1E6F: Treasure chests opened (Only the first 33 bytes are known to be used)
+$1E70-$1E7F: Unused (at least all my save files have this filled with 55h, indicating that it is never disturbed [and I have a lot a save files])
+$1E80-$1F5F: Event bits
+$1F60: Map XY position (2 bytes)
+$1F62: Airship’s XY position (2 bytes) 
+$1F6D: RndCounter Acts just like $72.
+$1F80: Song? (Needs verification)
+$1FC2-$1FD1: Event words
+$1FF9 : Which monster is it
+$1FFE: SRAM Checksum (2 bytes)
+
+
+
+
+$2001: EnemySprite1 Enemy's sprite ID. The actual monster sprite in slot 1. Stats aren't affected.
+$2002: EnemySprite1! Enemy's sprite ID. The actual monster sprite in slot 1. Stats aren't affected.
+$2003: EnemySprite2 Enemy's sprite ID. The actual monster sprite in slot 2. Stats aren't affected.
+$2004: EnemySprite2! Enemy's sprite ID. The actual monster sprite in slot 2. Stats aren't affected.
+$2005: EnemySprite3 Enemy's sprite ID. The actual monster sprite in slot 3. Stats aren't affected.
+$2006: EnemySprite3! Enemy's sprite ID. The actual monster sprite in slot 3. Stats aren't affected.
+$2007: EnemySprite4 Enemy's sprite ID. The actual monster sprite in slot 4. Stats aren't affected.
+$2008: EnemySprite4! Enemy's sprite ID. The actual monster sprite in slot 4. Stats aren't affected.
+$2009: EnemySprite5 Enemy's sprite ID. The actual monster sprite in slot 5. Stats aren't affected.
+$200A: EnemySprite5! Enemy's sprite ID. The actual monster sprite in slot 5. Stats aren't affected.
+$200B: EnemySprite6 Enemy's sprite ID. The actual monster sprite in slot 6. Stats aren't affected.
+$200C: EnemySprite6! Enemy's sprite ID. The actual monster sprite in slot 6. Stats aren't affected.
+$200D: EnemyName1 Enemy's name, as refered to by ID.
+$200E: EnemyName1! Enemy's name, as refered to by ID.
+$200F: EnemyName2 Enemy's name, as refered to by ID.
+$2010: EnemyName2! Enemy's name, as refered to by ID.
+$2011: EnemyName3 Enemy's name, as refered to by ID.
+$2012: EnemyName3! Enemy's name, as refered to by ID.
+$2013: EnemyName4 Enemy's name, as refered to by ID.
+$2014: EnemyName4! Enemy's name, as refered to by ID.
+$2015: EnemyName5 Enemy's name, as refered to by ID.
+$2016: EnemyName5! Enemy's name, as refered to by ID.
+$2017: EnemyName6 Enemy's name, as refered to by ID.
+$2018: EnemyName6! Enemy's name, as refered to by ID.
+$201D: DrawnCharacters Drawn characters on the field. If their ID bit is set to 1, they're Shown. "00001101" would Show targets 1, 2, and 4.
+$201E: DrawEnemies Drawn enemies on the field. If their ID bit is set to 1, they're Shown. "00001101" would Show targets 1, 2, and 4.
+$201F: EncounterType Sets the encounter type. 0x00 Front, 0x01 Back, 0x02 Pincer, 0x03 Side.
+$2020: How many SwdTechs are known 
+$2022 : ATB Counter (for displaying gauge)
+$2100: ScreenBright x000yyyy: X On|Off. Y Brightness.
+$2102: OAMAddress Sprite bank address.
+$2103: OAMProperty Sprite bank x000000y: X Priority rotation. Y Address MSB.
+$2116: VideoAddress Video address.
+$2117: VideoAddress! Video address.
+$2118: VideoData Video data. Address is auto-incremented by 2 every write.
+$2119: VideoData! Video data. Address is auto-incremented by 2 every write.
+$257E: Known Rages (256 bytes, $FF = not known)
+$2E98: StatusSprite1 Status effect-affected sprite for character 1. Ie, which status to display. Flags!
+$2E99: StatusSprite1! Status effect-affected sprite for character 1. Ie, which status to display. Flags!
+$2E9A: StatusSprite2 Status effect-affected sprite for character 2. Ie, which status to display. Flags!
+$2E9B: StatusSprite2! Status effect-affected sprite for character 2. Ie, which status to display. Flags!
+$2E9C: StatusSprite3 Status effect-affected sprite for character 3. Ie, which status to display. Flags!
+$2E9D: StatusSprite3! Status effect-affected sprite for character 3. Ie, which status to display. Flags!
+$2E9E: StatusSprite4 Status effect-affected sprite for character 4. Ie, which status to display. Flags!
+$2E9F: StatusSprite4! Status effect-affected sprite for character 4. Ie, which status to display. Flags!
+$2EA0: EffectSprite1 Status effect-affected sprite for character 1. Mostly Palette effects. Flags!
+$2EA1: EffectSprite1! Status effect-affected sprite for character 1. Mostly Palette effects. Flags!
+$2EA2: EffectSprite2 Status effect-affected sprite for character 2. Mostly Palette effects. Flags!
+$2EA3: EffectSprite2! Status effect-affected sprite for character 2. Mostly Palette effects. Flags!
+$2EA4: EffectSprite3 Status effect-affected sprite for character 3. Mostly Palette effects. Flags!
+$2EA5: EffectSprite3! Status effect-affected sprite for character 3. Mostly Palette effects. Flags!
+$2EA6: EffectSprite4 Status effect-affected sprite for character 4. Mostly Palette effects. Flags!
+$2EA7: EffectSprite4! Status effect-affected sprite for character 4. Mostly Palette effects. Flags!
+$2EAE: BatSpriteID1 Battle sprite ID for character 1.
+$2EBD: BatStatusIDA1 Copy of the status-effect from $2E98.
+$2EBE: BatStatusIDA1! Copy of the status-effect from $2E99.
+$2EBF: BatStatusIDB1 Copy of the status-effect from $2EA0.
+$2EC0: BatStatusIDB1! Copy of the status-effect from $2EA1.
+$2EC1: TmpStatusIDA1 Copy of $2EBD.
+$2EC2: TmpStatusIDA1! Copy of $2EBE.
+$2EC3: TmpStatusIDB1 Copy of $2EBF.
+$2EC4: TmpStatusIDB1! Copy of $2EC0.
+$2ECE: BatSpriteID2 Battle sprite ID for character 2.
+$2EDD: BatStatusIDA2 Copy of the status-effect from $2E9A.
+$2EDE: BatStatusIDA2! Copy of the status-effect from $2E9B.
+$2EDF: BatStatusIDB2 Copy of the status-effect from $2EA2.
+$2EE0: BatStatusIDB2! Copy of the status-effect from $2EA3.
+$2EE1: TmpStatusIDA2 Copy of $2EDD.
+$2EE2: TmpStatusIDA2! Copy of $2EDE.
+$2EE3: TmpStatusIDB2 Copy of $2EDF.
+$2EE4: TmpStatusIDB2! Copy of $2EE0.
+$2EEE: BatSpriteID3 Battle sprite ID for character 3.
+$2EFD: BatStatusIDA3 Copy of the status-effect from $2E9C.
+$2EFE: BatStatusIDA3! Copy of the status-effect from $2E9D.
+$2EFF: BatStatusIDB3 Copy of the status-effect from $2EA4.
+$2F00: BatStatusIDB3! Copy of the status-effect from $2EA5.
+$2F01: TmpStatusIDA3 Copy of $2EFD.
+$2F02: TmpStatusIDA3! Copy of $2EFE.
+$2F03: TmpStatusIDB3 Copy of $2EFF.
+$2F04: TmpStatusIDB3! Copy of $2F00.
+$2F0E: BatSpriteID4 Battle sprite ID for character 4.
+$2F1D: BatStatusIDA4 Copy of the status-effect from $2E9E.
+$2F1E: BatStatusIDA4! Copy of the status-effect from $2E9F.
+$2F1F: BatStatusIDB4 Copy of the status-effect from $2EA6.
+$2F20: BatStatusIDB4! Copy of the status-effect from $2EA7.
+$2F21: TmpStatusIDA4 Copy of $2F1D.
+$2F22: TmpStatusIDA4! Copy of $2F1E.
+$2F23: TmpStatusIDB4 Copy of $2F1F.
+$2F24: TmpStatusIDB4! Copy of $2F20.
+$2F34: BatWindowset Window set used in battle. Direct copy of $1D4E.
+$2F45 : If > 0 then characters are trying to run
+$2F46: TargetList List of available targets among enemies. Every bit is an enemy that can be selected.
+$2F4B : Bit 1 = formation not added to veldt list if set, Bit 2 = no preemptive attack if set
+$2F50 : Monster Facing (1 bit for each monster, 1 = right, 0 = left)
+$2F51 : Character Facing (as above)
+
+$3000 : Which character is Terra (#$FF if not in party)
+$3001 : Which character is Locke (#$FF if not in party)
+$3002 : Which character is Cyan (#$FF if not in party)
+$3003 : Which character is Shadow (#$FF if not in party)
+$3004 : Which character is Edgar (#$FF if not in party)
+$3005 : Which character is Sabin (#$FF if not in party)
+$3006 : Which character is Celes (#$FF if not in party)
+$3007 : Which character is Strago (#$FF if not in party)
+$3008 : Which character is Relm (#$FF if not in party)
+$3009 : Which character is Setzer (#$FF if not in party)
+$300A : Which character is Mog (#$FF if not in party)
+$300B : Which character is Gau (#$FF if not in party)
+$300C : Which character is Gogo (#$FF if not in party)
+$300D : Which character is Umaro (#$FF if not in party)
+$3018 : Holds $01 for character 1, $02 for character 2, $04 for character 3,
+              $08 for character 4
+$3019 : Holds $01 for monster 1, $02 for monster 2, etc.
+$3205 : 0 = bit set, Bit 2 = Air Anchor effect
+$3219 : ATB Counter 
+$322D : Monster's special attack
+$3254 : Index to find command script for regular attacks
+$3268 : Index to find command script for special (counter) attacks
+$32B8 : Which target you control (-1 for none)
+$32B9 : Which target controls you (-1 for none)
+$32E0 : Attacker for this attack
+$32E1 : Dance being used
+$32F5 : Which target is targetted by targetting attack
+$3308 : Common item to steal
+$3309 : Rare item to steal
+$331C : Blocked status byte 1 (Bit = 0 = set)
+$331D : Blocked status byte 2
+$3330 : Blocked status byte 3
+$3331 : Blocked status byte 4
+$3344 : Esper equipped
+$3358 : Which target you have seized (Seize) (Bit 7 = ??)
+$3359 : Which target has seized you (Seize) 
+$336C : Which target you take damage for (Love Token)
+$336D : Which target takes damage for you (Love Token) 
+$3394 : Which target you charmed (Charm)
+$3395 : Which target charmed you (Charm)
+$33D0 : Damage taken
+$33E4 : Damage Healed
+$33A8 : Which Rage is being used
+$33F8 : Which target has used Zinger
+$33F9 : Which target has been possessed by Zinger
+$33FA : Which monster is Doom Gaze (FF if Doom Gaze not in battle)
+$3400 : Spell number
+$3401 : Text to display
+$3402 : # of extra turns from Quick
+$3404 : Target who gets extra turns from Quick
+$3405 : # of attacks?
+$3414 : ? (if 0 then damage modification is skipped)
+$3A2A : Final Damage
+$3A2C : Command read from command script (4 bytes)
+$3A36 : HP Golem will block (2 bytes)
+$3A39 : Which characters have escaped
+$3A3C : Which targets are invincible (like Guardian) (2 bytes)
+$3A3E : Time counter in battle (2 bytes)
+$3A44 : Time counter in battle (2 bytes) (Goes up 1 for every 16 $3A3E goes up)
+$3A48 : Miss target if not 0
+$3A54 : Characters hit in back by attack
+$3A55 : Monsters hit in back by attack
+$3A56 : Which targets have died this combat (2 bytes, if bit = 1 then died)
+$3A5A : Which targets are missed by attack
+$3A6D : Bit 0 = 2x preemptive attack rate if set, bit 1 = no back or pincer if set
+$3A6E : Method used to end combat?
+$3A73 : Which monsters are in template
+$3A76 : Number of live character in party (while in combat)
+$3A77 : Number of monsters left
+$3A80 : How many Blitzes are known
+$3A82 : Target protected by Golem
+$3A83 : Target protected by Dog Block
+$3A84 : Lores to be learned at end of combat (3 bytes)
+$3A87 : Number of known lores)
+$3A89 : Spell randomly cast by weapon
+$3A8A : Which characters are engulfed
+$3A8F : Bit 0 = 0 if active battle
+$3A91 : Lower byte of time counter (in $3A3E)
+$3A9B : Which tools are owned
+$3DAC : Unique monster variables (1 for each monster)
+$3EB0 : Variables (36 bytes)
+$3EBE : Doom Gaze's HP (2 bytes)
+$3EC8 : Which elements have been nullified by Forcefield
+$3EC9 : # of targets
+$3A36 : HP Golem will block (2 bytes)
+$3A39 : Which characters have escaped
+$3A3C : Which targets are invincible (like Guardian) (2 bytes)
+$3A3E : Time counter in battle (2 bytes)
+$3A44 : Time counter in battle (2 bytes) (Goes up 1 for every 16 $3A3E goes up)
+$3A56 : Which targets have died this combat (2 bytes, if bit = 1 then died)
+$3A6D : Bit 0 = 2x preemptive attack rate if set, bit 1 = no back or pincer if set
+$3A6E : Method used to end combat?
+$3A70 : # of attacks?
+$3A73 : Which monsters are in template
+$3A74 : Which characters are alive and present in battle (bit 0 = character 1, 1 = character 2, etc.)
+$3A76 : Number of live character in party (while in combat)
+$3A77 : Number of monsters left
+$3A7A : Command
+$3A7B : Attack
+$3A80 : How many Blitzes are known
+$3A84 : Lores to be learned at end of combat (3 bytes)
+$3A87 : Number of known lores)
+$3A8A : Which characters are engulfed
+$3A8F : Bit 0 = 0 if active battle
+$3A91 : Lower byte of time counter (in $3A3E)
+$3A9B : Which tools are owned
+$3AA1 : Special Properties (bit 1 = Defend, 2 = prot. from death, 4 = seized?
+                                5 = Row [0 = back row], 6 = controlled?, 7 = ran away?)
+$3AF1 : Time until Stop wears off
+$3B05 : Countdown counter
+$3B18 : Level
+$3B19 : Speed
+$3B2C : Vigor
+$3B40 : Stamina
+$3B41 : Magic Power (* 1.5 for monsters?)
+$3B54 : Evade  (255 - Evade * 2) + 1
+$3B55 : MBlock (255 - Mblock * 2) + 1
+$3B68 : Battle Power
+$3B7C : Hit Rate
+$3BA4 : Right hand weapon (bit 1 = Can use Swdtech, 5 = Full damage from back row,
+                               6 = Can use 2-handed, 7 = Can use Runic)
+$3BA5 : Left hand Weapon (as $3BA4)
+$3BB8 : Defense
+$3BB9 : Magic Defense
+$3BCC : Absorbed elements
+$3BCD : Nullified elements
+$3BE0 : Weak elements
+$3BE1 : Resisted elements
+$3BF4 : HP
+$3C08 : MP
+$3C1C : Max HP
+$3C30 : Max MP
+$3C44 : Relic effects 1 (Bit 0 = Atlas Armlet, 1 = Double Earrings,
+                             2 = Fight => Jump, 3 = Magic> X-Magic,
+                             4 = Sketch => Control, 5 = Slot => GP Rain,
+                             6 = Steal => Capture, 7 = Jump Continuously)
+$3C45 : Relic effects 2 (Bit 0 = Sneak Ring, 1 = Earring, 2 = Increase sketch chance,
+                             3 = Increase Control chance, 4 = Sniper Sight,
+                             5 = Gold Hairpin, 6 = Economizer, 7 = Hyper Wrist)
+$3C58 : Bit 0 = Offering, 1 = Black Belt, 2 = Beads, 3 = Gauntlet, 4 = Genji Glove
+            5 = Merit Award, 6 = True Knight
+$3C59 : Bit 0 = Shell when low HP, 1 = Safe when low HP, 2 = Reflect when low HP,
+            3 = Exp. Egg, 4 = x2 Gold, 7 = Relic Ring
+$3C80 : Special Byte 2 (Bit 0 = Wait atk., 1 = Atk First, 2 = Make Suplex miss,
+                            3 = Can't run, 4 = No scan, 5 = No Sketch,
+                            6 = Special event, 7 = Can't Control)
+$3C94 : Morph Chance & Morph Package
+$3C95 : Special Byte 3 (Bit 0 = Dies at 0 MP, 1 = ???, 2 = No name, 3 = ???
+                            4 = Human, 5 =  ???, 6 = Auto critical if Imp, 7 = Undead)
+$3CA8 : Weapon in right hand
+$3CA9 : Weapon in left hand
+$3CD0 : Relic Slot 1
+$3CD1 : Relic Slot 2
+$3CE4 : Shield/Weapon miss animations
+$3CF9 : Time until Sleep wears off
+$3D34 : Spell randomly cast by weapon
+$3D48 : Which command you were attacked with this attack
+$3D49 : Which spell (or attack) you were attacked with this attack
+$3D5C : Which item was used on you for this attack
+$3D5D : Which element(s) you were attacked with this attack
+$3D84 : XP
+$3D98 : Gold monster gives
+$3DAC : Unique monster variables (1 for each monster)
+$3DC0 : Counter for how long monster has been alive (2 bytes)
+$3DD4 : Status to set byte 1
+$3DD5 : Status to set byte 2
+$3DE8 : Status to set byte 3
+$3DE9 : Status to set byte 4
+$3DFC : Status to clear byte 1
+$3DFD : Status to clear byte 2
+$3E10 : Status to clear byte 3
+$3E11 : Status to clear byte 4
+$3E24 : Damage increment for poison
+$3E4C : bit 0 = retort, 1 = enemy runic (speck), 2 = runic
+$3E60 : Status after attack byte 1
+$3E61 : Status after attack byte 2
+$3E74 : Status after attack byte 3
+$3E75 : Status after attack byte 4
+$3EB0 : Variables (36 bytes)
+$3EBE : Doom Gaze's HP (2 bytes)
+$3EC8 : Which elements have been nullified by Forcefield
+$3ECA : # of types of monsters active in combat
+$3ED4 : Battle formation (2 bytes)
+$3ED8 : Which character it is
+$3EE4 : Status byte 1
+$3EE5 : Status byte 2
+$3EF8 : Status byte 3
+$3EF9 : Status byte 4
+$3F20 : Last attack (for use by Mimic)
+$3F22 : Last targets (for use by Mimic)
+$3F24 : Last attack (second attack w/ Gem Box) (for use by Mimic)
+$3F26 : Last targets (second attack w/ Gem Box) (for use by Mimic)
+$3F30 : Morph time counter (2 bytes)
+$3F32 : Amount Morph time counter is reduced each frame      
+$3F44 : Monster formation data (15 bytes)
+$3F0C : Time until Wall wears off
+$3F0D : Time until Freeze wears off
+
+
+
+
+
+$4202: MathMultA Math coprocessor's Value to multiply A.
+$4203: MathMultB Math coprocessor's Value to multiply B.
+$4204: MathDiviA Math coprocessor's Value to Divide A.
+$4205: MathDiviB Math coprocessor's Value to Divide B.
+$420B: DMAEnable Enables the specified DMA channel(s).
+$420C: HDMAEnable Enables the specified HDMA channel(s).
+$4214: MathQuoti Math coprocessor's Quotient for Divisions.
+$4215: MathQuoti! Math coprocessor's Quotient for Divisions.
+$4216: MathValue Math coprocessor's result. Remainder for Divisions.
+$4217: MathValue! Math coprocessor's result. Remainder for Divisions.
+$43x0: DMAxControl How DMA is acheived. IE, DMA mode.
+$43x1: DMAxDest Destination of the DMA transfer + $2100.
+$43x2: DMAxSrcOffset Source offset of the Xth DMA channel.
+$43x3: DMAxSrcOffset! Source offset of the Xth DMA channel.
+$43x4: DMAxSrcBank Source bank of the Xth DMA channel.
+$43x5: DMAxByteSize Size of the transfer in bytes.
+$43x6: DMAxByteSize! Size of the transfer in bytes.
+$4AF5: InfoTextShiftX Offsets the X position of the info window text (the top window in battle.)
+$4AF6: InfoTextShiftX! Offsets the X position of the info window text (the top window in battle.) Unused?
+$4AF7: InfoTextShiftY Offsets the Y position of the info window text (the top window in battle.)
+$4AF8: InfoTextShiftY! Offsets the Y position of the info window text (the top window in battle.) Unused?
+
+$6154: Mode7X X position of the spell animation in Mode 7.
+$6155: Mode7Y Y position of the spell animation in Mode 7.
+$6156: Mode7Scale Scale of the spell animation in Mode 7.
+$6157: Mode7Rot Rotation of the spell animation in Mode 7.
+$6191: VisibleEnemies Visible enemies on the field. If their ID bit is set to 1, they're Shown. "00001101" would Show targets 1, 2, and 4.
+$619C: CharYMirror Any bit set in this corresponds to a character. Gives a reflection-like Y mirror effect to marked characters.
+$619D: EnemyYMirror Any bit set in this corresponds to an enemy. Gives a reflection-like Y mirror effect to marked enemies.
+$61AB: ShownEnemies Shown enemies. If not shown, an enemy can't be selected or displayed. Bit array.
+$61AE: CharStepAhead1 Character 1 steps forward if this is set to one. IE, "are we ready to move."
+$61AF: CharStepAhead2 Character 2 steps forward if this is set to one. IE, "are we ready to move."
+$61B0: CharStepAhead3 Character 3 steps forward if this is set to one. IE, "are we ready to move."
+$61B1: CharStepAhead4 Character 4 steps forward if this is set to one. IE, "are we ready to move."
+
+$61B6:
+$61B7: * X?
+$61B8: !
+$61B9: * Y?
+$61BA: !
+$61BB: * Animation?
+$61BC: CharRamPal1 Palette ID, as represented in Ram. Usually 0x08.
+$61BD: CharDrawFlip1 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$61BE: CharSprFlip1 Flips X or Y. $40: Flip X. $80 Flip Y. As opposed to DrawFlip, $20 is never off.
+$61BF: CharTmpAnim1 Character's animation ID. Not the definit one. I think? The next one takes prevailance over this address.
+$61C0: CharAnimID1 Character's animation ID. Frames higher than the characters' results in someone else's sprite.
+$61C1: CharSpriteID1 Character's sprite ID. Frames higher than the characters' results in someone else's sprite.
+$61C2: * animation Frame?
+$61C3: * flags?
+$61C4: * ...somehow related to C3?
+$61C5: CharXOffset1 Offsets the character sprite by this many pixels on the X plane.
+$61C6: CharXOffset1! Offsets the character sprite by this many pixels on the X plane.
+$61C7: CharYOffset1 Offsets the character sprite by this many pixels on the Y plane.
+$61C8: CharYOffset1! Offsets the character sprite by this many pixels on the Y plane.
+$61C9: CharXPos1 Character sprite X position in pixels on the battle map.
+$61CA: CharXPos1! Character sprite X position in pixels on the battle map.
+$61CB: *has to do with x pos (C9)
+$61CC:
+$61CD: *redraw flag...?
+$61CE:
+$61CF: CharHeadAnim1 Animation played over the character's head (ex: sunglasses, poison bubbles, or green crescent.)
+$61D0:
+$61D1:
+$61D2: CharYPos1 Character sprite Y position in pixels on the battle map.
+$61D3: CharYPos1! Character sprite Y position in pixels on the battle map.
+$61D4: *has to do with x pos
+
+$61DC: CharRamPal2 Palette ID, as represented in Ram. Usually 0x0A.
+$61DD: CharDrawFlip2 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$61DE: CharSprFlip2 Flips X or Y. $40: Flip X. $80 Flip Y. As opposed to DrawFlip, $20 is never off.
+$61DF: CharTmpAnim2 Character's animation ID. Not the definit one. I think? The next one takes prevailance over this address.
+$61E0: CharAnimID2 Character's animation ID. Frames higher than the characters' results in someone else's sprite.
+$61E1: CharSpriteID2 Character's sprite ID. Frames higher than the characters' results in someone else's sprite.
+$61E5: CharXOffset2 Offsets the character sprite by this many pixels on the X plane.
+$61E7: CharYOffset2 Offsets the character sprite by this many pixels on the Y plane.
+$61E9: CharXPos2 Character sprite X position in pixels on the battle map.
+$61EA: CharXPos2! Character sprite X position in pixels on the battle map.
+$61EF: CharHeadAnim2 Animation played over the character's head (ex: sunglasses, poison bubbles, or green crescent.)
+$61F2: CharYPos2 Character sprite Y position in pixels on the battle map.
+$61F3: CharYPos2! Character sprite Y position in pixels on the battle map.
+
+$61FC: CharRamPal3 Palette ID, as represented in Ram. Usually 0x0C.
+$61FD: CharDrawFlip3 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$61FE: CharSprFlip3 Flips X or Y. $40: Flip X. $80 Flip Y. As opposed to DrawFlip, $20 is never off.
+$61FF: CharTmpAnim3 Character's animation ID. Not the definit one. I think? The next one takes prevailance over this address.
+$6200: CharAnimID3 Character's animation ID. Frames higher than the characters' results in someone else's sprite.
+$6201: CharSpriteID3 Character's sprite ID. Frames higher than the characters' results in someone else's sprite.
+$6205: CharXOffset3 Offsets the character sprite by this many pixels on the X plane.
+$6207: CharYOffset3 Offsets the character sprite by this many pixels on the Y plane.
+$6209: CharXPos3 Character sprite X position in pixels on the battle map.
+$620A: CharXPos3! Character sprite X position in pixels on the battle map.
+$620F: CharHeadAnim3 Animation played over the character's head (ex: sunglasses, poison bubbles, or green crescent.)
+$6212: CharYPos3 Character sprite Y position in pixels on the battle map.
+$6213: CharYPos3! Character sprite Y position in pixels on the battle map.
+
+$621C: CharRamPal4 Palette ID, as represented in Ram. Usually 0x0E.
+$621D: CharDrawFlip4 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$621E: CharSprFlip4 Flips X or Y. $40: Flip X. $80 Flip Y. As opposed to DrawFlip, $20 is never off.
+$621F: CharTmpAnim4 Character's animation ID. Not the definit one. I think? The next one takes prevailance over this address.
+$6220: CharAnimID4 Character's animation ID. Frames higher than the characters' results in someone else's sprite.
+$6221: CharSpriteID4 Character's sprite ID. Frames higher than the characters' results in someone else's sprite.
+$6225: CharXOffset4 Offsets the character sprite by this many pixels on the X plane.
+$6227: CharYOffset4 Offsets the character sprite by this many pixels on the Y plane.
+$6229: CharXPos4 Character sprite X position in pixels on the battle map.
+$622A: CharXPos4! Character sprite X position in pixels on the battle map.
+$622F: CharHeadAnim4 Animation played over the character's head (ex: sunglasses, poison bubbles, or green crescent.)
+$6232: CharYPos4 Character sprite Y position in pixels on the battle map.
+$6233: CharYPos4! Character sprite Y position in pixels on the battle map.
+
+$6273: AnimDataID1 Animation Script ID 1.
+$6274: AnimDataID1! Animation Script ID 1.
+$6275: AnimDataID2 Animation Script ID 2.
+$6276: AnimDataID2! Animation Script ID 2.
+$6277: AnimDataID3 Animation Script ID 3.
+$6278: AnimDataID3! Animation Script ID 3.
+$6279: AnimDataPal1 Animation Palette ID 1.
+$627A: AnimDataPal2 Animation Palette ID 2.
+$627B: AnimDataPal3 Animation Palette ID 3.
+$627C: AnimDataSound Animation Sound.
+$6281: QueueShieldSnd If set to a non-zero value, plays the "ting" shield sound ASAP then resets to 0x00.
+$6283: ScreenIsWavy Makes the screen wavy in battle à-la heatwave when set to 1.
+$6285: ScreenShakes Makes the screen shake in battle à-la earthquake when set to 1. 0x80: shake left/right
+$628A: InFlashback Is the game in flashback mode; ie, yellow tint?
+$62AB: GamePaused Set to 0x01 if the game is paused and 0x00 if it isn't.
+$62D3: EchoSpriteID Determines which sprite(s) get an echo effect.
+$62D4: EchoActive Determines wether the echo effect is on or off.
+$62D5: EchoSpeed Determines how fast the echos are updated. 0x00 is fastest. 0x7F is slowest.
+$62D6: EchoBuffer The echo buffer. XPos, YPos; this is 0x40 bytes long.
+$64B0: BGShiftX Shifts the X position of the BG. Higher Values means the BG is drawn higher. BG wraps around.
+$64B1: BGShiftX! Shifts the X position of the BG. Higher Values means the BG is drawn higher. BG wraps around. Unused?
+$64B2: BGShiftY Shifts the Y position of the BG. Higher Values means the BG is drawn higher.
+$64B3: BGShiftY! Shifts the Y position of the BG. Higher Values means the BG is drawn higher. Unused?
+$64B4: InfoWinShiftX Offsets the battle information window X (at the top of the screen). Signed.
+$64B5: InfoWinShiftX! Offsets the battle information window X (at the top of the screen). Signed and unused?
+$64B6: InfoWinShiftY Offsets the battle information window Y (at the top of the screen). Signed.
+$64B7: InfoWinShiftY! Offsets the battle information window Y (at the top of the screen). Signed and unused?
+$64DE: AnimFinalShow Toggles wether the animation is being Shown (1) or not (0).
+$64DF: AnimFinalX The final X position of the animation after the offset has been added.
+$64E0: AnimFinalX! The final X position of the animation after the offset has been added.
+$64E1: AnimFinalY The final Y position of the animation after the offset has been added.
+$64E2: AnimFinalY! The final Y position of the animation after the offset has been added.
+$64E3: AnimFrameID The current Frame being displayed. Incremented.
+$64E6: AnimFinalPal The final Palette, after transformation. Must be over 128 and even.
+$64E9: AnimYSine The "position" along the sine wave. This is an Index into the sine table.
+$64EC: GosubAddress The address an animation jumps from when it calls a subprogRam.
+$6A31: AnimScriptPos Position in the Script. No messing with this. ;)
+$6A32: AnimScriptPos! Position in the Script. No messing with this. ;)
+$6A34: AnimSpeed The spell sprite's animation Speed.
+$6A38: CasterID The caster's ID in the battle sprite listing.
+$6A39: TargetID The target's ID in the battle sprite listing.
+$6A3A: AnimationX X position of the spell animation.
+$6A3B: AnimationX! X position of the spell animation.
+$6A3C: AnimationY Y position of the spell animation.
+$6A3D: AnimationY! Y position of the spell animation.
+$6F82: AnimRealX Original X position of the spell animation.
+$6F83: AnimRealX! Original X position of the spell animation.
+$6F84: AnimRealY Original Y position of the spell animation.
+$6F85: AnimRealY! Original Y position of the spell animation.
+$6F87: AnimationDIR Direction of the animation. 0x01: Right.
+$6F89: LoopStart Address where loop instructions are started; ie where it goes every iteration.
+$6F8A: LoopStart! Address where loop instructions are started; ie where it goes every iteration.
+$6F8B: LoopCount How often to iterate through a loop instruction.
+$6F8C: FrameCounte A counter used to determine the Frame ID to display. This is added to the real Frame counter. Usually 0x00.
+
+$74CE: AnimOffsetX Offsets the X position. Adds this to it, apparently.
+$74D0: AnimOffsetY Offsets the Y position. Adds this to it, apparently.
+$74D5: SpellPalID The spell animation's Palette, referenced by ID in Ram.
+$7AF6: BaseIndex Base Index of the animation data in memory.
+$7AF8: CasterIndex Caster Index, multipled by 0x20 to point into the structure right.
+$7B10: FacedDir Direction faced by the character. $01: Right. Read from $C2E4EF.
+$7B7E: PointedEnemies Enemies with a finger pointer in front of them. Each bit is a target. 0x00 turns it off.
+$7C00: TmpPalette00 Temporary Palette Data! Applies to Palette 0 (color 0). 2 bytes per color, 16 colors.
+$7C20: TmpPalette10 Temporary Palette Data! Applies to Palette 1 (color 0). 2 bytes per color, 16 colors.
+$7C40: TmpPalette20 Temporary Palette Data! Applies to Palette 2 (color 0). 2 bytes per color, 16 colors.
+$7C60: TmpPalette30 Temporary Palette Data! Applies to Palette 3 (color 0). 2 bytes per color, 16 colors.
+$7C80: TmpPalette40 Temporary Palette Data! Applies to Palette 4 (color 0). 2 bytes per color, 16 colors.
+$7CA0: TmpPalette50 Temporary Palette Data! Applies to Palette 5 (color 0). 2 bytes per color, 16 colors.
+$7CC0: TmpPalette60 Temporary Palette Data! Applies to Palette 6 (color 0). 2 bytes per color, 16 colors.
+$7CE0: TmpPalette70 Temporary Palette Data! Applies to Palette 7 (color 0). 2 bytes per color, 16 colors.
+$7D00: TmpPalette80 Temporary Palette Data! Applies to Palette 8 (color 0). 2 bytes per color, 16 colors.
+$7D20: TmpPalette90 Temporary Palette Data! Applies to Palette 9 (color 0). 2 bytes per color, 16 colors.
+$7D40: TmpPaletteA0 Temporary Palette Data! Applies to Palette A (color 0). 2 bytes per color, 16 colors.
+$7D60: TmpPaletteB0 Temporary Palette Data! Applies to Palette B (color 0). 2 bytes per color, 16 colors.
+$7D80: TmpPaletteC0 Temporary Palette Data! Applies to Palette C (color 0). 2 bytes per color, 16 colors.
+$7DA0: TmpPaletteD0 Temporary Palette Data! Applies to Palette D (color 0). 2 bytes per color, 16 colors.
+$7DC0: TmpPaletteE0 Temporary Palette Data! Applies to Palette E (color 0). 2 bytes per color, 16 colors.
+$7DE0: TmpPaletteF0 Temporary Palette Data! Applies to Palette F (color 0). 2 bytes per color, 16 colors.
+$7E00: RamPalette00 Palette Data, as stored in Ram! Applies to Palette 0 (color 0). 2 bytes per color, 16 colors.
+$7E20: RamPalette10 Palette Data, as stored in Ram! Applies to Palette 1 (color 0). 2 bytes per color, 16 colors.
+$7E40: RamPalette20 Palette Data, as stored in Ram! Applies to Palette 2 (color 0). 2 bytes per color, 16 colors.
+$7E60: RamPalette30 Palette Data, as stored in Ram! Applies to Palette 3 (color 0). 2 bytes per color, 16 colors.
+$7E80: RamPalette40 Palette Data, as stored in Ram! Applies to Palette 4 (color 0). 2 bytes per color, 16 colors.
+$7EA0: RamPalette50 Palette Data, as stored in Ram! Applies to Palette 5 (color 0). 2 bytes per color, 16 colors.
+$7EC0: RamPalette60 Palette Data, as stored in Ram! Applies to Palette 6 (color 0). 2 bytes per color, 16 colors.
+$7EE0: RamPalette70 Palette Data, as stored in Ram! Applies to Palette 7 (color 0). 2 bytes per color, 16 colors.
+$7F00: RamPalette80 Palette Data, as stored in Ram! Applies to Palette 8 (color 0). 2 bytes per color, 16 colors.
+$7F20: RamPalette90 Palette Data, as stored in Ram! Applies to Palette 9 (color 0). 2 bytes per color, 16 colors.
+$7F40: RamPaletteA0 Palette Data, as stored in Ram! Applies to Palette A (color 0). 2 bytes per color, 16 colors.
+$7F60: RamPaletteB0 Palette Data, as stored in Ram! Applies to Palette B (color 0). 2 bytes per color, 16 colors.
+$7F80: RamPaletteC0 Palette Data, as stored in Ram! Applies to Palette C (color 0). 2 bytes per color, 16 colors.
+$7FA0: RamPaletteD0 Palette Data, as stored in Ram! Applies to Palette D (color 0). 2 bytes per color, 16 colors.
+$7FC0: RamPaletteE0 Palette Data, as stored in Ram! Applies to Palette E (color 0). 2 bytes per color, 16 colors.
+$7FE0: RamPaletteF0 Palette Data, as stored in Ram! Applies to Palette F (color 0). 2 bytes per color, 16 colors.
+
+$807B: EnemyWidth1 Enemy width in pixels.
+$80C3: EnemyX1 X position of the enemy.
+$80C4: EnemyX1! X position of the enemy.
+$80CF: EnemyY1 Y position of the enemy.
+$80D0: EnemyY1! Y position of the enemy.
+$80DB: EnemyRamPal1 Palette ID, as represented in Ram. Usually 0x0?.
+$80DC: EnemyDrawFlip1 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$80DE: EnemyDrawFlip2 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$80E0: EnemyDrawFlip3 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$80E2: EnemyDrawFlip4 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$80E4: EnemyDrawFlip5 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$80E6: EnemyDrawFlip6 Flips X or Y. $20: Draw. $40: Flip X. $80 Flip Y.
+$812F: Enemy8Width1 One-eight of the enemy's width.
+$8130: Enemy8Height1 One-eight of the enemy's height.
+$8970: BGPixelate Pixelation level of the background.
+$898D: ShownLayers Toggles which Layers to Show: enemies, background, etc...
+$8991: ShownWindows Toggles which window Layers to Show: window, text, etc...
+
+$9613: AnimClipWNow Current Width of the clip plane.
+$9614: AnimClipXNow X position of the clip plane. Sort of...
+$9615: AnimClipYNow Y position of the clip plane.
+$9616: AnimClipWEnd Final Width of the clip plane.
+$9617: AnimClipXEnd Final X position of the clip plane. Sort of...
+$9618: AnimClipYEnd Final Y position of the clip plane.
+$961B: AnimClipShape Shape of the clip plane. 0x01[Circle] 0x02[Wavy] 0x03[Pillar] 0x04[OvalY] 0x05[WavyIn] 0x06[OvalX] 0x07[Dome] 0x08[WavyOut]
+
+$E9E7: AnimSoundA Sound played by the animation, as specified in the high-level structure.
+$E9E9: AnimSoundB Sound played by the animation, as specified in the high-level structure. This is an other one.
+$E9EA: AnimSoundPos Pans the animation Sound. 0x00 = left, 0x80 = center, 0xFF = right.
+$E9EC: AnimSoundPlay If set to 0x01, starts playing the Sound. Must be set back to 0x00 after.
+$E9ED: SoundMute If set to 0x00, the Sound doesn't play.
+$E9F9: BattleBright How Bright the screen is during battle. This is a carbon copy of the $21000 screen Bright bank.
+$EBFF: EnemyTmpName1 Backs up enemy Names in this.
+$EBC0: EnemyTmpName1! Backs up enemy Names in this.
+$EBC1: EnemyTmpName2 Backs up enemy Names in this.
+$EBC2: EnemyTmpName2! Backs up enemy Names in this.
+$EBC3: EnemyTmpName3 Backs up enemy Names in this.
+$EBC4: EnemyTmpName3! Backs up enemy Names in this.
+$EBC5: EnemyTmpName4 Backs up enemy Names in this.
+$EBC6: EnemyTmpName4! Backs up enemy Names in this.
+$EBC7: EnemyTmpName5 Backs up enemy Names in this.
+$EBC8: EnemyTmpName5! Backs up enemy Names in this.
+$EBC9: EnemyTmpName6 Backs up enemy Names in this.
+$EBCA: EnemyTmpName6! Backs up enemy Names in this.
+$ECB8: CurBattleBG Current battle BG, after it's been loaded.

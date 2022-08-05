@@ -1,0 +1,125 @@
+﻿===========================
+Book Locations
+===========================
+
+Narshe, School, Adv. Battle Tactics -- Open book: "Empire Soldier Rankings"
+Narshe, School, Adv. Battle Tactics -- Bookcase:
+Narshe, School, Battle Tactics -- Bookcase:
+Narshe, School, Environmental Science -- Bookcase:
+
+Figaro Castle, Library -- Bookcase 1:
+Figaro Castle, Library -- Bookcase 2:
+Figaro Castle, Library -- Bookcase 3:
+Figaro Castle, Library -- Bookcase 4:
+Figaro Castle, Library -- Bookcase 5:
+Figaro Castle, Library -- Bookcase 6:
+Figaro Castle, Library -- Bookcase 7:
+Figaro Castle, Library -- Bookcase 8:
+
+South Figaro, Pub (Basement) -- Bookcase:
+South Figaro, Duncan's Wife's House (Duncan's House) -- Bookcase:
+South Figaro, Old Man's House (Duncan's House) -- Open book:
+South Figaro, Old Man's House (Duncan's House) -- Bookcase:
+South Figaro, Rich Man's Room (Rich Man's House) -- Bookcase:
+South Figaro, Rich Kid's Room (Rich Man's House) -- Bookcase:
+South Figaro, Clock Room (Basement 1 Clock Room) -- Bookcase:
+South Figaro, Basement 1 -- Bookcase 1:
+South Figaro, Basement 1 -- Bookcase 2:
+South Figaro, Basement 1 -- Bookcase 3:
+South Figaro, Basement 1 -- Bookcase 4:
+
+Returner's Hideout, Bannon's Room (Rooms) -- Bookcase 1:
+Returner's Hideout, Bannon's Room (Rooms) -- Bookcase 2:
+
+Mobliz, Inn -- Open book:
+Mobliz, Mail House -- Bookcase:
+Mobliz, Wounded Soldier (Basement 1) -- Bookcase:
+
+Narshe, Elder's House -- Open book: "Elder's Journal"
+Narshe, Elder's House -- Bookcase:
+
+Kohlingen, Rachel's House -- Open book:
+Kohlingen, Rachel's House -- Bookcase:
+
+Jidoor, Inn -- Bookcase:
+Owzer's House, F1 -- Bookcase 1:
+Owzer's House, F1 -- Bookcase 2:
+Owzer's House, F1 -- Bookcase 3:
+
+Esper World, House -- Bookcase 1:
+Esper World, House -- Bookcase 2:
+
+Opera House, Dressing Room -- Bookcase:
+
+Albrook, Item Shop -- Open book:
+Albrook, Item Shop -- Bookcase:
+Albrook, Inn -- Bookcase:
+Albrook, Armor Shop -- Bookcase:
+Albrook, Pub -- Bookcase:
+
+Tzen, Inn -- Bookcase:
+
+Maranda, Flower Girl's House -- Bookcase:
+
+Imperial Castle, Inside (Room with 2 soldiers) -- Open book:
+Imperial Castle, Inside (Bedroom / Barracks) -- Open book:
+Imperial Castle, Inside (Room with 2 soldiers) -- Bookcase 1:
+Imperial Castle, Inside (Room with 2 soldiers) -- Bookcase 2:
+
+Thamasa, Inn -- Open book:
+Thamasa, Elder's House -- Open book:
+Thamasa, Elder's House -- Bookcase 1:
+Thamasa, Elder's House -- Bookcase 2:
+Thamasa, Strago's House (Downstairs) -- Open book:
+Thamasa, Strago's House (Upstairs) -- Open book:
+Thamasa, Strago's House (Upstairs) -- Bookcase:
+Thamasa, Item Shop -- Bookcase:
+
+
+=============
+Book Contents: Page Limit = 124 characters
+=============
+"Empire Soldier Rankings" (Narshe, School, Adv. Battle Tactics)
+Soldiers in the largest wing of the 
+Empire's army can be broken down 
+into five ranks, each distinguished 
+by their armor color.<EOP>
+Cadets are the lowest rank, wearing 
+green armor and performing the most 
+menial duties.<EOP>
+Brown-armored soldiers, the largest 
+portion of the Empire's forces, 
+contain Soldiers, Commanders, 
+Corporals, and Sergeants.<EOP>
+Field Commanders wear black armor, 
+and lead troops in combat. Should a 
+field commander fall in battle with 
+none to replace them, forces will be 
+forced to call a retreat.<EOP>
+Orange-armored soldiers are under the 
+direct command of Kefka Palazzo, and 
+are all expertly trained in the 
+piloting of Magitek Armor.<EOP>
+The highest rank, wearing custom
+armor, is the Imperial Elite. 
+They are subdivided into Officers, 
+Captains, Generals, and Templars.
+
+- - -
+
+"Elder's Journal" (Narshe)
+20 years ago, Narshe placed a ban 
+on coal exports to the invading 
+Gestahlian Empire through armed 
+resistance.<EOP>
+While a pact for mutual peace was 
+agreed upon, I can't help but 
+wonder what their next steps will 
+be.<EOP>
+The recent excavation of the 
+frozen esper only complicates 
+things. How long before the pact 
+is broken?
+
+- - -
+

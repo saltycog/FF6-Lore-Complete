@@ -1,0 +1,233 @@
+Ideas:
+ -	In Moogle cave, give them all names after the moogles in the early game battle.
+	Also allow them to be spoken to if Mog's in the party?
+ -	Consider adding "signs" to the dialogue for Owzer's paintings, that describe
+	historical events.
+ -	Have Strago mention that Relm is just as bad as his late wife, Lara.
+	Perhaps even use the same dialogue.
+ -	Try to work in scene between Shadow and Strago. Extra dream sequence?
+	Strago: I have one request... Show me your face. Even if you are him, I have 
+		no intention of wasting time trying to talk you into staying. I just 
+		want to know... for Relm's sake...
+	Shadow: (back to player, takes off mask, presumably)
+	Strago: Thank you... Shadow. ...Come, let's have a drink.
+ -	See if there's a way to link both Shadow and Relm's flashbacks in WoR.
+ -	Have a bit of Amano's artwork in the game somewhere, as one of Relm's
+	paintings. Perhaps WoR only, at the Owzer's house?
+ -	Control ability is apparently associated with True Names. Make a reference 
+	to this in Relm's room. Or replace "Fake Mustache" with "Tome of Names," 
+	with True Names mentioned in the description.
+ -	Consider adding a flower sprite near the raft in Cid's hut, and call it
+	Celes. Perhaps make it collectable, and have it activate the Magitek
+	ability for Celes. Perhaps only make it available if Cid is saved.
+ -	Consider replacing Kefka's laugh in his final form with that of N64 Bowser.
+ -	Try altering Kefka's sprite to have white paint/skin (DONE).
+ -	Kefka was more childish in Japanese version. Try to emphasize this in his
+	dialogue.
+ -	Rename the Ancient Castle queen to princess.
+ -	Mention the Bomb Forest's location (west of river in Veldt).
+ - 	Consider adding Kappa the Imp somewhere in the WoR, and have him refer to
+	falling off a mountain during the world's destruction (from the cutscene).
+ -	Make Wrexsoul defeatable with Raiden.
+ -	Have the wounded soldier ask the players to "ensure the letters reach Lola,"
+	to encourage them to read the letters in Maranda (easily missed, otherwise).
+ -	Have Duncan actually mention his goddamn son. Easily missed detail.
+ -	Play up Edgar's attraction to Relm, as apparently he was more pervy in the
+	Japanese version.
+ -	Figure out where Castle Figaro keeps its damn Chocobos. Map edit?
+ -	Add a maid to Vector, to imply they're the one hit on by Edgar.
+ -	Consider adding treasure to the hidden Chocobo stables (may not be doable).
+ - 	Have one of the characters mention that Setzer is still at the airship,
+	after the Gestahl banquet. Easily missed cutscene, otherwise.
+ -	Consider putting the Warring Triad somewhere in the Esper World.
+ -	After the end of the world, several people apparently washed up on Solitary
+	Island, but didn't make it. Add gravestones?
+ -	When picking up the bandana on Solitary Island, have Celes initially think
+	it's Setzer's (see Setzer character details... he had a similar bandana).
+ -	Perhaps have sand worms on Triangle Island, to elude to them evolving into
+	Hoovers in the WoR.
+ -	The old man outside the Inn in Kohlingen, WoR, will unequip party members if
+	spoken to. After getting the Falcon, he shows up there. Add some dialog to
+	imply they're the same person.
+ -	Mention that Kefka's tower is in the same place Vector used to be.
+ -	Shadow will leave in the WoB if taken to the Opera house. Add some dialogue
+	that reveals Shadow hates opera (canon).
+ -	Consider adding a + shaped tree formation around Duncan's house in the Wob,
+	to make it easier to find in the WoR.
+ -	Releasing the Espers from the factory ultimately results in them not being
+	able to make more Magitek armor (canon). Maybe imply this somewhere after 
+	the event. Perhaps at South Figaro in the WoR?
+ -	Consider making Umaro controllable if Mog is in the party, or have him
+	auto-act in specific ways if given dried meat, green cherry, or tonic.
+
+
+Canon Characters Details (to generate more ideas):
+ -	Locke was originally planned to have Runic (probalby won't do anything with
+	this).
+ -	Locke hates mushrooms.
+ -	Locke travelled the world with his father, a treasure hunter.
+	After his father's death, Locke was treated like a thief by everyone but
+	Rachel. Rachel's father didn't approve of him. He ventured into a dangerous
+	cave in search of great treasure to prove he was more than a thief.
+	Rachel injured while he was gone.
+ -	Edgar lost his mother as an infant, and thus has strong attachment to women.
+ -	Edgar's first crush was an older woman, one of his father's cousins.
+	She was very firm telling him he must grow up to be a good man, so Edgar
+	studied the art of chivalry with passion. She was killed in a political
+	rivalry, Edgar's feelings forever unrequited. Her spiritedness and lively
+	wit made a mark on him, creating his vision of the ideal woman.
+ -	Sabin, Gau, and Cyan act as surrogate family. Sabin/Gau lost their fathers,
+	Cyan lost his son.
+ -	Sabin recognizes an aspect of himself in Gau, and both share a connection
+	to nature and what is natural. Terra senses that when calling him a 
+	"docile bear."
+ -	Sabin was originally going to be able to die at the Tzen house in the WoR.
+	Edgar would trigger a cutscene, looking for Sabin in the middle of the night
+	through the rubble... "I'm coming to save you!"
+	Could have Sabin's heroism mentioned to Edgar, have Edgar say he would have
+	saved him.
+ -	Figaro's sacred colors are yellow (the sun) and blue (water). Edgar wears
+	a blue ribbon against his yellow hair to symbolize this.
+ -	Sabin is afraid of squirrels (one bit him as a kid while giving it a nut).
+ -	Sabin was initially smaller and weaker than his brother.
+ -	Vargas was Duncan's son, and thus meant to be his heir.
+ - 	Sabin made no contact with Edgar in the ten years they were apart.
+ - 	Edgar's hobby is rearranging furniture in his bedroom as a way to de-stress.
+ -	Edgar sleeps with lion paw slippers.
+ -	If Edgar had not taken the throne, he would have become an airship mechanic.
+	Probably explains the Tools ability.
+ -	Only Relm knows Edgar's middle name (Roni). 
+	Cyan and Gau know Sabin's middle name (Rene)
+ -	When Sabin was 5, the brothers saw a tantalizing wedding cake at their 
+	father and stepmother’s wedding. Edgar said to Sabin, “let’s get married so 
+	we can cut the cake!” and Sabin replied, “Yeah!!”
+ -	Using magic requires a great deal of mental energy, and the mental strain of 
+	it caused Celes to become unhinged, prone to sudden outbursts of tears and 
+	fits of hysteria... this state of mind strengthened her desire to find 
+	someone she could rely on: Enter Locke, who speaks to and treats her kindly.
+	By the time she is supposed to betray everyone, Celes realizes she has 
+	fallen in love with Locke, and the conflict tears her up inside.
+ -	Setzer got his scars from accidents on the airship and gambling incidents.
+ -	Setzer is very particular about fashion, and doesn’t like to wear the same 
+	styles as everyone else. The bandana is Locke’s signature piece of apparel,
+	plus it looks really good on him. Once Setzer joins the party and sees this, 
+	he loses his love for his bandana.
+ -	Strago and Cid are the same age (71).
+ -	Strago originally had a wife named Lara, age 65 and a Geomancer. They 
+	constantly bickered. Scene never included by devs:
+	Strago: “Looks like I’ll be the one dying first… in heaven or hell, 
+		I’ll be waiting for you!”
+	Lara: “Hey, you can’t leave yet, what about all this debt?! 
+		I’m going first!”
+ -	Gogo was originally going to impersonate the other main characters
+	throughout the game.
+ -	Gestahl became Emperor at age 52, displaying uncanny charisma.
+ -	A coup d'etat occurred in Gestahlian Empire when Gestahl was 13. Gestahl's 
+	father heavily involved.
+ -	During his time as Emperor, Gestahl researched ancient tales of magic and 
+	sorcery, looking for truth behind the tales. 
+	Explains some of his motivations.
+ -	Mog is only 12 years old.
+ -	Molulu is (was) Mog's girlfriend, and gave him the Moogle Charm. 
+	So if she died in the WoR...
+ -	Ramuh appears to Mog in dreams, and taught him to speak human.
+ -	Mog states his blood type is "Black-Footed Duck Type."
+ -	Umaro is only 4, and has a strong sense of honor. He feels like he owes a
+	debt to Mog, because Mog shared food with him when he collapsed from
+	exhaustion.
+ -	Umaro hates caterpillars.
+ -	Gau dislikes being on ships (hence why he probably didn't go to Thamasa).
+ -	The Siegried imposter, Ziegfried, was likely Gogo.
+ -	Cid is a member of the Marquez bloodline, a line of patriotic scientists
+	of the northern state that became Vector.
+ -	Cid cultivated exotic flowers in a greenhouse, his favorite being roses.
+	As Celes grew, she would help him in the greenhouse, where Cid named his
+	favorite flower after her and eventually gave it to her to adorn her
+	quarters.
+ -	The room with two soldiers in the Imperial Castle likely belonged to Celes.
+ -	Terra was originally supposed to struggle and yell "No! Get away from me!", 
+	while having the slave crown placed, revealing that she was not a willing 
+	participant in the procedure.
+ -	Terra loves animals, and "fluffing" moogles. Fluffing? Uh...
+ -	Terra was effectively raised in entirety in the Magitek Factory.
+ -	Wrexsoul, in the Japanese version, is an amalgam of souls that lost their
+	minds during the War of the Magi.
+ -	Kefka was raised in an orphanage (unknown town).
+ -	Kefka met Celes around age 8, and became interested in her due to her also
+	being an orphan. Used political influence to get her promoted to General.
+ -	Kefka's mind snapped the same day Celes was promoted.
+ -	After descending into madness, Gestahl demoted Kefka to Court Mage. This
+	is still a high rank, but lower than General.
+ -	Kefka loves mirrors and playing with dolls.
+ -	Shadow loves hard-boiled eggs.
+ -	General Leo has an appreciation of music.
+	
+------------------------------------------------
+	
+World History:
+  -	The symbol on the Imperial banner is likely the "mouth" of Magitek Armor.
+ -	The Empire was formed 685 years ago, declaring independence from the world
+	as a military state, intent on creating a global police force.
+ -	The First Gestahlian campaign took place 18 years ago, resulting in 
+	conquering the southern continent. Establishment of the Magitek Research 
+	Facility happened the same year, as well as Terra's birth (and kidnap).
+	Celes was also born the same year.
+ -	The Second Gestahlian campaign took place 8 years ago, with the release of
+	Magitek Armor into combat. At this point, the western continent was
+	conquered, and Figaro formed an alliance with the Empire. Upon allying,
+	there was a small riot in South Figaro. Edgar/Sabin's father died a year
+	later (probably related).
+- 	The game takes place during the Third Gestahlian Campaign:
+	The Gestahlian empire aspires to conquer the northern continent, clashing
+	with the Returners in the Sabre Mountains.
+ -	Samurai started training at Doma 600 years ago.
+ -	Skirmishes began between Doma and the Empire 3 years ago. The Third
+	Gestahlian Campaign began a year later. Doma sympathizes with the Returners.
+ -	Industrial Revolutions and Artistic Revivals started 208 years ago.
+ -	Figaro Castle constructed 202 years ago.
+ -	The Narshe mines are a coal mine, from which Figaro and Narshe draw from. 
+	20 years ago, Narshe refused to trade coal with the invading Gestahlian 
+	Empire, using armed resistance. A pact for mutual peace was agreed upon, 
+	however.
+ -	Figaro's first castle submersion failed 72 years ago, during which a
+	temporary palace was build at South Figaro.
+ -	Gestahl was born the same year to a military family (bad omen?)
+ -	Figaro castle's third submersion was a success 4 years later (68 years ago)
+ -	The Imperial Palace at Vector was completed 38 years ago.
+ -	There are five ranks of Imperial soldier:
+	Green - Cadets.
+	Brown -	Soldiers, commanders, corporals, sergeants.
+	Black - Field commanders.
+	Orange - Kefka's personal soldiers.
+	Imperial Elite - Gestahl's personal guardss, templars, officers, captains,
+		and generals.
+ -	Don's are hounds bred with Magitek power.
+ x 	Tunnel Armor was likely made to find Figaro Castle.
+ -	The Returners name refers to their desire to return things to the way they
+	were before the Empire's conquests.
+ -	The Magi were Mage Knights, who learned how to wield magic. After the War
+	of the Magi, they were persecuted by non-magic-wielding humans, and fled to
+	Crescent Island to found Thamasa.
+ -	Phoenix and Ragnarok died in the War of the Magi.
+ -	In the original concept art, the Warring Triad are referred to as 
+	Sophia (Goddess), Zuvan (Demon), and Sephiroth (Fiend). Note, singular of
+	Sephiroth is Sephirah. The also correspond to the main elements:
+	Lightning (Goddess), Fire (Demon), and Ice (Fiend). Crusader is very likely 
+	a reference to the Triad, or is them
+ -	The "damages friend and foe alike" from the PlayStation bonus section can 
+	refer to the Warring Triad battling each other and mortals getting caught 
+	among their fighting during the War of the Magi, and for this reason it 
+	damages both parties.
+ -	Zozo was founded by the lower-class citizens of Jidoor to the south, and 
+	criminals in Zozo sometimes drift back to the city looking for work and 
+	targets to steal from.
+ -	Albrook was one of the first cities conquered by the Empire.
+	
+--------
+
+NPCs:
+ -	The thieves in Figaro Castle and who help return to it are known as the
+	Crimson Robbers. Their leader perished in the escape.
+ 
+ 
+	
